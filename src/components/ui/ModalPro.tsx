@@ -44,7 +44,7 @@ export default function ModalPro() {
       onClick={ModalProContext.closeModalPro}
       >
         <div className="flex z-10 max-w-3xl max-h-[670px] h-full"
-          ref={modalref}
+          ref={modalRef}
           tabIndex={-1}
           onClick={(e) => e.stopPropagation()}
         >
