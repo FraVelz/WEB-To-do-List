@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { AsidebarProvider } from "@/context/context-openAsidebar";
-import { ModalProProvider, useModalPro } from "@/context/context-ModalPro";
+import { ModalProProvider } from "@/context/context-ModalPro";
 
 import Aside  from "@/components/layout/Aside";
 import ModalPro from "@/components/ui/ModalPro";
@@ -31,7 +31,7 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
+    <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-surface-app antialiased`}
       >
