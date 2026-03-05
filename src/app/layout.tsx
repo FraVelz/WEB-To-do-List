@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+
+import { useAsideBar } from "@/hooks/useAsideBar";
+
+import Header from "../components/layout/Header";
+import Aside  from "../components/layout/Aside";
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -22,12 +28,25 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex min-h-screen items-center justify-center font-sans">
+          <Aside
+          useAsideBar={useAsideBar}
+          className="relative w-70 h-screen bg-background-sidebar" />
+
+          <div className="flex-1 flex flex-col h-screen bg-background-main">
+            <Header
+            useAsideBar={useAsideBar}
+            className="" />
+
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
