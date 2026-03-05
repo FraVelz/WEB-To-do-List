@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
+/* =========================================================
+   DESIGN TOKENS
+   Sistema de colores escalable
+   ========================================================= */
+
 @theme inline {
-  --color-background-sidebar: rgb(36, 36, 36);
-  --color-background-main: rgb(28, 28, 28);
 
-  --color-text-red: rgb(255, 127, 116);
-  --color-background-red:rgb(255, 127, 116, 0.2);
-  --color-bg-button-primary: #db4c3f;
-  --color-bg-button-primary-hover: #c5372b;
+  /* =========================================================
+     1. PRIMITIVES (COLORES BASE)
+     Estos NO se usan directamente en componentes.
+     Solo definen la paleta del diseño.
+     ========================================================= */
 
+  /* Base neutrals */
+  --color-gray-950: rgb(28, 28, 28);
+  --color-gray-900: rgb(36, 36, 36);
+  --color-gray-200: #e2e2e2;
 
+  /* Brand */
+  --color-brand-500: #db4c3f;
+  --color-brand-600: #c5372b;
 
-  --color-hover-primary: rgba(226, 226, 226, 0.1);
-  --color-hover-secundary: rgba(226, 226, 226, 0.6);
+  /* Accent */
+  --color-accent-400: rgb(255, 127, 116);
+  --color-accent-soft: rgb(255 127 116 / 0.2);
 
-  --color-text-sidebar: #e2e2e2;
-  --color-text-header: #e2e2e2;
-  --color-text-main: #e2e2e2;
+  /* Utility */
+  --color-white-alpha-10: rgba(226, 226, 226, 0.1);
+  --color-white-alpha-60: rgba(226, 226, 226, 0.6);
+
+  /* =========================================================
+     2. SEMANTIC TOKENS
+     Estos SI se usan en los componentes.
+     Describen el propósito del color.
+     ========================================================= */
+
+  /* -----------------------------
+     SURFACES (fondos UI)
+     ----------------------------- */
+
+  /* Fondo principal de la app */
+  --color-surface-app: var(--color-gray-950);
+
+  /* Sidebar / panel lateral */
+  --color-surface-sidebar: var(--color-gray-900);
+
+  /* Fondo suave para elementos destacados */
+  --color-surface-accent-soft: var(--color-accent-soft);
+
+  /* -----------------------------
+     TEXT
+     ----------------------------- */
+
+  /* Texto principal */
+  --color-text-primary: var(--color-gray-200);
+
+  /* Texto en sidebar */
+  --color-text-sidebar: var(--color-gray-200);
+
+  /* Texto en headers */
+  --color-text-heading: var(--color-gray-200);
+
+  /* Texto de acento (links, números importantes, etc) */
+  --color-text-accent: var(--color-accent-400);
+
+  /* -----------------------------
+     INTERACTIVE
+     Elementos clicables (botones, links)
+     ----------------------------- */
+
+  /* Botón principal */
+  --color-interactive-primary: var(--color-brand-500);
+
+  /* Hover del botón principal */
+  --color-interactive-primary-hover: var(--color-brand-600);
+
+  /* Hover suave de UI (menus, items, etc) */
+  --color-interactive-hover-soft: var(--color-white-alpha-10);
+
+  /* Hover fuerte */
+  --color-interactive-hover-strong: var(--color-white-alpha-60);
+
+  /* -----------------------------
+     BORDERS
+     (aunque ahora no los uses)
+     ----------------------------- */
+
+  --color-border-subtle: rgba(255 255 255 / 0.08);
+  --color-border-default: rgba(255 255 255 / 0.12);
+
+  /* -----------------------------
+     STATES (para futuro)
+     ----------------------------- */
+
+  --color-state-success: #22c55e;
+  --color-state-warning: #f59e0b;
+  --color-state-error: #ef4444;
 }
 
 body {
-  color: var(--color-text-main);
+  color: var(--color-text-primary);
 }
 
 button {

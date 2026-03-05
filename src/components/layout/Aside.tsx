@@ -10,8 +10,8 @@ function Pages({children, link, text, fontsize}: {children: React.ReactElement, 
   const isActive = usePathLink({href: link});
 
   return (
-    <Link href={link} className={`px-3 py-2 flex gap-3 hover:bg-hover-primary rounded-md
-      ${isActive ? 'bg-background-red text-text-red':''}
+    <Link href={link} className={`px-3 py-2 flex gap-3 hover:bg-interactive-hover-soft rounded-md
+      ${isActive ? 'bg-surface-accent-soft text-text-accent':''}
     `}>
       {children}
       <p className={fontsize ? fontsize : "text-sm"}>{text}</p>
@@ -32,18 +32,18 @@ export default function Aside({ className }: { className: string }) {
       <div>
         {/* Profile */}
         <div className="p-3 mb-3 flex justify-between">
-          <button className="flex items-center gap-3 hover:bg-hover-primary py-1 px-2 rounded-md">
+          <button className="flex items-center gap-3 hover:bg-interactive-hover-soft py-1 px-2 rounded-md">
             <div className="size-6 bg-white rounded-full"></div>
             <p className="text-sm text-text-sidebar">Fravelz</p>
             <Image src="/aside-bar/DownArrow.svg" width={12} height={12} alt="Down Arrow" />
           </button>
 
           <div className="flex gap-1">
-            <button className="hover:bg-hover-primary py-1 px-2 rounded-md">
+            <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md">
               <Image src="/aside-bar/NotificationNotify.svg" width={20} height={20} alt="Down Arrow" />
             </button>
 
-            <button className="hover:bg-hover-primary py-1 px-2 rounded-md" onClick={context.click_button_asidebar}>
+            <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md" onClick={context.click_button_asidebar}>
               <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Down Arrow" />
             </button>
           </div>
@@ -75,7 +75,7 @@ export default function Aside({ className }: { className: string }) {
         </nav>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full h-10 bg-background-sidebar px-3 mb-4">
+      <div className="absolute bottom-0 left-0 w-full h-10 bg-surface-sidebar px-3 mb-4">
         <Pages text="Inicio" link="/" fontsize="text-md">
           <Image src="/aside-bar/Home.svg" width={24} height={24} alt="Down Arrow" />
         </Pages>

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { AsidebarProvider } from "../context/context-openAsidebar";
 
-import { useAsideBar } from "@/hooks/useAsideBar";
 import Aside  from "../components/layout/Aside";
 
 import { Geist, Geist_Mono } from "next/font/google";
@@ -32,14 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background-main antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-surface-app antialiased`}
       >
         <div className="flex min-h-screen items-center justify-center font-sans">
           <AsidebarProvider>
             <Aside
-            className="relative w-70 h-screen bg-background-sidebar" />
+            className="relative w-70 h-screen bg-surface-sidebar" />
 
-            <div className="flex-1 flex flex-col h-screen bg-background-main">
+            <div className="flex-1 flex flex-col h-screen bg-surface-app">
               {children}
             </div>
           </AsidebarProvider>
