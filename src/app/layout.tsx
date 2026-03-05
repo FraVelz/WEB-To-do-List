@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 
-import { AsidebarProvider } from "../context/context-openAsidebar";
+import { AsidebarProvider } from "@/context/context-openAsidebar";
+import { ModalProProvider, useModalPro } from "@/context/context-ModalPro";
 
-import Aside  from "../components/layout/Aside";
+import Aside  from "@/components/layout/Aside";
+import ModalPro from "@/components/ui/ModalPro";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -33,16 +35,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-surface-app antialiased`}
       >
-        <div className="flex min-h-screen items-center justify-center font-sans">
-          <AsidebarProvider>
-            <Aside
-            className="relative w-70 h-screen bg-surface-sidebar" />
+        <AsidebarProvider>
+          <ModalProProvider>
+            <div className="flex min-h-screen items-center justify-center font-sans">
+              <Aside
+              className="relative w-70 h-screen bg-surface-sidebar" />
 
-            <div className="flex-1 flex flex-col h-screen bg-surface-app">
-              {children}
+              <div className="flex-1 flex flex-col h-screen bg-surface-app">
+                {children}
+              </div>
             </div>
-          </AsidebarProvider>
-        </div>
+
+            <ModalPro />
+          </ModalProProvider>
+        </AsidebarProvider>
       </body>
     </html>
   );

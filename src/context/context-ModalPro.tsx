@@ -2,37 +2,30 @@
 
 import { createContext, useContext, useState } from "react";
 
-type SidebarContextType = {
-  asideBarVisible: boolean
-  asideBarOpen: boolean
-  click_button_asidebar: () => void
-}
+type ModalProContextType = {
+  modalPro: boolean;
+  openModalPro: () => void;
+  closeModalPro: () => void;
+};
 
-const Context = createContext<SidebarContextType | null>(null);
+const ModalProContext = createContext<ModalProContextType | null>(null);
 
+export const ModalProProvider = ({ children }: { children: React.ReactNode }) => {
+  const [modalPro, setModalPro] = useState(false);
 
-export function AsidebarProvider({ children }: { children: React.ReactNode }) {
-  const [asideBarVisible, setAsideBarVisible] = useState(true)
-  const [asideBarOpen, setAsideBarOpen] = useState(true)
+  const openModalPro = () => {
+    setModalPro(true);
+  };
 
-  const click_button_asidebar = () => {
-    if (asideBarOpen) {
-      setAsideBarOpen(false)
-      setTimeout(() => setAsideBarVisible(false), 1000)
-    }
-    else {
-      setAsideBarVisible(true)
-      setAsideBarOpen(true)
-    }
-  }
+  const closeModalPro = () => {
+    setModalPro(false);
+  };
 
   return (
-    <Context.Provider value={{asideBarVisible, asideBarOpen, click_button_asidebar}}>
+    <ModalProContext.Provider value={{ modalPro, openModalPro, closeModalPro }}>
       {children}
-    </Context.Provider>
+    </ModalProContext.Provider>
   );
-}
+};
 
-export function useAsidebar() {
-  return useContext(Context);
-}
+export const useModalPro = () => useContext(ModalProContext);
