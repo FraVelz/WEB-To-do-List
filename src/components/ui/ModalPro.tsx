@@ -42,17 +42,17 @@ export default function ModalPro() {
     <div
       role="dialog"
       aria-modal="true"
-      className="absolute top-0 left-0 w-screen h-screen px-4 py-24 bg-black/50 flex justify-center items-center"
+      className="absolute left-0 top-0 flex h-screen w-screen items-center justify-center bg-black/50 px-4 py-24"
       onClick={ModalProContext.closeModalPro}
     >
       <div
-        className="flex z-10 max-w-3xl max-h-167.5 h-full"
+        className="max-h-167.5 z-10 flex h-full max-w-3xl"
         ref={modalRef}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Part 1: Test pro */}
-        <div className="basis-[60%] h-full bg-surface-app rounded-bl-3xl rounded-tl-1xl flex flex-col gap-3 p-6">
+        <div className="bg-surface-app rounded-tl-1xl flex h-full basis-3/5 flex-col gap-3 rounded-bl-3xl p-6">
           <h1 className="text-xl font-bold">Prueba Pro gratis</h1>
           <p>
             Millones de personas ya usan nuestras herramientas simples pero
@@ -60,13 +60,13 @@ export default function ModalPro() {
           </p>
 
           <h2 className="mt-4 font-bold">Ciclo de facturación</h2>
-          <div className="rounded-md border border-brand-500 px-2 py-3">
+          <div className="border-brand-500 rounded-md border px-2 py-3">
             <p className="font-bold">Anual</p>
 
-            <p className="font-bold mt-1">
+            <p className="mt-1 font-bold">
               0 US$
               <span className="font-normal contrast-75">/mes</span>
-              <span className="text-[12px] ml-5 rounded-md px-1 py-0.5 text-text-accent bg-accent-soft font-normal">
+              <span className="text-text-accent bg-accent-soft ml-5 rounded-md px-1 py-0.5 text-[12px] font-normal">
                 Ahorra 24 US$
               </span>
             </p>
@@ -74,7 +74,7 @@ export default function ModalPro() {
         </div>
 
         {/* Part 2: More Information*/}
-        <div className="basis-[40%] h-full bg-surface-sidebar rounded-tr-3xl flex flex-col justify-center items-center gap-3 p-6">
+        <div className="bg-surface-sidebar flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
           <Image
             src="/ModalPro/img-box-premium.png"
             width={250}
@@ -86,28 +86,28 @@ export default function ModalPro() {
             Millones de personas ya usan nuestras herramientas simples pero
             potentes para enfocarse y alcanzar sus metas.
           </p>
-          <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md flex justify-center items-center gap-1">
+          <button className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1">
             <Image
               src="/aside-bar/Sidebar.svg"
               width={20}
               height={20}
               alt="Down Arrow"
             />
-            <p className="text-sm text-text-heading">Formato</p>
+            <p className="text-text-heading text-sm">Formato</p>
             <Image
               src="/aside-bar/Sidebar.svg"
               width={20}
               height={20}
               alt="Down Arrow"
             />
-            <p className="text-sm text-text-heading">Formato</p>
+            <p className="text-text-heading text-sm">Formato</p>
             <Image
               src="/aside-bar/Sidebar.svg"
               width={20}
               height={20}
               alt="Down Arrow"
             />
-            <p className="text-sm text-text-heading">Formato</p>
+            <p className="text-text-heading text-sm">Formato</p>
           </button>
         </div>
       </div>

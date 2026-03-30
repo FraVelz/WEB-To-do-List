@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { AsidebarProvider } from "@/context/context-openAsidebar";
 import { ModalProProvider } from "@/context/context-ModalPro";
 
-import Aside  from "@/components/layout/Aside";
+import Aside from "@/components/layout/Aside";
 import ModalPro from "@/components/ui/ModalPro";
 
 import { Geist, Geist_Mono } from "next/font/google";
@@ -29,7 +29,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   return (
     <html lang="es">
       <body
@@ -38,10 +37,9 @@ export default function RootLayout({
         <AsidebarProvider>
           <ModalProProvider>
             <div className="flex min-h-screen items-center justify-center font-sans">
-              <Aside
-              className="relative w-70 h-screen bg-surface-sidebar" />
+              <Aside className="w-70 bg-surface-sidebar relative h-screen" />
 
-              <div className="flex-1 flex flex-col h-screen bg-surface-app">
+              <div className="bg-surface-app flex h-screen flex-1 flex-col">
                 {children}
               </div>
             </div>

@@ -27,7 +27,7 @@ Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vi
 
 ## 📁 Estructura del proyecto
 
-``` text
+```text
 src/
 ├── app/                    # Rutas de la aplicación (App Router)
 │   ├── add-task/          # Crear nueva tarea

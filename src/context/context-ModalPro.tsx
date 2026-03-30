@@ -10,7 +10,11 @@ type ModalProContextType = {
 
 const ModalProContext = createContext<ModalProContextType | null>(null);
 
-export const ModalProProvider = ({ children }: { children: React.ReactNode }) => {
+export const ModalProProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [modalPro, setModalPro] = useState(false);
 
   const openModalPro = () => {

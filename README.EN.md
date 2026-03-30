@@ -27,7 +27,7 @@ A modern task management app built with Next.js. Organize your life and work wit
 
 ## 📁 Project Structure
 
-``` text
+```text
 src/
 ├── app/ # Application routes (App Router)
 │ ├── add-task/ # Create a new task

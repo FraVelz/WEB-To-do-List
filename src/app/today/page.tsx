@@ -1,6 +1,3 @@
-
 export default function Today() {
-  return (
-    <div></div>
-  );
+  return <div></div>;
 }

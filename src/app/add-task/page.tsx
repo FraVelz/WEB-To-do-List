@@ -1,7 +1,3 @@
-
 export default function AddTask() {
-  return (
-    <div>
-    </div>
-  );
+  return <div></div>;
 }

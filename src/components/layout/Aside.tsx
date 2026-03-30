@@ -6,13 +6,24 @@ import { usePathLink } from "@/hooks/usePathLink";
 import Image from "next/image";
 import Link from "next/link";
 
-function Pages({children, link, text, fontsize}: {children: React.ReactElement, text: string, link:string, fontsize?: string}) {
-  const isActive = usePathLink({href: link});
+function Pages({
+  children,
+  link,
+  text,
+  fontsize,
+}: {
+  children: React.ReactElement;
+  text: string;
+  link: string;
+  fontsize?: string;
+}) {
+  const isActive = usePathLink({ href: link });
 
   return (
-    <Link href={link} className={`px-3 py-2 flex gap-3 hover:bg-interactive-hover-soft rounded-md
-      ${isActive ? 'bg-surface-accent-soft text-text-accent':''}
-    `}>
+    <Link
+      href={link}
+      className={`hover:bg-interactive-hover-soft flex gap-3 rounded-md px-3 py-2 ${isActive ? "bg-surface-accent-soft text-text-accent" : ""} `}
+    >
       {children}
       <p className={fontsize ? fontsize : "text-sm"}>{text}</p>
     </Link>
@@ -87,62 +98,83 @@ export default function Aside({ className }: { className: string }) {
 
   if (context.asideBarVisible) {
     return (
-      <aside className={`
-      transition-transform duration-1000
-      ${context.asideBarOpen ? "transform translate-x-0" : "transform -translate-x-full"}
-      ${className}`}>
-      <div>
-        {/* Profile */}
-        <div className="p-3 mb-3 flex justify-between">
-          <button className="flex items-center gap-3 hover:bg-interactive-hover-soft py-1 px-2 rounded-md">
-            <div className="size-6 bg-white rounded-full"></div>
-            <p className="text-sm text-text-sidebar">Fravelz</p>
-            <Image src="/aside-bar/DownArrow.svg" width={12} height={12} alt="" />
-          </button>
-
-          <div className="flex gap-1">
-            <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md">
-              <Image src="/aside-bar/NotificationNotify.svg" width={20} height={20} alt="Icono Notificaciones" />
+      <aside
+        className={`transition-transform duration-1000 ${context.asideBarOpen ? "translate-x-0" : "-translate-x-full"} ${className}`}
+      >
+        <div>
+          {/* Profile */}
+          <div className="mb-3 flex justify-between p-3">
+            <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
+              <div className="size-6 rounded-full bg-white"></div>
+              <p className="text-text-sidebar text-sm">Fravelz</p>
+              <Image
+                src="/aside-bar/DownArrow.svg"
+                width={12}
+                height={12}
+                alt=""
+              />
             </button>
 
-            <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md" onClick={context.click_button_asidebar}>
-              <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Icono Menú" />
-            </button>
+            <div className="flex gap-1">
+              <button className="hover:bg-interactive-hover-soft rounded-md px-2 py-1">
+                <Image
+                  src="/aside-bar/NotificationNotify.svg"
+                  width={20}
+                  height={20}
+                  alt="Icono Notificaciones"
+                />
+              </button>
+
+              <button
+                className="hover:bg-interactive-hover-soft rounded-md px-2 py-1"
+                onClick={context.click_button_asidebar}
+              >
+                <Image
+                  src="/aside-bar/Sidebar.svg"
+                  width={20}
+                  height={20}
+                  alt="Icono Menú"
+                />
+              </button>
+            </div>
           </div>
+
+          {/* Pages */}
+          <nav aria-label="Menú principal" className="flex flex-col gap-1 px-3">
+            <ul className="flex flex-col gap-1">
+              {asideItems.map((item) => (
+                <li key={item.link}>
+                  <Pages
+                    text={item.text}
+                    link={item.link}
+                    fontsize={item.fontSize}
+                  >
+                    <Image
+                      src={item.icon}
+                      width={item.width}
+                      height={item.height}
+                      alt={item.text}
+                    />
+                  </Pages>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
 
-        {/* Pages */}
-        <nav aria-label="Menú principal" className="px-3 flex flex-col gap-1">
-          <ul className="flex flex-col gap-1">
-            {asideItems.map((item) => (
-              <li key={item.link}>
-                <Pages
-                  text={item.text}
-                  link={item.link}
-                  fontsize={item.fontSize}
-                >
-                  <Image
-                    src={item.icon}
-                    width={item.width}
-                    height={item.height}
-                    alt={item.text}
-                  />
-                </Pages>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-full h-10 bg-surface-sidebar px-3 mb-4">
-        <Pages text="Inicio" link="/" fontsize="text-md">
-          <Image src="/aside-bar/Home.svg" width={24} height={24} alt="Icono Inicio" />
-        </Pages>
-      </div>
-    </aside>
+        <div className="bg-surface-sidebar absolute bottom-0 left-0 mb-4 h-10 w-full px-3">
+          <Pages text="Inicio" link="/" fontsize="text-md">
+            <Image
+              src="/aside-bar/Home.svg"
+              width={24}
+              height={24}
+              alt="Icono Inicio"
+            />
+          </Pages>
+        </div>
+      </aside>
     );
   }
-  
+
   return null;
 }
-
