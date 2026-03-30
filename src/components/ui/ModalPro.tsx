@@ -1,13 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+
 import { useModalPro } from "@/context/context-ModalPro";
 import Image from "next/image";
 
 export default function ModalPro() {
   const ModalProContext = useModalPro();
-  const modalRef = useRef(null)
-  const previousFocus = useRef(null)
+  const modalRef = useRef(null);
+
+  // const previousFocus = useRef(null)
 
   // useEffect(() => {
   //   if (isOpen) {
@@ -37,40 +39,81 @@ export default function ModalPro() {
   if (!ModalProContext) return null;
 
   return ModalProContext.modalPro ? (
-      <div
+    <div
       role="dialog"
       aria-modal="true"
       className="absolute top-0 left-0 w-screen h-screen px-4 py-24 bg-black/50 flex justify-center items-center"
       onClick={ModalProContext.closeModalPro}
+    >
+      <div
+        className="flex z-10 max-w-3xl max-h-167.5 h-full"
+        ref={modalRef}
+        tabIndex={-1}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex z-10 max-w-3xl max-h-[670px] h-full"
-          ref={modalRef}
-          tabIndex={-1}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="basis-[60%] h-full bg-surface-app rounded-bl-3xl rounded-tl-1xl flex flex-col justify-center items-center gap-3 p-6">
-            <h1>Prueba Pro gratis</h1>
-            <p>Millones de personas ya usan nuestras herramientas simples pero potentes para enfocarse y alcanzar sus metas.</p>
-          </div>
+        {/* Part 1: Test pro */}
+        <div className="basis-[60%] h-full bg-surface-app rounded-bl-3xl rounded-tl-1xl flex flex-col gap-3 p-6">
+          <h1 className="text-xl font-bold">Prueba Pro gratis</h1>
+          <p>
+            Millones de personas ya usan nuestras herramientas simples pero
+            potentes para enfocarse y alcanzar sus metas.
+          </p>
 
-          <div className="basis-[40%] h-full bg-surface-sidebar flex flex-col justify-center items-center gap-3 p-6">
-            <h1>Prueba Pro gratis</h1>
-            <p>Millones de personas ya usan nuestras herramientas simples pero potentes para enfocarse y alcanzar sus metas.</p>
-            <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md flex justify-center items-center gap-1">
-              <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Down Arrow" />
-              <p className="text-sm text-text-heading">Formato</p>
-              <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Down Arrow" />
-              <p className="text-sm text-text-heading">Formato</p>
-              <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Down Arrow" />
-              <p className="text-sm text-text-heading">Formato</p>
-            </button>
+          <h2 className="mt-4 font-bold">Ciclo de facturación</h2>
+          <div className="rounded-md border border-brand-500 px-2 py-3">
+            <p className="font-bold">Anual</p>
+
+            <p className="font-bold mt-1">
+              0 US$
+              <span className="font-normal contrast-75">/mes</span>
+              <span className="text-[12px] ml-5 rounded-md px-1 py-0.5 text-text-accent bg-accent-soft font-normal">
+                Ahorra 24 US$
+              </span>
+            </p>
           </div>
         </div>
+
+        {/* Part 2: More Information*/}
+        <div className="basis-[40%] h-full bg-surface-sidebar rounded-tr-3xl flex flex-col justify-center items-center gap-3 p-6">
+          <Image
+            src="/ModalPro/img-box-premium.png"
+            width={250}
+            height={250}
+            alt=""
+          />
+          <h1>Prueba Pro gratis</h1>
+          <p>
+            Millones de personas ya usan nuestras herramientas simples pero
+            potentes para enfocarse y alcanzar sus metas.
+          </p>
+          <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md flex justify-center items-center gap-1">
+            <Image
+              src="/aside-bar/Sidebar.svg"
+              width={20}
+              height={20}
+              alt="Down Arrow"
+            />
+            <p className="text-sm text-text-heading">Formato</p>
+            <Image
+              src="/aside-bar/Sidebar.svg"
+              width={20}
+              height={20}
+              alt="Down Arrow"
+            />
+            <p className="text-sm text-text-heading">Formato</p>
+            <Image
+              src="/aside-bar/Sidebar.svg"
+              width={20}
+              height={20}
+              alt="Down Arrow"
+            />
+            <p className="text-sm text-text-heading">Formato</p>
+          </button>
+        </div>
       </div>
-
-    ): null;
+    </div>
+  ) : null;
 }
-
 
 // import { useEffect, useRef } from "react"
 
