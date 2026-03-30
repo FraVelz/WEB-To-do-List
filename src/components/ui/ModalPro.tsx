@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import { useModalPro } from "@/context/context-ModalPro";
 import Image from "next/image";
 
+import ClosedIcon from "./ClosedIcon.svg";
+
 export default function ModalPro() {
   const ModalProContext = useModalPro();
   const modalRef = useRef(null);
@@ -42,18 +44,18 @@ export default function ModalPro() {
     <div
       role="dialog"
       aria-modal="true"
-      className="absolute left-0 top-0 flex h-screen w-screen items-center justify-center bg-black/50 px-4 py-24"
+      className="absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/50 px-4 py-24"
       onClick={ModalProContext.closeModalPro}
     >
       <div
-        className="max-h-167.5 z-10 flex h-full max-w-3xl"
+        className="z-10 flex h-full max-h-167.5 max-w-3xl"
         ref={modalRef}
         tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Part 1: Test pro */}
         <div className="bg-surface-app rounded-tl-1xl flex h-full basis-3/5 flex-col gap-3 rounded-bl-3xl p-6">
-          <h1 className="text-xl font-bold">Prueba Pro gratis</h1>
+          <h1 className="text-xl font-bold">Pro gratis</h1>
           <p>
             Millones de personas ya usan nuestras herramientas simples pero
             potentes para enfocarse y alcanzar sus metas.
@@ -67,96 +69,39 @@ export default function ModalPro() {
               0 US$
               <span className="font-normal contrast-75">/mes</span>
               <span className="text-text-accent bg-accent-soft ml-5 rounded-md px-1 py-0.5 text-[12px] font-normal">
-                Ahorra 24 US$
+                Gratis
               </span>
             </p>
           </div>
         </div>
 
         {/* Part 2: More Information*/}
-        <div className="bg-surface-sidebar flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
+        <div className="relative bg-surface-sidebar flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
+        <button>
+          <Image
+            src={ClosedIcon}
+            className="absolute top-3 right-3 size-7 cursor-pointer rounded-md px-0.5 py-px transition duration-300 hover:bg-white/10"
+            alt="Cerrar modal"
+            onClick={ModalProContext.closeModalPro}
+          />
+        </button>
+
           <Image
             src="/ModalPro/img-box-premium.png"
+            className="select-none"
+            draggable={false}
             width={250}
             height={250}
             alt=""
           />
-          <h1>Prueba Pro gratis</h1>
-          <p>
-            Millones de personas ya usan nuestras herramientas simples pero
-            potentes para enfocarse y alcanzar sus metas.
-          </p>
-          <button className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1">
-            <Image
-              src="/aside-bar/Sidebar.svg"
-              width={20}
-              height={20}
-              alt="Down Arrow"
-            />
-            <p className="text-text-heading text-sm">Formato</p>
-            <Image
-              src="/aside-bar/Sidebar.svg"
-              width={20}
-              height={20}
-              alt="Down Arrow"
-            />
-            <p className="text-text-heading text-sm">Formato</p>
-            <Image
-              src="/aside-bar/Sidebar.svg"
-              width={20}
-              height={20}
-              alt="Down Arrow"
-            />
-            <p className="text-text-heading text-sm">Formato</p>
-          </button>
+
+          <h1 className="text-xl font-bold">Pro gratis</h1>
+
+          <p>Funcionalidades, opciones y características, próximamente...</p>
+
+          <p className="absolute bottom-3 text-center text-[14px] contrast-75 font-normal"> Esta web, es un proyecto de código abierto de practica, no un producto ni servicio oficial.</p>
         </div>
       </div>
     </div>
   ) : null;
 }
-
-// import { useEffect, useRef } from "react"
-
-// export default function ModalPro({ isOpen, onClose }) {
-//   const modalRef = useRef(null)
-//   const previousFocus = useRef(null)
-
-//   useEffect(() => {
-//     if (isOpen) {
-//       previousFocus.current = document.activeElement
-//       modalRef.current?.focus()
-//     } else {
-//       previousFocus.current?.focus()
-//     }
-//   }, [isOpen])
-
-//   useEffect(() => {
-//     const handleKey = (e) => {
-//       if (e.key === "Escape") onClose()
-//     }
-
-//     document.addEventListener("keydown", handleKey)
-//     return () => document.removeEventListener("keydown", handleKey)
-//   }, [onClose])
-
-//   if (!isOpen) return null
-
-//   return (
-//     <div
-//       role="dialog"
-//       aria-modal="true"
-//       className="fixed inset-0 bg-black/50 flex justify-center items-center"
-//       onClick={onClose}
-//     >
-//       <div
-//         ref={modalRef}
-//         tabIndex={-1}
-//         className="bg-white p-6"
-//         onClick={(e) => e.stopPropagation()}
-//       >
-//         <h2 id="modal-title">Modal</h2>
-//         <button onClick={onClose}>Cerrar</button>
-//       </div>
-//     </div>
-//   )
-// }
