@@ -5,7 +5,8 @@ import { useEffect, useRef } from "react";
 import { useModalPro } from "@/context/context-ModalPro";
 import Image from "next/image";
 
-import ClosedIcon from "./ClosedIcon.svg";
+import ClosedIcon from "./icons/ClosedIcon.svg";
+import ModalProImg from "./icons/img-box-premium.png";
 
 export default function ModalPro() {
   const ModalProContext = useModalPro();
@@ -76,18 +77,18 @@ export default function ModalPro() {
         </div>
 
         {/* Part 2: More Information*/}
-        <div className="relative bg-surface-sidebar flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
-        <button>
-          <Image
-            src={ClosedIcon}
-            className="absolute top-3 right-3 size-7 cursor-pointer rounded-md px-0.5 py-px transition duration-300 hover:bg-white/10"
-            alt="Cerrar modal"
-            onClick={ModalProContext.closeModalPro}
-          />
-        </button>
+        <div className="bg-surface-sidebar relative flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
+          <button>
+            <Image
+              src={ClosedIcon}
+              className="absolute top-3 right-3 size-7 cursor-pointer rounded-md px-0.5 py-px transition duration-300 hover:bg-white/10"
+              alt="Cerrar modal"
+              onClick={ModalProContext.closeModalPro}
+            />
+          </button>
 
           <Image
-            src="/ModalPro/img-box-premium.png"
+            src={ModalProImg}
             className="select-none"
             draggable={false}
             width={250}
@@ -99,7 +100,11 @@ export default function ModalPro() {
 
           <p>Funcionalidades, opciones y características, próximamente...</p>
 
-          <p className="absolute bottom-3 text-center text-[14px] contrast-75 font-normal"> Esta web, es un proyecto de código abierto de practica, no un producto ni servicio oficial.</p>
+          <p className="absolute bottom-3 text-center text-[14px] font-normal contrast-75">
+            {" "}
+            Esta web, es un proyecto de código abierto de practica, no un
+            producto ni servicio oficial.
+          </p>
         </div>
       </div>
     </div>

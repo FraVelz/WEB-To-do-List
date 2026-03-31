@@ -2,6 +2,10 @@
 
 import { useAsidebar } from "@/context/context-openAsidebar";
 import { useModalPro } from "@/context/context-ModalPro";
+
+import Premium from "./icons/Premium.svg";
+import Sidebar from "./../aside-bar/icons/Sidebar.svg";
+
 import Image from "next/image";
 
 export default function Header({
@@ -18,7 +22,7 @@ export default function Header({
   if (!ModalProContext) return null;
 
   return (
-    <header
+    <aside
       className={`flex h-fit w-full justify-between px-6 py-3 ${className}`}
     >
       {!AsidebarContext.asideBarOpen && (
@@ -27,7 +31,7 @@ export default function Header({
           onClick={AsidebarContext.click_button_asidebar}
         >
           <Image
-            src="/aside-bar/Sidebar.svg"
+            src={Sidebar}
             width={20}
             height={20}
             alt="Down Arrow"
@@ -42,7 +46,7 @@ export default function Header({
           onClick={ModalProContext.openModalPro}
         >
           <Image
-            src="/header/Premium.svg"
+            src={Premium}
             width={20}
             height={20}
             alt="Down Arrow"
@@ -52,14 +56,6 @@ export default function Header({
 
         {children}
       </div>
-    </header>
+    </aside>
   );
-}
-
-{
-  /* <button className="hover:bg-interactive-hover-soft py-1 px-2 rounded-md flex justify-center items-center gap-1">
-          <Image src="/aside-bar/Sidebar.svg" width={20} height={20} alt="Down Arrow" />
-          <p className="text-sm text-text-heading">Formato</p>
-        </button>
-  */
 }
