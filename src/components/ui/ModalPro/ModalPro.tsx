@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react'
 
-import { useModalPro } from "@/context/context-ModalPro";
-import Image from "next/image";
+import { useModalPro } from '@/context/context-ModalPro'
+import Image from 'next/image'
 
-import ClosedIcon from "./icons/ClosedIcon.svg";
-import ModalProImg from "./icons/img-box-premium.png";
+import ClosedIcon from './icons/ClosedIcon.svg'
+import ModalProImg from './icons/img-box-premium.png'
 
 export default function ModalPro() {
-  const ModalProContext = useModalPro();
-  const modalRef = useRef(null);
+  const ModalProContext = useModalPro()
+  const modalRef = useRef(null)
 
   // const previousFocus = useRef(null)
 
@@ -25,21 +25,21 @@ export default function ModalPro() {
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (!ModalProContext) return;
+      if (!ModalProContext) return
 
-      if (e.key === "Escape") {
-        ModalProContext.closeModalPro();
+      if (e.key === 'Escape') {
+        ModalProContext.closeModalPro()
       }
-    };
+    }
 
-    window.addEventListener("keydown", handleEsc);
+    window.addEventListener('keydown', handleEsc)
 
     return () => {
-      window.removeEventListener("keydown", handleEsc);
-    };
-  }, [ModalProContext]);
+      window.removeEventListener('keydown', handleEsc)
+    }
+  }, [ModalProContext])
 
-  if (!ModalProContext) return null;
+  if (!ModalProContext) return null
 
   return ModalProContext.modalPro ? (
     <div
@@ -101,12 +101,12 @@ export default function ModalPro() {
           <p>Funcionalidades, opciones y características, próximamente...</p>
 
           <p className="absolute bottom-3 text-center text-[14px] font-normal contrast-75">
-            {" "}
+            {' '}
             Esta web, es un proyecto de código abierto de practica, no un
             producto ni servicio oficial.
           </p>
         </div>
       </div>
     </div>
-  ) : null;
+  ) : null
 }

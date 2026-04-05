@@ -1,3 +1,3 @@
 export default function Next() {
-  return <div></div>;
+  return <div></div>
 }

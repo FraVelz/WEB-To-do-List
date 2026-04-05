@@ -1,35 +1,35 @@
-"use client";
+'use client'
 
-import { useAsidebar } from "@/context/context-openAsidebar";
+import { useAsidebar } from '@/context/context-openAsidebar'
 
-import { LinkPages } from "./LinkPages";
-import { asideItems } from "./data";
+import { LinkPages } from './LinkPages'
+import { asideItems } from './data'
 
-import DownArrow from "./icons/DownArrow.svg";
-import NotificationNotify from "./icons/NotificationNotify.svg";
-import Sidebar from "./icons/Sidebar.svg";
-import Home from "./icons/Home.svg";
+import DownArrow from './icons/DownArrow.svg'
+import NotificationNotify from './icons/NotificationNotify.svg'
+import Sidebar from './icons/Sidebar.svg'
+import Home from './icons/Home.svg'
 
-import Image from "next/image";
-import Link from "next/link";
-import clsx from "clsx";
+import Image from 'next/image'
+import Link from 'next/link'
+import clsx from 'clsx'
 
 export default function Aside() {
-  const context = useAsidebar();
-  if (!context) return null;
+  const context = useAsidebar()
+  if (!context) return null
 
   return (
     <header
       className={clsx(
-        "bg-surface-sidebar relative h-screen transition-[width] duration-1000",
-        context.asideBarOpen ? "w-70" : "w-0",
+        'bg-surface-sidebar relative h-screen transition-[width] duration-1000',
+        context.asideBarOpen ? 'w-70' : 'w-0'
       )}
     >
       <div
         className={clsx(
-          "transition-opacity duration-300",
-          context.asideBarOpen ? "opacity-100 delay-500" : "opacity-0 delay-0",
-          !context.asideBarOpen && "pointer-events-none",
+          'transition-opacity duration-300',
+          context.asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
+          !context.asideBarOpen && 'pointer-events-none'
         )}
       >
         {/* Profile */}
@@ -87,9 +87,9 @@ export default function Aside() {
 
       <div
         className={clsx(
-          "bg-surface-sidebar absolute bottom-0 left-0 mb-4 h-10 w-full px-3 transition-opacity",
-          context.asideBarOpen ? "opacity-100 delay-500" : "opacity-0 delay-0",
-          !context.asideBarOpen && "pointer-events-none",
+          'bg-surface-sidebar absolute bottom-0 left-0 mb-4 h-10 w-full px-3 transition-opacity',
+          context.asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
+          !context.asideBarOpen && 'pointer-events-none'
         )}
       >
         <LinkPages text="Inicio" link="/" fontsize="text-md">
@@ -97,5 +97,5 @@ export default function Aside() {
         </LinkPages>
       </div>
     </header>
-  );
+  )
 }

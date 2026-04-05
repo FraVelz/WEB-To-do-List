@@ -1,14 +1,14 @@
-"use client";
+'use client'
 
-import Header from "@/components/layout/header/Header";
+import Header from '@/components/layout/header/Header'
 
-import Image from "next/image";
+import Image from 'next/image'
 
-import { clsx } from "clsx";
-import { useState } from "react";
+import { clsx } from 'clsx'
+import { useState } from 'react'
 
 export default function Notification() {
-  const [activeTodas, setActiveTodas] = useState(true);
+  const [activeTodas, setActiveTodas] = useState(true)
 
   return (
     <>
@@ -23,11 +23,11 @@ export default function Notification() {
               className={clsx(
                 `text-text-primary rounded-full px-2 py-1 text-[14px]`,
                 {
-                  "bg-black/50": activeTodas,
-                },
+                  'bg-black/50': activeTodas,
+                }
               )}
               onClick={() => {
-                setActiveTodas(true);
+                setActiveTodas(true)
               }}
             >
               Todas
@@ -37,11 +37,11 @@ export default function Notification() {
               className={clsx(
                 `text-text-primary rounded-full px-2 py-1 text-[14px]`,
                 {
-                  "bg-black/50": !activeTodas,
-                },
+                  'bg-black/50': !activeTodas,
+                }
               )}
               onClick={() => {
-                setActiveTodas(false);
+                setActiveTodas(false)
               }}
             >
               Sin leer
@@ -90,5 +90,5 @@ export default function Notification() {
         </div>
       </div>
     </>
-  );
+  )
 }
