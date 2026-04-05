@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 
-import { AsidebarProvider } from '@/context/context-openAsidebar'
-import { ModalProProvider } from '@/context/context-ModalPro'
+import { ContextWrapper } from '@/context/context-wrapper'
 
 import Aside from '@/components/layout/aside-bar/Aside'
 import ModalPro from '@/components/ui/ModalPro/ModalPro'
@@ -27,19 +26,17 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${geistSans.variable} bg-surface-app antialiased`}>
-        <AsidebarProvider>
-          <ModalProProvider>
-            <div className="flex min-h-screen items-center justify-center font-sans">
-              <Aside />
+        <ContextWrapper>
+          <div className="flex min-h-screen items-center justify-center font-sans">
+            <Aside />
 
-              <div className="bg-surface-app flex h-screen flex-1 flex-col">
-                {children}
-              </div>
+            <div className="bg-surface-app flex h-screen flex-1 flex-col">
+              {children}
             </div>
+          </div>
 
-            <ModalPro />
-          </ModalProProvider>
-        </AsidebarProvider>
+          <ModalPro />
+        </ContextWrapper>
       </body>
     </html>
   )
