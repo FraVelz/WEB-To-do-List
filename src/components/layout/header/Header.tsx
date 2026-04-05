@@ -1,37 +1,37 @@
-"use client";
+'use client'
 
-import { useAsidebar } from "@/context/context-openAsidebar";
-import { useModalPro } from "@/context/context-ModalPro";
+import { useAsidebar } from '@/context/context-openAsidebar'
+import { useModalPro } from '@/context/context-ModalPro'
 
-import Premium from "./icons/Premium.svg";
-import Sidebar from "./../aside-bar/icons/Sidebar.svg";
+import Premium from './icons/Premium.svg'
+import Sidebar from './../aside-bar/icons/Sidebar.svg'
 
-import Image from "next/image";
-import clsx from "clsx";
+import Image from 'next/image'
+import clsx from 'clsx'
 
 export default function Header({
   className,
   children,
 }: {
-  className?: string;
-  children?: React.ReactNode;
+  className?: string
+  children?: React.ReactNode
 }) {
-  const AsidebarContext = useAsidebar();
-  const ModalProContext = useModalPro();
+  const AsidebarContext = useAsidebar()
+  const ModalProContext = useModalPro()
 
-  if (!AsidebarContext) return null;
-  if (!ModalProContext) return null;
+  if (!AsidebarContext) return null
+  if (!ModalProContext) return null
 
   return (
     <aside
-      className={clsx("flex h-fit w-full justify-between px-6 py-3", className)}
+      className={clsx('flex h-fit w-full justify-between px-6 py-3', className)}
     >
       <button
         className={clsx(
-          "hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1",
+          'hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1',
           !AsidebarContext.asideBarOpen
-            ? ""
-            : "pointer-events-none cursor-default opacity-0",
+            ? ''
+            : 'pointer-events-none cursor-default opacity-0'
         )}
         onClick={AsidebarContext.click_button_asidebar}
       >
@@ -50,5 +50,5 @@ export default function Header({
         {children}
       </div>
     </aside>
-  );
+  )
 }

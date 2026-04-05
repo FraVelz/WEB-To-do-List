@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link'
 
-import Header from "@/components/layout/header/Header";
+import Header from '@/components/layout/header/Header'
 
 export default function Home() {
   return (
@@ -26,5 +26,5 @@ export default function Home() {
         </Link>
       </main>
     </>
-  );
+  )
 }

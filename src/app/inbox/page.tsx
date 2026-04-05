@@ -1,3 +1,3 @@
 export default function Inbox() {
-  return <div></div>;
+  return <div></div>
 }

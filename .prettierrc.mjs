@@ -1,13 +1,13 @@
 /** @type {import("prettier").Config} */
 
 const config = {
-  plugins: ["prettier-plugin-tailwindcss"],
-  tailwindFunctions: ["clsx", "cn"],
+  plugins: ['prettier-plugin-tailwindcss'],
+  tailwindFunctions: ['clsx', 'cn'],
 
-  trailingComma: "es5",
-  tabWidth: 4,
+  trailingComma: 'es5',
+  tabWidth: 2,
   semi: false,
-  singleQuote: true
-};
+  singleQuote: true,
+}
 
-export default config;
+export default config

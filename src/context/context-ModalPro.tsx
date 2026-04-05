@@ -1,35 +1,35 @@
-"use client";
+'use client'
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from 'react'
 
 type ModalProContextType = {
-  modalPro: boolean;
-  openModalPro: () => void;
-  closeModalPro: () => void;
-};
+  modalPro: boolean
+  openModalPro: () => void
+  closeModalPro: () => void
+}
 
-const ModalProContext = createContext<ModalProContextType | null>(null);
+const ModalProContext = createContext<ModalProContextType | null>(null)
 
 export const ModalProProvider = ({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) => {
-  const [modalPro, setModalPro] = useState(false);
+  const [modalPro, setModalPro] = useState(false)
 
   const openModalPro = () => {
-    setModalPro(true);
-  };
+    setModalPro(true)
+  }
 
   const closeModalPro = () => {
-    setModalPro(false);
-  };
+    setModalPro(false)
+  }
 
   return (
     <ModalProContext.Provider value={{ modalPro, openModalPro, closeModalPro }}>
       {children}
     </ModalProContext.Provider>
-  );
-};
+  )
+}
 
-export const useModalPro = () => useContext(ModalProContext);
+export const useModalPro = () => useContext(ModalProContext)
