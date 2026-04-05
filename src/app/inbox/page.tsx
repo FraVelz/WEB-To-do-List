@@ -1,9 +1,5 @@
-import Header from '@/components/layout/header/Header'
+import { PageInbox } from '@/features/inbox/PageInbox'
 
 export default function Inbox() {
-  return (
-    <div>
-      <Header></Header>
-    </div>
-  )
+  return <PageInbox />
 }

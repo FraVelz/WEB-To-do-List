@@ -12,17 +12,6 @@ export default function ModalPro() {
   const ModalProContext = useModalPro()
   const modalRef = useRef(null)
 
-  // const previousFocus = useRef(null)
-
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     previousFocus.current = document.activeElement
-  //     modalRef.current?.focus()
-  //   } else {
-  //     previousFocus.current?.focus()
-  //   }
-  // }, [isOpen])
-
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (!ModalProContext) return
