@@ -16,6 +16,9 @@ import AddPlus from './icons/AddPlus.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
+import { Button } from '@/components/ui/button'
+
+import { ButtonProfile } from './components/buttonProfile'
 
 export default function Aside() {
   const context = useAsidebar()
@@ -37,11 +40,7 @@ export default function Aside() {
       >
         {/* Profile */}
         <div className="mb-3 flex justify-between p-3">
-          <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
-            <div className="size-6 rounded-full bg-white"></div>
-            <p className="text-text-sidebar text-sm">Fravelz</p>
-            <Image src={DownArrow} width={12} height={12} alt="" />
-          </button>
+          <ButtonProfile />
 
           <div className="flex gap-1">
             <Link

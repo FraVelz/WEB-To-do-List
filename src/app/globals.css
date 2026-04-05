@@ -29,6 +29,9 @@
   --color-white-alpha-10: rgba(226, 226, 226, 0.1);
   --color-white-alpha-60: rgba(226, 226, 226, 0.6);
 
+  /* Texto secundario (derivado del gris base, sin nuevos matices arbitrarios) */
+  --color-gray-500: color-mix(in srgb, var(--color-gray-200) 45%, rgb(28 28 28));
+
   /* =========================================================
      2. SEMANTIC TOKENS
      Estos SI se usan en los componentes.
@@ -95,6 +98,34 @@
   --color-state-success: #22c55e;
   --color-state-warning: #f59e0b;
   --color-state-error: #ef4444;
+
+  /* -----------------------------
+     UI / Radix (dropdown-menu, etc.)
+     Nombres tipo shadcn: mapeados a tokens ya definidos arriba.
+     ----------------------------- */
+
+  /* Texto y anillos por defecto (ring-foreground/10, etc.) */
+  --color-foreground: var(--color-text-primary);
+
+  /* Superficies flotantes (menús, submenús) */
+  --color-popover: var(--color-surface-sidebar);
+  --color-popover-foreground: var(--color-text-primary);
+
+  /*
+   * "accent" aquí = resalte neutro al enfocar ítems (no confundir con --color-accent-400 marca).
+   */
+  --color-accent: var(--color-interactive-hover-soft);
+  --color-accent-foreground: var(--color-text-primary);
+
+  --color-muted-foreground: var(--color-gray-500);
+
+  --color-destructive: var(--color-state-error);
+
+  /* Separadores (bg-border en DropdownMenuSeparator) */
+  --color-border: var(--color-border-default);
+
+  /* Focus rings (por si añades @apply outline-ring en componentes) */
+  --color-ring: var(--color-accent-400);
 }
 
 body {

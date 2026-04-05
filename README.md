@@ -6,6 +6,10 @@ Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vi
 
 ![Captura de pantalla](public/images/screenshot.png)
 
+## 📚 Documentación
+
+Guías técnicas (español e inglés): [docs/README.md](docs/README.md) · [docs/README.EN.md](docs/README.EN.md)
+
 ## ✨ Características
 
 - **Bandeja de entrada** — Todas tus tareas en un solo lugar
@@ -24,25 +28,6 @@ Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vi
 - [React 19](https://react.dev/) — Biblioteca UI
 - [TypeScript](https://www.typescriptlang.org/) — Tipado estático
 - [Tailwind CSS 4](https://tailwindcss.com/) — Estilos utilitarios
-
-## 📁 Estructura del proyecto
-
-```text
-src/
-├── app/                    # Rutas de la aplicación (App Router)
-│   ├── add-task/          # Crear nueva tarea
-│   ├── completed/         # Tareas completadas
-│   ├── filters/           # Filtros y etiquetas
-│   ├── inbox/             # Bandeja de entrada
-│   ├── next/              # Próximas tareas
-│   ├── search/            # Buscador
-│   └── today/             # Tareas de hoy
-├── components/
-│   ├── layout/            # Aside, Header
-│   └── ui/                # ModalPro y otros componentes
-├── context/               # Contextos de React (Modal, Asidebar)
-└── hooks/                 # Hooks personalizados (usePathLink)
-```
 
 ## 📄 Información
 
