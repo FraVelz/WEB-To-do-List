@@ -19,7 +19,7 @@ export default function Home() {
         </p>
 
         <Link
-          href="/add-task"
+          href="/inbox"
           className="bg-interactive-primary hover:bg-interactive-primary-hover text-text-primary mt-8 rounded-lg px-8 py-3 font-semibold transition-colors"
         >
           Empieza gratis

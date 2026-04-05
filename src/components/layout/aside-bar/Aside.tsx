@@ -10,6 +10,9 @@ import NotificationNotify from './icons/NotificationNotify.svg'
 import Sidebar from './icons/Sidebar.svg'
 import Home from './icons/Home.svg'
 
+import Search from './icons/Search.svg'
+import AddPlus from './icons/AddPlus.svg'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
@@ -65,6 +68,35 @@ export default function Aside() {
         {/* Pages */}
         <nav aria-label="Menú principal" className="flex flex-col gap-1 px-3">
           <ul className="flex flex-col gap-1">
+            <li>
+              <button
+                className={clsx(
+                  'hover:bg-interactive-hover-soft text-text-primary text-md',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
+                )}
+              >
+                <Image
+                  src={AddPlus}
+                  width={24}
+                  height={24}
+                  alt="Agregar tarea"
+                />
+                Agregar tarea
+              </button>
+            </li>
+
+            <li>
+              <button
+                className={clsx(
+                  'hover:bg-interactive-hover-soft text-text-primary text-md',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
+                )}
+              >
+                <Image src={Search} width={18} height={18} alt="Buscador" />
+                Buscar
+              </button>
+            </li>
+
             {asideItems.map((item) => (
               <li key={item.link}>
                 <LinkPages
