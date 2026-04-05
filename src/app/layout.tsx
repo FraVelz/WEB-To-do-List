@@ -37,7 +37,7 @@ export default function RootLayout({
         <AsidebarProvider>
           <ModalProProvider>
             <div className="flex min-h-screen items-center justify-center font-sans">
-              <Aside className="bg-surface-sidebar relative h-screen w-70" />
+              <Aside />
 
               <div className="bg-surface-app flex h-screen flex-1 flex-col">
                 {children}
