@@ -7,6 +7,7 @@ import Premium from "./icons/Premium.svg";
 import Sidebar from "./../aside-bar/icons/Sidebar.svg";
 
 import Image from "next/image";
+import clsx from "clsx";
 
 export default function Header({
   className,
@@ -23,34 +24,26 @@ export default function Header({
 
   return (
     <aside
-      className={`flex h-fit w-full justify-between px-6 py-3 ${className}`}
+      className={clsx("flex h-fit w-full justify-between px-6 py-3", className)}
     >
-      {!AsidebarContext.asideBarOpen && (
-        <button
-          className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
-          onClick={AsidebarContext.click_button_asidebar}
-        >
-          <Image
-            src={Sidebar}
-            width={20}
-            height={20}
-            alt="Down Arrow"
-          />
-        </button>
-      )}
-      {AsidebarContext.asideBarOpen && <div></div>}
+      <button
+        className={clsx(
+          "hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1",
+          !AsidebarContext.asideBarOpen
+            ? ""
+            : "pointer-events-none cursor-default opacity-0",
+        )}
+        onClick={AsidebarContext.click_button_asidebar}
+      >
+        <Image src={Sidebar} width={20} height={20} alt="Down Arrow" />
+      </button>
 
       <div className="flex gap-3">
         <button
           className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
           onClick={ModalProContext.openModalPro}
         >
-          <Image
-            src={Premium}
-            width={20}
-            height={20}
-            alt="Down Arrow"
-          />
+          <Image src={Premium} width={20} height={20} alt="Down Arrow" />
           <p className="text-text-heading text-sm">Prueba Pro gratis</p>
         </button>
 
