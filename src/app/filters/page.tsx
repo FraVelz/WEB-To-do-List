@@ -1,3 +1,5 @@
-export default function Filters() {
-  return <div></div>
+import { PageFilters } from '@/features/filters/PageFilters'
+
+export default function FiltersPage() {
+  return <PageFilters />
 }

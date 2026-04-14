@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 
 import Image from 'next/image'
+import Link from 'next/link'
 
 import DownArrow from '../icons/DownArrow.svg'
 
@@ -28,23 +29,43 @@ export function ButtonProfile() {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <UserIcon />
-          Profile
+      <DropdownMenuContent className="min-w-44">
+        <DropdownMenuItem asChild>
+          <Link
+            href="/profile"
+            className="flex cursor-pointer items-center gap-1.5"
+          >
+            <UserIcon />
+            Perfil
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <CreditCardIcon />
-          Billing
+        <DropdownMenuItem asChild>
+          <Link
+            href="/billing"
+            className="flex cursor-pointer items-center gap-1.5"
+          >
+            <CreditCardIcon />
+            Facturación
+          </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SettingsIcon />
-          Settings
+        <DropdownMenuItem asChild>
+          <Link
+            href="/settings"
+            className="flex cursor-pointer items-center gap-1.5"
+          >
+            <SettingsIcon />
+            Ajustes
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive">
-          <LogOutIcon />
-          Log out
+        <DropdownMenuItem variant="destructive" asChild>
+          <Link
+            href="/logout"
+            className="flex cursor-pointer items-center gap-1.5"
+          >
+            <LogOutIcon />
+            Cerrar sesión
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
