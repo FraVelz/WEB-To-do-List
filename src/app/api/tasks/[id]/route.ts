@@ -1,0 +1,78 @@
+import { prisma } from '@/lib/prisma'
+import { NextResponse } from 'next/server'
+
+type RouteContext = { params: Promise<{ id: string }> }
+
+export async function PATCH(req: Request, context: RouteContext) {
+  try {
+    const { id } = await context.params
+    const body = (await req.json()) as Record<string, unknown>
+
+    const data: {
+      title?: string
+      description?: string | null
+      completed?: boolean
+      dueDate?: Date | null
+      priority?: number
+      label?: string | null
+    } = {}
+
+    if (typeof body.title === 'string') {
+      const t = body.title.trim()
+      if (!t) {
+        return NextResponse.json(
+          { error: 'El título no puede estar vacío' },
+          { status: 400 }
+        )
+      }
+      data.title = t
+    }
+    if (body.description === null || typeof body.description === 'string') {
+      data.description =
+        typeof body.description === 'string'
+          ? body.description.trim() || null
+          : null
+    }
+    if (typeof body.completed === 'boolean') data.completed = body.completed
+    if (body.dueDate === null) {
+      data.dueDate = null
+    } else if (typeof body.dueDate === 'string' && body.dueDate) {
+      const d = new Date(body.dueDate)
+      if (!Number.isNaN(d.getTime())) data.dueDate = d
+    }
+    if (typeof body.priority === 'number' && Number.isFinite(body.priority)) {
+      data.priority = body.priority
+    }
+    if (body.label === null || typeof body.label === 'string') {
+      data.label =
+        typeof body.label === 'string' ? body.label.trim() || null : null
+    }
+
+    const task = await prisma.task.update({
+      where: { id },
+      data,
+    })
+
+    return NextResponse.json(task)
+  } catch (e) {
+    console.error('PATCH /api/tasks/[id]', e)
+    return NextResponse.json(
+      { error: 'Error al actualizar tarea' },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(_req: Request, context: RouteContext) {
+  try {
+    const { id } = await context.params
+    await prisma.task.delete({ where: { id } })
+    return NextResponse.json({ ok: true })
+  } catch (e) {
+    console.error('DELETE /api/tasks/[id]', e)
+    return NextResponse.json(
+      { error: 'Error al eliminar tarea' },
+      { status: 500 }
+    )
+  }
+}

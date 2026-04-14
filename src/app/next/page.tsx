@@ -1,3 +1,5 @@
-export default function Next() {
-  return <div></div>
+import { PageNext } from '@/features/next/PageNext'
+
+export default function NextPage() {
+  return <PageNext />
 }

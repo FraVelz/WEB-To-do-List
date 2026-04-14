@@ -1,8 +1,7 @@
 'use client'
 
 import Header from '@/components/layout/header/Header'
-
-import Image from 'next/image'
+import { SectionNotification } from './SectionNotifications'
 
 import { clsx } from 'clsx'
 import { useState } from 'react'
@@ -48,45 +47,7 @@ export function PageNotification() {
             </button>
           </div>
 
-          {activeTodas ? (
-            <div>
-              <hr className="text-accent-soft my-4" />
-
-              <div className="hover:bg-accent-soft flex w-full cursor-pointer gap-3 rounded-lg px-3 py-2">
-                <div>
-                  <div className="bg-accent-400 size-8 rounded-full p-2"></div>
-                </div>
-
-                <div>
-                  <p className="font-bold">¡Hola! Bienvenido.</p>
-
-                  <p className="mt-3 text-[14px]">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Maxime corrupti, unde laudantium aspernatur eveniet aliquid
-                    perspiciatis sunt delectus, similique, earum ipsa debitis
-                    nobis voluptas expedita vel natus quo quod dolorem!
-                  </p>
-                </div>
-              </div>
-
-              <hr className="text-accent-soft my-4" />
-            </div>
-          ) : (
-            <div>
-              <Image
-                src="/images/image-box-clear.png"
-                alt="No notifications"
-                width={250}
-                height={250}
-                className="mx-auto mt-14 select-none"
-                draggable={false}
-              />
-
-              <p className="text-text-secondary text-center">
-                ¡Buen trabajo! Estás al día.
-              </p>
-            </div>
-          )}
+          <SectionNotification unreadOnly={!activeTodas} />
         </div>
       </div>
     </>

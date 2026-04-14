@@ -26,7 +26,7 @@ export default function ModalPro() {
     return () => {
       window.removeEventListener('keydown', handleEsc)
     }
-  }, [ModalProContext])
+  }, [ModalProContext?.closeModalPro])
 
   if (!ModalProContext) return null
 

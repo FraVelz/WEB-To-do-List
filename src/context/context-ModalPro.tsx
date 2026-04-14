@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 type ModalProContextType = {
   modalPro: boolean
@@ -17,13 +17,13 @@ export const ModalProProvider = ({
 }) => {
   const [modalPro, setModalPro] = useState(false)
 
-  const openModalPro = () => {
+  const openModalPro = useCallback(() => {
     setModalPro(true)
-  }
+  }, [])
 
-  const closeModalPro = () => {
+  const closeModalPro = useCallback(() => {
     setModalPro(false)
-  }
+  }, [])
 
   return (
     <ModalProContext.Provider value={{ modalPro, openModalPro, closeModalPro }}>

@@ -5,7 +5,6 @@ import { useAsidebar } from '@/context/context-openAsidebar'
 import { LinkPages } from './LinkPages'
 import { asideItems } from './data'
 
-import DownArrow from './icons/DownArrow.svg'
 import NotificationNotify from './icons/NotificationNotify.svg'
 import Sidebar from './icons/Sidebar.svg'
 import Home from './icons/Home.svg'
@@ -16,12 +15,16 @@ import AddPlus from './icons/AddPlus.svg'
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { Button } from '@/components/ui/button'
 
 import { ButtonProfile } from './components/buttonProfile'
 
+import { useUiStore } from '@/stores/ui-store'
+
 export default function Aside() {
   const context = useAsidebar()
+  const openAddTask = useUiStore((s) => s.openAddTask)
+  const openSearch = useUiStore((s) => s.openSearch)
+
   if (!context) return null
 
   return (
@@ -69,10 +72,12 @@ export default function Aside() {
           <ul className="flex flex-col gap-1">
             <li>
               <button
+                type="button"
                 className={clsx(
                   'hover:bg-interactive-hover-soft text-text-primary text-md',
                   'flex w-full items-center gap-3 rounded-md px-2 py-1'
                 )}
+                onClick={openAddTask}
               >
                 <Image
                   src={AddPlus}
@@ -86,10 +91,12 @@ export default function Aside() {
 
             <li>
               <button
+                type="button"
                 className={clsx(
                   'hover:bg-interactive-hover-soft text-text-primary text-md',
                   'flex w-full items-center gap-3 rounded-md px-2 py-1'
                 )}
+                onClick={openSearch}
               >
                 <Image src={Search} width={18} height={18} alt="Buscador" />
                 Buscar
