@@ -29,23 +29,29 @@ export function ModalSearch() {
     if (!searchOpen) return
 
     let cancelled = false
-    setLoading(true)
 
-    const t = window.setTimeout(async () => {
-      try {
+    queueMicrotask(() => {
+      if (!cancelled) setLoading(true)
+    })
+
+    const t = window.setTimeout(() => {
+      void (async () => {
+        const q = query.trim() || undefined
         const list = await fetchTasks({
           filter: 'inbox',
-          q: query.trim() || undefined,
-        })
-        if (!cancelled) setResults(list)
-      } catch {
-        if (!cancelled) {
+          q,
+        }).catch(() => undefined)
+
+        if (cancelled) return
+
+        if (list !== undefined) {
+          setResults(list)
+        } else {
           toast.error('No se pudo buscar')
           setResults([])
         }
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
+        setLoading(false)
+      })()
     }, 280)
 
     return () => {

@@ -20,7 +20,10 @@ export function TaskList({ filter, label }: Props) {
 
   useEffect(() => {
     let cancelled = false
-    setLoading(true)
+
+    queueMicrotask(() => {
+      if (!cancelled) setLoading(true)
+    })
 
     fetchTasks({ filter, label })
       .then((data) => {

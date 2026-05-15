@@ -1,0 +1,22 @@
+{
+  "ignore": {
+    "rules": [
+      "react-doctor/design-no-bold-heading",
+      "knip/exports",
+      "knip/files",
+      "react-doctor/nextjs-missing-metadata",
+      "jsx-a11y/click-events-have-key-events",
+      "react-doctor/no-react19-deprecated-apis",
+      "react-doctor/no-cascading-set-state",
+      "jsx-a11y/no-autofocus",
+      "jsx-a11y/no-static-element-interactions",
+      "react-doctor/design-no-three-period-ellipsis",
+      "react-doctor/js-tosorted-immutable",
+      "react-doctor/js-combine-iterations",
+      "react-doctor/design-no-redundant-padding-axes",
+      "react-doctor/rerender-state-only-in-handlers",
+      "react-doctor/async-defer-await",
+      "react-doctor/prefer-useReducer"
+    ]
+  }
+}
