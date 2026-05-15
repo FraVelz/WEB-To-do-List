@@ -38,13 +38,23 @@ export function ModalAddTask() {
       return
     }
     setLoading(true)
-    try {
-      await createTask({
-        title: title.trim(),
-        description: description.trim() || null,
-        label: label.trim() || null,
-        dueDate: dueDate ? new Date(dueDate).toISOString() : null,
-      })
+    const outcome = await createTask({
+      title: title.trim(),
+      description: description.trim() || null,
+      label: label.trim() || null,
+      dueDate: dueDate ? new Date(dueDate).toISOString() : null,
+    }).then(
+      () => ({ ok: true as const }),
+      (e: unknown) => ({ ok: false as const, error: e }),
+    )
+
+    if (!outcome.ok) {
+      toast.error(
+        outcome.error instanceof Error
+          ? outcome.error.message
+          : 'Error al crear',
+      )
+    } else {
       toast.success('Tarea creada')
       setTitle('')
       setDescription('')
@@ -52,11 +62,8 @@ export function ModalAddTask() {
       setDueDate('')
       bump()
       closeAddTask()
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al crear')
-    } finally {
-      setLoading(false)
     }
+    setLoading(false)
   }
 
   return (
