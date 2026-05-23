@@ -1,0 +1,72 @@
+name: Continuous Integration - CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "prisma/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "next.config.*"
+      - "tsconfig.json"
+      - "postcss.config.*"
+      - "eslint.config.*"
+      - "globals.d.ts"
+      - "prisma.config.ts"
+      - "vitest.config.*"
+      - "vitest.setup.*"
+      - "react-doctor.config.json"
+      - ".github/workflows/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "prisma/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - "next.config.*"
+      - "tsconfig.json"
+      - "postcss.config.*"
+      - "eslint.config.*"
+      - "globals.d.ts"
+      - "prisma.config.ts"
+      - "vitest.config.*"
+      - "vitest.setup.*"
+      - "react-doctor.config.json"
+      - ".github/workflows/**"
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Test
+        run: pnpm run test:run
+
+      - name: Build
+        run: pnpm run build
