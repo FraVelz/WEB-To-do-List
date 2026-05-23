@@ -1,6 +1,7 @@
 # Autocommit — WEB-To-do-List (Next.js + Prisma)
 
-Usar cuando el usuario pida **hacer commit** del trabajo actual. Mensajes **Conventional Commits**, coherentes con `git log` de este repo. **No** hacer `git push` salvo petición explícita.
+Usar cuando el usuario pida **hacer commit** del trabajo actual. Mensajes **Conventional Commits**, coherentes con
+`git log` de este repo. **No** hacer `git push` salvo petición explícita.
 
 ## Cuándo ejecutar
 
@@ -17,9 +18,11 @@ Usar cuando el usuario pida **hacer commit** del trabajo actual. Mensajes **Conv
 
 ## Ámbitos (`scope`) habituales en este repo
 
-`tasks`, `api`, `prisma`, `db`, `account`, `inbox`, `today`, `filters`, `notification`, `ui`, `modal`, `layout`, `readme`, `docs`, `cursor`, `ci`, `test`, `deps`.
+`tasks`, `api`, `prisma`, `db`, `account`, `inbox`, `today`, `filters`, `notification`, `ui`, `modal`, `layout`,
+`readme`, `docs`, `cursor`, `ci`, `test`, `deps`.
 
-Rutas de referencia: `src/app/api/`, `src/features/`, `src/components/`, `src/services/`, `prisma/`, `README.md` / `README.EN.md`, `docs/`, `.cursor/`.
+Rutas de referencia: `src/app/api/`, `src/features/`, `src/components/`, `src/services/`, `prisma/`, `README.md` /
+`README.EN.md`, `docs/`, `.cursor/`.
 
 ## Formas de mensaje
 
@@ -42,14 +45,14 @@ fix: align task modals with react compiler and tame react-doctor
 
 ## Tipos
 
-| Tipo | Uso aquí |
-| --- | --- |
-| `feat` | Páginas, modales, API, cuenta |
-| `fix` | Bugs UI/API |
-| `test` | Vitest (`*.test.ts`, `vitest`) |
-| `docs` | README, `docs/`, comandos Cursor |
-| `refactor` | Features, stores, contextos |
-| `chore` | Prettier, ESLint, deps |
+| Tipo       | Uso aquí                         |
+| ---------- | -------------------------------- |
+| `feat`     | Páginas, modales, API, cuenta    |
+| `fix`      | Bugs UI/API                      |
+| `test`     | Vitest (`*.test.ts`, `vitest`)   |
+| `docs`     | README, `docs/`, comandos Cursor |
+| `refactor` | Features, stores, contextos      |
+| `chore`    | Prettier, ESLint, deps           |
 
 ## Commit
 

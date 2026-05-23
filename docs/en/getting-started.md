@@ -17,15 +17,15 @@ pnpm install
 
 ## Available scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Development server at [http://localhost:3000](http://localhost:3000). |
-| `pnpm build` | Production build (optimized Next.js output). |
-| `pnpm start` | Serves the production build (run after `pnpm build`). |
-| `pnpm lint` | Run ESLint across the project. |
-| `pnpm lint:fix` | ESLint with auto-fixes where possible. |
-| `pnpm format` | Format with Prettier. |
-| `pnpm format:check` | Check formatting without writing files. |
+| Command             | Description                                                           |
+| ------------------- | --------------------------------------------------------------------- |
+| `pnpm dev`          | Development server at [http://localhost:3000](http://localhost:3000). |
+| `pnpm build`        | Production build (optimized Next.js output).                          |
+| `pnpm start`        | Serves the production build (run after `pnpm build`).                 |
+| `pnpm lint`         | Run ESLint across the project.                                        |
+| `pnpm lint:fix`     | ESLint with auto-fixes where possible.                                |
+| `pnpm format`       | Format with Prettier.                                                 |
+| `pnpm format:check` | Check formatting without writing files.                               |
 
 ## Local development
 

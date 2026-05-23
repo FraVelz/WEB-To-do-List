@@ -11,8 +11,10 @@ Global styles live in `src/app/globals.css`:
 
 ## Token layers
 
-1. **Primitives** — base values (grays, brand, accents). Prefer not to use them directly in components when a semantic token exists.
-2. **Semantic** — names by **role** in the UI: surfaces (`surface-app`, `surface-sidebar`), text (`text-primary`, `text-accent`), interaction (`interactive-primary`, `interactive-hover-soft`), borders (`border-subtle`), etc.
+1. **Primitives** — base values (grays, brand, accents). Prefer not to use them directly in components when a semantic
+   token exists.
+2. **Semantic** — names by **role** in the UI: surfaces (`surface-app`, `surface-sidebar`), text (`text-primary`,
+   `text-accent`), interaction (`interactive-primary`, `interactive-hover-soft`), borders (`border-subtle`), etc.
 
 You will see classes such as:
 
@@ -28,7 +30,8 @@ The root layout uses **Geist** (Google Fonts) via `next/font` in `layout.tsx` wi
 
 ## Dark mode
 
-The current palette targets a **dark** look (dark gray backgrounds, light text). If you add a light theme, extend tokens and/or `dark:` variants consistently.
+The current palette targets a **dark** look (dark gray backgrounds, light text). If you add a light theme, extend tokens
+and/or `dark:` variants consistently.
 
 ## Good practices
 

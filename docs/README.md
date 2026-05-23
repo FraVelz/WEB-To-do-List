@@ -2,12 +2,12 @@
 
 Índice de la documentación del proyecto. Cada guía está disponible en **español** y **inglés**.
 
-| Tema | Español | English |
-|------|---------|---------|
-| Primeros pasos | [es/getting-started.md](es/getting-started.md) | [en/getting-started.md](en/getting-started.md) |
-| Arquitectura | [es/architecture.md](es/architecture.md) | [en/architecture.md](en/architecture.md) |
-| Desarrollo | [es/development.md](es/development.md) | [en/development.md](en/development.md) |
-| Sistema de diseño | [es/design-system.md](es/design-system.md) | [en/design-system.md](en/design-system.md) |
+| Tema              | Español                                        | English                                        |
+| ----------------- | ---------------------------------------------- | ---------------------------------------------- |
+| Primeros pasos    | [es/getting-started.md](es/getting-started.md) | [en/getting-started.md](en/getting-started.md) |
+| Arquitectura      | [es/architecture.md](es/architecture.md)       | [en/architecture.md](en/architecture.md)       |
+| Desarrollo        | [es/development.md](es/development.md)         | [en/development.md](en/development.md)         |
+| Sistema de diseño | [es/design-system.md](es/design-system.md)     | [en/design-system.md](en/design-system.md)     |
 
 ## Lectura recomendada
 

@@ -24,12 +24,14 @@ import { ContextWrapper } from '@/context/context-wrapper'
 
 ## Tailwind y build
 
-- La versión de **`tailwindcss`** debe ser **v4** junto con **`@tailwindcss/postcss`**, alineada con `@import "tailwindcss"` en `globals.css`.
-- Si el build falla con *Can't resolve 'tailwindcss'*, revisa que no haya mezcla de Tailwind v3 y v4 en `package.json`.
+- La versión de **`tailwindcss`** debe ser **v4** junto con **`@tailwindcss/postcss`**, alineada con
+  `@import "tailwindcss"` en `globals.css`.
+- Si el build falla con _Can't resolve 'tailwindcss'_, revisa que no haya mezcla de Tailwind v3 y v4 en `package.json`.
 
 ## React Compiler
 
-El proyecto tiene el **React Compiler** activado en `next.config.ts` (`reactCompiler: true`). Mantén componentes predecibles para aprovechar las optimizaciones.
+El proyecto tiene el **React Compiler** activado en `next.config.ts` (`reactCompiler: true`). Mantén componentes
+predecibles para aprovechar las optimizaciones.
 
 ## Componentes UI
 
@@ -40,11 +42,11 @@ Hay primitivos basados en utilidades comunes del ecosistema (por ejemplo `Button
 
 ## Solución de problemas
 
-| Síntoma | Qué revisar |
-|---------|-------------|
-| Error al resolver `tailwindcss` en build | Versión de `tailwindcss` en v4 y `@tailwindcss/postcss` instalados. |
-| Estilos que no aplican | Clases en archivos bajo `src/`; tokens en `@theme` dentro de `globals.css`. |
-| Contexto `undefined` en cliente | El componente debe estar bajo `ContextWrapper` y marcado como `'use client'` si usa hooks de contexto. |
+| Síntoma                                  | Qué revisar                                                                                            |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| Error al resolver `tailwindcss` en build | Versión de `tailwindcss` en v4 y `@tailwindcss/postcss` instalados.                                    |
+| Estilos que no aplican                   | Clases en archivos bajo `src/`; tokens en `@theme` dentro de `globals.css`.                            |
+| Contexto `undefined` en cliente          | El componente debe estar bajo `ContextWrapper` y marcado como `'use client'` si usa hooks de contexto. |
 
 ## Documentación relacionada
 

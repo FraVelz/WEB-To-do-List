@@ -7,12 +7,16 @@ Cómo están definidos los estilos visuales en **WEB To-Do List**.
 Los estilos globales viven en `src/app/globals.css`:
 
 - `@import "tailwindcss"` — carga el motor de Tailwind v4.
-- `@theme inline { ... }` — define **tokens de diseño** (colores, variables CSS) consumidos por las utilidades de Tailwind y por CSS normal.
+- `@theme inline { ... }` — define **tokens de diseño** (colores, variables CSS) consumidos por las utilidades de
+  Tailwind y por CSS normal.
 
 ## Capas de tokens
 
-1. **Primitivos** — valores base (grises, marca, acentos). No deben usarse directamente en componentes si existe un token semántico equivalente.
-2. **Semánticos** — nombres según **rol** en la UI: superficies (`surface-app`, `surface-sidebar`), texto (`text-primary`, `text-accent`), interacción (`interactive-primary`, `interactive-hover-soft`), bordes (`border-subtle`), etc.
+1. **Primitivos** — valores base (grises, marca, acentos). No deben usarse directamente en componentes si existe un
+   token semántico equivalente.
+2. **Semánticos** — nombres según **rol** en la UI: superficies (`surface-app`, `surface-sidebar`), texto
+   (`text-primary`, `text-accent`), interacción (`interactive-primary`, `interactive-hover-soft`), bordes
+   (`border-subtle`), etc.
 
 En componentes verás clases como:
 
@@ -24,11 +28,13 @@ Estas clases se generan a partir de las variables definidas en `@theme`.
 
 ## Tipografía
 
-La fuente principal del layout raíz es **Geist** (Google Fonts), aplicada vía `next/font` en `layout.tsx` con la variable `--font-geist-sans`.
+La fuente principal del layout raíz es **Geist** (Google Fonts), aplicada vía `next/font` en `layout.tsx` con la
+variable `--font-geist-sans`.
 
 ## Modo oscuro
 
-La paleta actual está orientada a **tema oscuro** (fondos gris oscuro, texto claro). Si amplías a tema claro, añade tokens y/o variantes `dark:` de forma coherente con los existentes.
+La paleta actual está orientada a **tema oscuro** (fondos gris oscuro, texto claro). Si amplías a tema claro, añade
+tokens y/o variantes `dark:` de forma coherente con los existentes.
 
 ## Buenas prácticas
 
