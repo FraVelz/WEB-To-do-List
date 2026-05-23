@@ -2,12 +2,12 @@
 
 Project documentation index. Each guide is available in **Spanish** and **English**.
 
-| Topic | Español | English |
-|-------|---------|---------|
+| Topic           | Español                                        | English                                        |
+| --------------- | ---------------------------------------------- | ---------------------------------------------- |
 | Getting started | [es/getting-started.md](es/getting-started.md) | [en/getting-started.md](en/getting-started.md) |
-| Architecture | [es/architecture.md](es/architecture.md) | [en/architecture.md](en/architecture.md) |
-| Development | [es/development.md](es/development.md) | [en/development.md](en/development.md) |
-| Design system | [es/design-system.md](es/design-system.md) | [en/design-system.md](en/design-system.md) |
+| Architecture    | [es/architecture.md](es/architecture.md)       | [en/architecture.md](en/architecture.md)       |
+| Development     | [es/development.md](es/development.md)         | [en/development.md](en/development.md)         |
+| Design system   | [es/design-system.md](es/design-system.md)     | [en/design-system.md](en/design-system.md)     |
 
 ## Suggested reading order
 

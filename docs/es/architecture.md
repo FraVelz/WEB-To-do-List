@@ -11,30 +11,31 @@ Visión general de la estructura de **WEB To-Do List** (Next.js App Router).
 
 ## Organización de carpetas (`src/`)
 
-| Carpeta | Rol |
-|---------|-----|
-| `app/` | Rutas, layouts y estilos globales (`globals.css`). |
-| `components/` | UI reutilizable: layout (aside, header), primitivos (`ui/`). |
-| `features/` | Pantallas o bloques de dominio (por ejemplo inbox, notificaciones). |
-| `context/` | Proveedores de React Context (modales, barra lateral). |
-| `hooks/` | Hooks personalizados (`usePathLink`, etc.). |
-| `lib/` | Utilidades compartidas (`utils.ts`). |
+| Carpeta       | Rol                                                                 |
+| ------------- | ------------------------------------------------------------------- |
+| `app/`        | Rutas, layouts y estilos globales (`globals.css`).                  |
+| `components/` | UI reutilizable: layout (aside, header), primitivos (`ui/`).        |
+| `features/`   | Pantallas o bloques de dominio (por ejemplo inbox, notificaciones). |
+| `context/`    | Proveedores de React Context (modales, barra lateral).              |
+| `hooks/`      | Hooks personalizados (`usePathLink`, etc.).                         |
+| `lib/`        | Utilidades compartidas (`utils.ts`).                                |
 
 ## Rutas (App Router)
 
 Rutas actuales con página definida:
 
-| Ruta | Notas |
-|------|--------|
-| `/` | Página de inicio / landing. |
-| `/inbox` | Bandeja de entrada. |
-| `/today` | Vista “Hoy”. |
-| `/next` | Vista “Próximo”. |
-| `/filters` | Filtros y etiquetas. |
-| `/completed` | Completado. |
-| `/notification` | Notificaciones. |
+| Ruta            | Notas                       |
+| --------------- | --------------------------- |
+| `/`             | Página de inicio / landing. |
+| `/inbox`        | Bandeja de entrada.         |
+| `/today`        | Vista “Hoy”.                |
+| `/next`         | Vista “Próximo”.            |
+| `/filters`      | Filtros y etiquetas.        |
+| `/completed`    | Completado.                 |
+| `/notification` | Notificaciones.             |
 
-La barra lateral incluye acciones “Agregar tarea” y “Buscar” como botones; pueden enlazarse a rutas o modales según evolucione el producto.
+La barra lateral incluye acciones “Agregar tarea” y “Buscar” como botones; pueden enlazarse a rutas o modales según
+evolucione el producto.
 
 ## Layout raíz
 
@@ -58,7 +59,8 @@ Los componentes cliente consumen estos contextos con hooks dedicados.
 
 ## Navegación lateral
 
-Los ítems de menú con enlace están definidos en `src/components/layout/aside-bar/data.ts` (`asideItems`). Los iconos se importan como SVG desde la misma carpeta `aside-bar/icons/`.
+Los ítems de menú con enlace están definidos en `src/components/layout/aside-bar/data.ts` (`asideItems`). Los iconos se
+importan como SVG desde la misma carpeta `aside-bar/icons/`.
 
 ## Documentación relacionada
 
