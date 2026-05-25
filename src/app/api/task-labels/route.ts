@@ -10,7 +10,9 @@ export async function GET() {
 
     const unique = [
       ...new Set(
-        rows.map((r) => r.label).filter((l): l is string => Boolean(l))
+        rows
+          .map((r: { label: string | null }) => r.label)
+          .filter((l): l is string => Boolean(l))
       ),
     ].sort()
 
