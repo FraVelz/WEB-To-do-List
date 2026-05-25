@@ -8,12 +8,9 @@ export async function GET() {
       select: { label: true },
     })
 
+    const labels = rows.map((r: { label: string | null }) => r.label)
     const unique = [
-      ...new Set(
-        rows
-          .map((r: { label: string | null }) => r.label)
-          .filter((l): l is string => Boolean(l))
-      ),
+      ...new Set(labels.filter((l: string | null): l is string => Boolean(l))),
     ].sort()
 
     return NextResponse.json(unique)
