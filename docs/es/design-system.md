@@ -31,10 +31,14 @@ Estas clases se generan a partir de las variables definidas en `@theme`.
 La fuente principal del layout raíz es **Geist** (Google Fonts), aplicada vía `next/font` en `layout.tsx` con la
 variable `--font-geist-sans`.
 
-## Modo oscuro
+## Temas claro y oscuro
 
-La paleta actual está orientada a **tema oscuro** (fondos gris oscuro, texto claro). Si amplías a tema claro, añade
-tokens y/o variantes `dark:` de forma coherente con los existentes.
+Los tokens semánticos en `globals.css` leen variables `--theme-*` según `data-theme` en `<html>` (`dark` | `light`).
+
+- **Oscuro:** fondos negros/gris neutro (`gray-950`, `gray-900`), acentos y botones en azul (`blue-400`–`blue-600`).
+- **Claro:** fondos `slate-100` / blanco, texto `slate-900`, misma marca azul.
+
+El cambio de tema se persiste en `localStorage` (`todo-theme`) y se aplica con [`ThemeToggle`](../../src/components/theme/ThemeToggle.tsx) (cabecera de la app y login) o el interruptor en Ajustes.
 
 ## Buenas prácticas
 

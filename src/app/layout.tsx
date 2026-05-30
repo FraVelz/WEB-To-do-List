@@ -1,12 +1,7 @@
 import type { Metadata } from 'next'
 
-import { ContextWrapper } from '@/context/context-wrapper'
-
-import Aside from '@/components/layout/aside-bar/Aside'
-import { ModalAddTask } from '@/components/modals/ModalAddTask'
-import { ModalSearch } from '@/components/modals/ModalSearch'
-import ModalPro from '@/components/ui/ModalPro/ModalPro'
-import { Toaster } from '@/components/ui/sonner'
+import { ThemeProvider } from '@/components/theme/ThemeProvider'
+import { DEFAULT_THEME, THEME_STORAGE_KEY } from '@/lib/theme'
 
 import { Geist } from 'next/font/google'
 import './globals.css'
@@ -21,28 +16,20 @@ export const metadata: Metadata = {
   description: 'Gestor de tareas con notificaciones y bandeja de entrada.',
 }
 
+const themeInitScript = `(function(){try{var k=${JSON.stringify(THEME_STORAGE_KEY)};var t=localStorage.getItem(k);var theme=(t==='light'||t==='dark')?t:${JSON.stringify(DEFAULT_THEME)};document.documentElement.setAttribute('data-theme',theme);document.documentElement.style.colorScheme=theme;}catch(e){document.documentElement.setAttribute('data-theme',${JSON.stringify(DEFAULT_THEME)});}})();`
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" data-theme={DEFAULT_THEME} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className={`${geistSans.variable} bg-surface-app antialiased`}>
-        <ContextWrapper>
-          <div className="flex min-h-screen items-center justify-center font-sans">
-            <Aside />
-
-            <div className="bg-surface-app flex h-screen flex-1 flex-col">
-              {children}
-            </div>
-          </div>
-
-          <ModalPro />
-          <ModalAddTask />
-          <ModalSearch />
-          <Toaster position="top-center" richColors closeButton />
-        </ContextWrapper>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   )

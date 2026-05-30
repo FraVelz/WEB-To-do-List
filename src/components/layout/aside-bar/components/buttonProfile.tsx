@@ -1,3 +1,5 @@
+'use client'
+
 import {
   CreditCardIcon,
   LogOutIcon,
@@ -7,6 +9,7 @@ import {
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 import DownArrow from '../icons/DownArrow.svg'
 
@@ -17,14 +20,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useAuthSessionStore } from '@/stores/auth-session-store'
 
 export function ButtonProfile() {
+  const mode = useAuthSessionStore((s) => s.mode)
+  const hydrate = useAuthSessionStore((s) => s.hydrate)
+
+  useEffect(() => {
+    hydrate()
+  }, [hydrate])
+
+  const displayName = mode === 'demo' ? 'Usuario demo' : 'Fravelz'
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
-          <div className="size-6 rounded-full bg-white"></div>
-          <p className="text-text-sidebar text-sm">Fravelz</p>
+          <div className="border-border-default size-6 rounded-full border bg-[var(--theme-on-primary)]" />
+          <p className="text-text-sidebar text-sm">{displayName}</p>
           <Image src={DownArrow} width={12} height={12} alt="" />
         </button>
       </DropdownMenuTrigger>

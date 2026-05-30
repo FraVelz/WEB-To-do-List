@@ -3,7 +3,9 @@
 import Header from '@/components/layout/header/Header'
 import type { LucideIcon } from 'lucide-react'
 import { BellIcon, GlobeIcon, MoonIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useThemeStore } from '@/stores/theme-store'
 
 function ToggleRow({
   id,
@@ -59,7 +61,14 @@ export function PageSettings() {
   const [emailNotif, setEmailNotif] = useState(true)
   const [pushNotif, setPushNotif] = useState(false)
   const [weekStartsMonday, setWeekStartsMonday] = useState(true)
-  const [darkMatchSystem, setDarkMatchSystem] = useState(true)
+  const theme = useThemeStore((s) => s.theme)
+  const hydrateTheme = useThemeStore((s) => s.hydrate)
+  const setTheme = useThemeStore((s) => s.setTheme)
+  const isDark = theme === 'dark'
+
+  useEffect(() => {
+    hydrateTheme()
+  }, [hydrateTheme])
 
   return (
     <>
@@ -99,10 +108,10 @@ export function PageSettings() {
           <ToggleRow
             id="set-theme"
             icon={MoonIcon}
-            title="Coincidir con el sistema"
-            description="Tema claro u oscuro según tu sistema (demo visual)."
-            checked={darkMatchSystem}
-            onCheckedChange={setDarkMatchSystem}
+            title="Tema oscuro"
+            description="Desactiva para usar el tema claro con paleta azul."
+            checked={isDark}
+            onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
           />
         </div>
       </main>
