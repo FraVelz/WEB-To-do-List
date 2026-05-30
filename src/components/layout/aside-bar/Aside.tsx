@@ -130,8 +130,8 @@ export default function Aside() {
           !context.asideBarOpen && 'pointer-events-none'
         )}
       >
-        <LinkPages text="Inicio" link="/" fontsize="text-md">
-          <Image src={Home} width={24} height={24} alt="Icono Inicio" />
+        <LinkPages text="Bandeja" link="/inbox" fontsize="text-md">
+          <Image src={Home} width={24} height={24} alt="Icono Bandeja" />
         </LinkPages>
       </div>
     </header>

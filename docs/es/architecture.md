@@ -24,38 +24,63 @@ Visión general de la estructura de **WEB To-Do List** (Next.js App Router).
 
 Rutas actuales con página definida:
 
-| Ruta            | Notas                       |
-| --------------- | --------------------------- |
-| `/`             | Página de inicio / landing. |
-| `/inbox`        | Bandeja de entrada.         |
-| `/today`        | Vista “Hoy”.                |
-| `/next`         | Vista “Próximo”.            |
-| `/filters`      | Filtros y etiquetas.        |
-| `/completed`    | Completado.                 |
-| `/notification` | Notificaciones.             |
+| Ruta            | Notas                                      |
+| --------------- | ------------------------------------------ |
+| `/`             | Inicio de sesión o modo demo (zona pública). |
+| `/inbox`        | Bandeja de entrada.                        |
+| `/today`        | Vista “Hoy”.                               |
+| `/next`         | Vista “Próximo”.                           |
+| `/filters`      | Filtros y etiquetas.                       |
+| `/completed`    | Completado.                                |
+| `/notification` | Notificaciones.                            |
+| `/profile`      | Perfil de cuenta.                          |
+| `/billing`      | Facturación.                               |
+| `/settings`     | Ajustes.                                   |
+| `/logout`       | Cerrar sesión (simulado).                  |
 
 La barra lateral incluye acciones “Agregar tarea” y “Buscar” como botones; pueden enlazarse a rutas o modales según
 evolucione el producto.
 
-## Layout raíz
+## Layouts
 
-`src/app/layout.tsx` envuelve la aplicación con:
+Los **route groups** `(public)` y `(app)` organizan layouts sin cambiar la URL.
+
+### Layout raíz — `src/app/layout.tsx`
 
 - Fuente **Geist** (variable CSS).
-- **`ContextWrapper`** — anida los proveedores de contexto.
+- `globals.css` y metadatos globales.
+- Solo envuelve `{children}`; sin sidebar ni modales.
+
+### Layout público — `src/app/(public)/layout.tsx`
+
+- Pantalla centrada para login en `/`.
+- Sin `Aside`, `ContextWrapper` ni modales de la app.
+
+### Layout de aplicación — `src/app/(app)/layout.tsx`
+
+- **`ContextWrapper`** — proveedores de contexto.
 - **`Aside`** — navegación lateral colapsable.
-- **`ModalPro`** — capa de modales global.
+- **`ModalPro`**, **`ModalAddTask`**, **`ModalSearch`**, **`Toaster`**.
+
+Las rutas bajo `(app)/` comparten este shell. Las APIs en `src/app/api/` no usan estos layouts de UI.
+
+## Modo demo
+
+En `/`, además del formulario de login simulado, existe **“Probar en modo demo”**: entra a `/inbox` sin credenciales.
+
+- El modo (`demo` o `user`) se guarda en `sessionStorage` vía [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) y [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
+- En modo demo, el layout `(app)` muestra [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) y el perfil del sidebar indica “Usuario demo”.
+- Al cerrar sesión en `/logout` se borra el modo guardado.
 
 ## Contextos React
 
-`ContextWrapper` compone (orden exterior → interior):
+`ContextWrapper` (solo en el layout `(app)`) compone:
 
-1. `ModalSearchProvider` — estado del buscador modal.
-2. `ModalAddTaskProvider` — estado del modal de nueva tarea.
-3. `ModalProProvider` — coordinación del modal principal.
-4. `AsidebarProvider` — apertura/cierre de la barra lateral.
+1. `ModalProProvider` — coordinación del modal principal.
+2. `AsidebarProvider` — apertura/cierre de la barra lateral.
 
-Los componentes cliente consumen estos contextos con hooks dedicados.
+Los modales de tarea y búsqueda se controlan con `ui-store` (Zustand). Los componentes cliente consumen contextos y store
+con hooks dedicados.
 
 ## Navegación lateral
 

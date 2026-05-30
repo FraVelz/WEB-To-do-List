@@ -28,10 +28,14 @@ These map to variables declared in `@theme`.
 
 The root layout uses **Geist** (Google Fonts) via `next/font` in `layout.tsx` with the `--font-geist-sans` variable.
 
-## Dark mode
+## Light and dark themes
 
-The current palette targets a **dark** look (dark gray backgrounds, light text). If you add a light theme, extend tokens
-and/or `dark:` variants consistently.
+Semantic tokens in `globals.css` read `--theme-*` variables from `<html data-theme="dark|light">`.
+
+- **Dark:** neutral black/gray surfaces (`gray-950`, `gray-900`), blue accents and primary buttons (`blue-400`–`blue-600`).
+- **Light:** `slate-100` / white backgrounds, `slate-900` text, same blue brand.
+
+Theme choice is stored in `localStorage` (`todo-theme`) and toggled via [`ThemeToggle`](../../src/components/theme/ThemeToggle.tsx) (app header and login) or the switch in Settings.
 
 ## Good practices
 

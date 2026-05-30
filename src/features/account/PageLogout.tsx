@@ -6,8 +6,11 @@ import { CheckCircle2Icon, LogOutIcon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { useAuthSessionStore } from '@/stores/auth-session-store'
+
 export function PageLogout() {
   const [done, setDone] = useState(false)
+  const clearSession = useAuthSessionStore((s) => s.clear)
 
   return (
     <>
@@ -33,7 +36,14 @@ export function PageLogout() {
                 Podrás volver a entrar cuando quieras desde la pantalla de inicio.
               </p>
               <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:justify-center">
-                <Button type="button" variant="destructive" onClick={() => setDone(true)}>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => {
+                    clearSession()
+                    setDone(true)
+                  }}
+                >
                   Cerrar sesión
                 </Button>
                 <Button type="button" variant="outline" asChild>

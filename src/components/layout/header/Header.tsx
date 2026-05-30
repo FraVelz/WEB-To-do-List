@@ -9,6 +9,8 @@ import Sidebar from './../aside-bar/icons/Sidebar.svg'
 import Image from 'next/image'
 import clsx from 'clsx'
 
+import { ThemeToggle } from '@/components/theme/ThemeToggle'
+
 export default function Header({
   className,
   children,
@@ -38,7 +40,8 @@ export default function Header({
         <Image src={Sidebar} width={20} height={20} alt="Down Arrow" />
       </button>
 
-      <div className="flex gap-3">
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
         <button
           className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
           onClick={ModalProContext.openModalPro}

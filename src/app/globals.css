@@ -2,135 +2,121 @@
 
 /* =========================================================
    DESIGN TOKENS
-   Sistema de colores escalable
+   Primitivos + semánticos vía variables de tema
    ========================================================= */
 
 @theme inline {
-  /* =========================================================
-     1. PRIMITIVES (COLORES BASE)
-     Estos NO se usan directamente en componentes.
-     Solo definen la paleta del diseño.
-     ========================================================= */
+  /* Primitivos */
+  --color-gray-950: #0a0a0a;
+  --color-gray-900: #141414;
+  --color-gray-850: #1c1c1c;
+  --color-gray-200: #e5e5e5;
+  --color-blue-600: #2563eb;
+  --color-blue-500: #3b82f6;
+  --color-blue-400: #60a5fa;
+  --color-blue-300: #93c5fd;
+  --color-slate-100: #f1f5f9;
+  --color-slate-50: #f8fafc;
+  --color-slate-700: #334155;
+  --color-slate-500: #64748b;
+  --color-slate-900: #0f172a;
 
-  /* Base neutrals */
-  --color-gray-950: rgb(28, 28, 28);
-  --color-gray-900: rgb(36, 36, 36);
-  --color-gray-200: #e2e2e2;
+  /* Semánticos → variables de tema (--theme-*) */
+  --color-surface-app: var(--theme-surface-app);
+  --color-surface-sidebar: var(--theme-surface-sidebar);
+  --color-surface-accent-soft: var(--theme-surface-accent-soft);
 
-  /* Brand */
-  --color-brand-500: #db4c3f;
-  --color-brand-600: #c5372b;
+  --color-text-primary: var(--theme-text-primary);
+  --color-text-sidebar: var(--theme-text-sidebar);
+  --color-text-heading: var(--theme-text-heading);
+  --color-text-secondary: var(--theme-text-secondary);
+  --color-text-accent: var(--theme-text-accent);
 
-  /* Accent */
-  --color-accent-400: rgb(255, 127, 116);
-  --color-accent-soft: rgb(255 127 116 / 0.2);
+  --color-interactive-primary: var(--theme-interactive-primary);
+  --color-interactive-primary-hover: var(--theme-interactive-primary-hover);
+  --color-interactive-hover-soft: var(--theme-interactive-hover-soft);
+  --color-interactive-hover-strong: var(--theme-interactive-hover-strong);
 
-  /* Utility */
-  --color-white-alpha-10: rgba(226, 226, 226, 0.1);
-  --color-white-alpha-60: rgba(226, 226, 226, 0.6);
-
-  /* Texto secundario (derivado del gris base, sin nuevos matices arbitrarios) */
-  --color-gray-500: color-mix(in srgb, var(--color-gray-200) 45%, rgb(28 28 28));
-
-  /* =========================================================
-     2. SEMANTIC TOKENS
-     Estos SI se usan en los componentes.
-     Describen el propósito del color.
-     ========================================================= */
-
-  /* -----------------------------
-     SURFACES (fondos UI)
-     ----------------------------- */
-
-  /* Fondo principal de la app */
-  --color-surface-app: var(--color-gray-950);
-
-  /* Sidebar / panel lateral */
-  --color-surface-sidebar: var(--color-gray-900);
-
-  /* Fondo suave para elementos destacados */
-  --color-surface-accent-soft: var(--color-accent-soft);
-
-  /* -----------------------------
-     TEXT
-     ----------------------------- */
-
-  /* Texto principal */
-  --color-text-primary: var(--color-gray-200);
-
-  /* Texto en sidebar */
-  --color-text-sidebar: var(--color-gray-200);
-
-  /* Texto en headers */
-  --color-text-heading: var(--color-gray-200);
-
-  /* Texto de acento (links, números importantes, etc) */
-  --color-text-accent: var(--color-accent-400);
-
-  /* -----------------------------
-     INTERACTIVE
-     Elementos clicables (botones, links)
-     ----------------------------- */
-
-  /* Botón principal */
-  --color-interactive-primary: var(--color-brand-500);
-
-  /* Hover del botón principal */
-  --color-interactive-primary-hover: var(--color-brand-600);
-
-  /* Hover suave de UI (menus, items, etc) */
-  --color-interactive-hover-soft: var(--color-white-alpha-10);
-
-  /* Hover fuerte */
-  --color-interactive-hover-strong: var(--color-white-alpha-60);
-
-  /* -----------------------------
-     BORDERS
-     ----------------------------- */
-
-  --color-border-subtle: rgba(255 255 255 / 0.08);
-  --color-border-default: rgba(255 255 255 / 0.12);
-
-  /* -----------------------------
-     STATES (para futuro)
-     ----------------------------- */
+  --color-border-subtle: var(--theme-border-subtle);
+  --color-border-default: var(--theme-border-default);
 
   --color-state-success: #22c55e;
   --color-state-warning: #f59e0b;
   --color-state-error: #ef4444;
 
-  /* -----------------------------
-     UI / Radix (dropdown-menu, etc.)
-     Nombres tipo shadcn: mapeados a tokens ya definidos arriba.
-     ----------------------------- */
-
-  /* Texto y anillos por defecto (ring-foreground/10, etc.) */
-  --color-foreground: var(--color-text-primary);
-
-  /* Superficies flotantes (menús, submenús) */
-  --color-popover: var(--color-surface-sidebar);
-  --color-popover-foreground: var(--color-text-primary);
-
-  /*
-   * "accent" aquí = resalte neutro al enfocar ítems (no confundir con --color-accent-400 marca).
-   */
-  --color-accent: var(--color-interactive-hover-soft);
-  --color-accent-foreground: var(--color-text-primary);
-
-  --color-muted-foreground: var(--color-gray-500);
-
+  --color-foreground: var(--theme-text-primary);
+  --color-popover: var(--theme-surface-sidebar);
+  --color-popover-foreground: var(--theme-text-primary);
+  --color-accent: var(--theme-interactive-hover-soft);
+  --color-accent-foreground: var(--theme-text-primary);
+  --color-muted-foreground: var(--theme-text-secondary);
   --color-destructive: var(--color-state-error);
+  --color-border: var(--theme-border-default);
+  --color-ring: var(--theme-text-accent);
 
-  /* Separadores (bg-border en DropdownMenuSeparator) */
-  --color-border: var(--color-border-default);
+  --color-background: var(--theme-surface-app);
+  --color-primary: var(--theme-interactive-primary);
+  --color-primary-foreground: var(--theme-on-primary);
+  --color-secondary: var(--theme-interactive-hover-soft);
+  --color-secondary-foreground: var(--theme-text-primary);
+  --color-input: var(--theme-border-default);
+}
 
-  /* Focus rings (por si añades @apply outline-ring en componentes) */
-  --color-ring: var(--color-accent-400);
+/* Tema oscuro — superficies negras, acentos azules */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --theme-surface-app: var(--color-gray-950);
+  --theme-surface-sidebar: var(--color-gray-900);
+  --theme-surface-accent-soft: rgb(59 130 246 / 0.14);
+
+  --theme-text-primary: var(--color-gray-200);
+  --theme-text-sidebar: var(--color-gray-200);
+  --theme-text-heading: #fafafa;
+  --theme-text-secondary: #a3a3a3;
+  --theme-text-accent: var(--color-blue-400);
+
+  --theme-interactive-primary: var(--color-blue-500);
+  --theme-interactive-primary-hover: var(--color-blue-600);
+  --theme-interactive-hover-soft: rgba(255 255 255 / 0.08);
+  --theme-interactive-hover-strong: rgba(255 255 255 / 0.14);
+
+  --theme-border-subtle: rgba(255 255 255 / 0.06);
+  --theme-border-default: rgba(255 255 255 / 0.12);
+
+  --theme-on-primary: #ffffff;
+}
+
+/* Tema claro */
+[data-theme='light'] {
+  color-scheme: light;
+
+  --theme-surface-app: var(--color-slate-100);
+  --theme-surface-sidebar: #ffffff;
+  --theme-surface-accent-soft: rgb(37 99 235 / 0.1);
+
+  --theme-text-primary: var(--color-slate-900);
+  --theme-text-sidebar: var(--color-slate-900);
+  --theme-text-heading: #020617;
+  --theme-text-secondary: var(--color-slate-500);
+  --theme-text-accent: var(--color-blue-600);
+
+  --theme-interactive-primary: var(--color-blue-600);
+  --theme-interactive-primary-hover: #1d4ed8;
+  --theme-interactive-hover-soft: rgb(15 23 42 / 0.06);
+  --theme-interactive-hover-strong: rgb(15 23 42 / 0.1);
+
+  --theme-border-subtle: rgb(15 23 42 / 0.06);
+  --theme-border-default: rgb(15 23 42 / 0.12);
+
+  --theme-on-primary: #ffffff;
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
   color: var(--color-text-primary);
+  background-color: var(--color-surface-app);
 }
 
 button {
