@@ -7,10 +7,10 @@ import {
   UserIcon,
 } from 'lucide-react'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
+import { AsideNavIcon } from '../AsideNavIcon'
 import DownArrow from '../icons/DownArrow.svg'
 
 import {
@@ -38,7 +38,7 @@ export function ButtonProfile() {
         <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
           <div className="border-border-default size-6 rounded-full border bg-[var(--theme-on-primary)]" />
           <p className="text-text-sidebar text-sm">{displayName}</p>
-          <Image src={DownArrow} width={12} height={12} alt="" />
+          <AsideNavIcon src={DownArrow} size={12} className="opacity-80" />
         </button>
       </DropdownMenuTrigger>
 

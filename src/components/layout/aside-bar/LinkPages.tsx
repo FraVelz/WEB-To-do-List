@@ -1,13 +1,19 @@
+import clsx from 'clsx'
+
+import { AsideNavIcon } from '@/components/layout/aside-bar/AsideNavIcon'
 import { usePathLink } from '@/hooks/usePathLink'
 import Link from 'next/link'
+import type { StaticImageData } from 'next/image'
 
 export function LinkPages({
-  children,
+  iconSrc,
+  iconSize = 20,
   link,
   text,
   fontsize,
 }: {
-  children: React.ReactElement
+  iconSrc: string | StaticImageData
+  iconSize?: number
   text: string
   link: string
   fontsize?: string
@@ -17,10 +23,15 @@ export function LinkPages({
   return (
     <Link
       href={link}
-      className={`hover:bg-interactive-hover-soft flex gap-3 rounded-md px-3 py-2 ${isActive ? 'bg-surface-accent-soft text-text-accent' : ''} `}
+      className={clsx(
+        'group hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-3 py-2 transition-colors',
+        isActive
+          ? 'bg-surface-accent-soft text-text-accent'
+          : 'text-text-primary',
+      )}
     >
-      {children}
-      <p className={fontsize ? fontsize : 'text-sm'}>{text}</p>
+      <AsideNavIcon src={iconSrc} size={iconSize} active={isActive} />
+      <p className={fontsize ?? 'text-sm'}>{text}</p>
     </Link>
   )
 }

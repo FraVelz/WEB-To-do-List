@@ -1,49 +1,24 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-
-import { useModalPro } from '@/context/context-ModalPro'
 import Image from 'next/image'
+
+import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
 
 import ClosedIcon from './icons/ClosedIcon.svg'
 import ModalProImg from './icons/img-box-premium.png'
 
 export default function ModalPro() {
-  const ModalProContext = useModalPro()
-  const modalRef = useRef(null)
+  const { closeModal } = useModalNavigation()
 
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (!ModalProContext) return
-
-      if (e.key === 'Escape') {
-        ModalProContext.closeModalPro()
-      }
-    }
-
-    window.addEventListener('keydown', handleEsc)
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc)
-    }
-  }, [ModalProContext?.closeModalPro])
-
-  if (!ModalProContext) return null
-
-  return ModalProContext.modalPro ? (
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="absolute top-0 left-0 flex h-screen w-screen items-center justify-center bg-black/50 px-4 py-24"
-      onClick={ModalProContext.closeModalPro}
-    >
+  return (
+    <ModalRouteShell className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 py-24">
       <div
+        role="dialog"
+        aria-modal="true"
         className="z-10 flex h-full max-h-167.5 max-w-3xl"
-        ref={modalRef}
         tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
       >
-        {/* Part 1: Test pro */}
         <div className="bg-surface-app rounded-tl-1xl flex h-full basis-3/5 flex-col gap-3 rounded-bl-3xl p-6">
           <h1 className="text-xl font-bold">Pro gratis</h1>
           <p>
@@ -52,7 +27,7 @@ export default function ModalPro() {
           </p>
 
           <h2 className="mt-4 font-bold">Ciclo de facturación</h2>
-          <div className="border-brand-500 rounded-md border px-2 py-3">
+          <div className="border-interactive-primary rounded-md border px-2 py-3">
             <p className="font-bold">Anual</p>
 
             <p className="mt-1 font-bold">
@@ -65,14 +40,12 @@ export default function ModalPro() {
           </div>
         </div>
 
-        {/* Part 2: More Information*/}
         <div className="bg-surface-sidebar relative flex h-full basis-2/5 flex-col items-center justify-center gap-3 rounded-tr-3xl p-6">
-          <button>
+          <button type="button" onClick={closeModal} aria-label="Cerrar modal">
             <Image
               src={ClosedIcon}
               className="absolute top-3 right-3 size-7 cursor-pointer rounded-md px-0.5 py-px transition duration-300 hover:bg-white/10"
-              alt="Cerrar modal"
-              onClick={ModalProContext.closeModalPro}
+              alt=""
             />
           </button>
 
@@ -90,12 +63,11 @@ export default function ModalPro() {
           <p>Funcionalidades, opciones y características, próximamente...</p>
 
           <p className="absolute bottom-3 text-center text-[14px] font-normal contrast-75">
-            {' '}
-            Esta web, es un proyecto de código abierto de practica, no un
+            Esta web es un proyecto de código abierto de práctica, no un
             producto ni servicio oficial.
           </p>
         </div>
       </div>
-    </div>
-  ) : null
+    </ModalRouteShell>
+  )
 }

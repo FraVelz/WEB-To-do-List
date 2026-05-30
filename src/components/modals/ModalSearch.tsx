@@ -3,31 +3,20 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+
+import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { formatTaskDate } from '@/lib/date-format'
 import { fetchTasks, type TaskDto } from '@/services/tasks'
-import { useUiStore } from '@/stores/ui-store'
 
 export function ModalSearch() {
-  const searchOpen = useUiStore((s) => s.searchOpen)
-  const closeSearch = useUiStore((s) => s.closeSearch)
+  const { closeModal } = useModalNavigation()
 
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<TaskDto[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!searchOpen) return
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeSearch()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [searchOpen, closeSearch])
-
-  useEffect(() => {
-    if (!searchOpen) return
-
     let cancelled = false
 
     queueMicrotask(() => {
@@ -58,22 +47,15 @@ export function ModalSearch() {
       cancelled = true
       window.clearTimeout(t)
     }
-  }, [searchOpen, query])
-
-  if (!searchOpen) return null
+  }, [query])
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 pt-[10vh] pb-12"
-      role="presentation"
-      onClick={closeSearch}
-    >
+    <ModalRouteShell align="top">
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-search-title"
         className="border-border-default bg-surface-sidebar w-full max-w-lg rounded-xl border shadow-xl"
-        onClick={(e) => e.stopPropagation()}
       >
         <div className="border-border-subtle border-b p-4">
           <h2
@@ -105,7 +87,7 @@ export function ModalSearch() {
               <li key={task.id}>
                 <Link
                   href="/inbox"
-                  onClick={closeSearch}
+                  onClick={closeModal}
                   className="hover:bg-interactive-hover-soft flex flex-col gap-1 rounded-md px-3 py-2"
                 >
                   <span className="font-medium">{task.title}</span>
@@ -128,13 +110,13 @@ export function ModalSearch() {
         <div className="border-border-subtle flex justify-end border-t p-3">
           <button
             type="button"
-            onClick={closeSearch}
+            onClick={closeModal}
             className="hover:bg-interactive-hover-soft rounded-md px-4 py-2 text-sm"
           >
             Cerrar
           </button>
         </div>
       </div>
-    </div>
+    </ModalRouteShell>
   )
 }

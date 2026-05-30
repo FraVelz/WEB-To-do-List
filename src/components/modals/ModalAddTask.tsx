@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import clsx from 'clsx'
 
+import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { createTask } from '@/services/tasks'
 import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
-import { useUiStore } from '@/stores/ui-store'
 
 export function ModalAddTask() {
-  const addTaskOpen = useUiStore((s) => s.addTaskOpen)
-  const closeAddTask = useUiStore((s) => s.closeAddTask)
+  const { closeModal } = useModalNavigation()
   const bump = useTasksRefreshStore((s) => s.bump)
 
   const [title, setTitle] = useState('')
@@ -18,18 +18,6 @@ export function ModalAddTask() {
   const [label, setLabel] = useState('')
   const [dueDate, setDueDate] = useState('')
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (!addTaskOpen) return
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeAddTask()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [addTaskOpen, closeAddTask])
-
-  if (!addTaskOpen) return null
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -61,23 +49,18 @@ export function ModalAddTask() {
       setLabel('')
       setDueDate('')
       bump()
-      closeAddTask()
+      closeModal()
     }
     setLoading(false)
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4"
-      role="presentation"
-      onClick={closeAddTask}
-    >
+    <ModalRouteShell>
       <form
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-add-task-title"
         className="border-border-default bg-surface-sidebar w-full max-w-md rounded-xl border p-6 shadow-xl"
-        onClick={(e) => e.stopPropagation()}
         onSubmit={onSubmit}
       >
         <h2
@@ -134,7 +117,7 @@ export function ModalAddTask() {
         <div className="mt-6 flex justify-end gap-2">
           <button
             type="button"
-            onClick={closeAddTask}
+            onClick={closeModal}
             className="hover:bg-interactive-hover-soft rounded-md px-4 py-2 text-sm"
           >
             Cancelar
@@ -144,13 +127,13 @@ export function ModalAddTask() {
             disabled={loading}
             className={clsx(
               'bg-interactive-primary hover:bg-interactive-primary-hover text-text-primary rounded-md px-4 py-2 text-sm font-semibold',
-              loading && 'opacity-60'
+              loading && 'opacity-60',
             )}
           >
             {loading ? 'Guardando…' : 'Crear'}
           </button>
         </div>
       </form>
-    </div>
+    </ModalRouteShell>
   )
 }

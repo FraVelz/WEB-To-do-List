@@ -59,7 +59,7 @@ The **`(public)`** and **`(app)`** route groups organize layouts without changin
 
 - **`ContextWrapper`** — context providers.
 - **`Aside`** — collapsible sidebar navigation.
-- **`ModalPro`**, **`ModalAddTask`**, **`ModalSearch`**, **`Toaster`**.
+- **`@modal`** parallel slot and **`Toaster`**.
 
 Routes under `(app)/` share this shell. APIs under `src/app/api/` do not use these UI layouts.
 
@@ -71,15 +71,26 @@ At `/`, besides the simulated sign-in form, **“Try demo mode”** opens `/inbo
 - In demo mode, the `(app)` layout shows [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) and the sidebar profile reads “Demo user”.
 - Signing out at `/logout` clears the stored mode.
 
-## React contexts
+## Global state (Zustand)
 
-`ContextWrapper` (app layout only) composes:
+| Store | Role |
+| ----- | ---- |
+| `useSidebarStore` | Sidebar open/close |
+| `useThemeStore` | Light/dark theme |
+| `useAuthSessionStore` | Demo / user session |
+| `useTasksRefreshStore` | Task list refresh |
 
-1. `ModalProProvider` — main modal coordination.
-2. `AsidebarProvider` — sidebar open/close state.
+## Modals and URL (parallel routes)
 
-Task and search modals are driven by `ui-store` (Zustand). Client components consume contexts and the store via dedicated
-hooks.
+Modals use the **`@modal`** slot in `(app)/layout.tsx` (`{ children, modal }`).
+
+| URL | Modal |
+| --- | ----- |
+| `/add-task` | New task |
+| `/search` | Search |
+| `/pro` | Pro |
+
+Intercepting routes `(.)add-task`, etc. keep the background page on in-app navigation; `router.back()` or Escape closes the modal. Hook: `useModalNavigation()`.
 
 ## Sidebar navigation
 
