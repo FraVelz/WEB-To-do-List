@@ -1,7 +1,9 @@
 'use client'
 
-import { useAsidebar } from '@/context/context-openAsidebar'
-import { useModalPro } from '@/context/context-ModalPro'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
+import { useSidebarStore } from '@/stores/sidebar-store'
+
+import { AsideNavIcon } from '@/components/layout/aside-bar/AsideNavIcon'
 
 import Premium from './icons/Premium.svg'
 import Sidebar from './../aside-bar/icons/Sidebar.svg'
@@ -18,11 +20,9 @@ export default function Header({
   className?: string
   children?: React.ReactNode
 }) {
-  const AsidebarContext = useAsidebar()
-  const ModalProContext = useModalPro()
-
-  if (!AsidebarContext) return null
-  if (!ModalProContext) return null
+  const asideBarOpen = useSidebarStore((s) => s.asideBarOpen)
+  const toggleSidebar = useSidebarStore((s) => s.toggleSidebar)
+  const { openPro } = useModalNavigation()
 
   return (
     <aside
@@ -31,20 +31,20 @@ export default function Header({
       <button
         className={clsx(
           'hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1',
-          !AsidebarContext.asideBarOpen
+          !asideBarOpen
             ? ''
             : 'pointer-events-none cursor-default opacity-0'
         )}
-        onClick={AsidebarContext.click_button_asidebar}
+        onClick={toggleSidebar}
       >
-        <Image src={Sidebar} width={20} height={20} alt="Down Arrow" />
+        <AsideNavIcon src={Sidebar} size={20} />
       </button>
 
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <button
           className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
-          onClick={ModalProContext.openModalPro}
+          onClick={openPro}
         >
           <Image src={Premium} width={20} height={20} alt="Down Arrow" />
           <p className="text-text-heading text-sm">Prueba Pro gratis</p>

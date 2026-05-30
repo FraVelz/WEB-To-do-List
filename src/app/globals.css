@@ -32,6 +32,10 @@
   --color-text-secondary: var(--theme-text-secondary);
   --color-text-accent: var(--theme-text-accent);
 
+  --color-icon-sidebar: var(--theme-icon-sidebar);
+  --color-icon-sidebar-active: var(--theme-icon-sidebar-active);
+  --color-icon-action: var(--theme-icon-action);
+
   --color-interactive-primary: var(--theme-interactive-primary);
   --color-interactive-primary-hover: var(--theme-interactive-primary-hover);
   --color-interactive-hover-soft: var(--theme-interactive-hover-soft);
@@ -86,6 +90,10 @@
   --theme-border-default: rgba(255 255 255 / 0.12);
 
   --theme-on-primary: #ffffff;
+
+  --theme-icon-sidebar: #a3a3a3;
+  --theme-icon-sidebar-active: var(--color-blue-400);
+  --theme-icon-action: var(--color-blue-500);
 }
 
 /* Tema claro */
@@ -111,6 +119,10 @@
   --theme-border-default: rgb(15 23 42 / 0.12);
 
   --theme-on-primary: #ffffff;
+
+  --theme-icon-sidebar: var(--color-slate-500);
+  --theme-icon-sidebar-active: var(--color-blue-600);
+  --theme-icon-action: var(--color-blue-600);
 }
 
 body {

@@ -60,7 +60,7 @@ Los **route groups** `(public)` y `(app)` organizan layouts sin cambiar la URL.
 
 - **`ContextWrapper`** — proveedores de contexto.
 - **`Aside`** — navegación lateral colapsable.
-- **`ModalPro`**, **`ModalAddTask`**, **`ModalSearch`**, **`Toaster`**.
+- Slot **`@modal`** (parallel routes) y **`Toaster`**.
 
 Las rutas bajo `(app)/` comparten este shell. Las APIs en `src/app/api/` no usan estos layouts de UI.
 
@@ -72,15 +72,26 @@ En `/`, además del formulario de login simulado, existe **“Probar en modo dem
 - En modo demo, el layout `(app)` muestra [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) y el perfil del sidebar indica “Usuario demo”.
 - Al cerrar sesión en `/logout` se borra el modo guardado.
 
-## Contextos React
+## Estado global (Zustand)
 
-`ContextWrapper` (solo en el layout `(app)`) compone:
+| Store | Uso |
+| ----- | --- |
+| `useSidebarStore` | Apertura/cierre de la barra lateral |
+| `useThemeStore` | Tema claro/oscuro |
+| `useAuthSessionStore` | Sesión demo / usuario |
+| `useTasksRefreshStore` | Refresco de listas de tareas |
 
-1. `ModalProProvider` — coordinación del modal principal.
-2. `AsidebarProvider` — apertura/cierre de la barra lateral.
+## Modales y URL (parallel routes)
 
-Los modales de tarea y búsqueda se controlan con `ui-store` (Zustand). Los componentes cliente consumen contextos y store
-con hooks dedicados.
+Los modales usan el slot **`@modal`** en `(app)/layout.tsx` (`{ children, modal }`).
+
+| URL | Modal |
+| --- | ----- |
+| `/add-task` | Nueva tarea |
+| `/search` | Búsqueda |
+| `/pro` | Pro |
+
+Rutas interceptadas `(.)add-task`, etc. mantienen la página de fondo al navegar desde la app; `router.back()` o Escape cierra el modal. Hook: `useModalNavigation()`.
 
 ## Navegación lateral
 

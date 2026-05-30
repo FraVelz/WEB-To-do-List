@@ -1,7 +1,9 @@
 'use client'
 
-import { useAsidebar } from '@/context/context-openAsidebar'
+import { useModalNavigation } from '@/hooks/useModalNavigation'
+import { useSidebarStore } from '@/stores/sidebar-store'
 
+import { AsideNavIcon } from './AsideNavIcon'
 import { LinkPages } from './LinkPages'
 import { asideItems } from './data'
 
@@ -12,33 +14,31 @@ import Home from './icons/Home.svg'
 import Search from './icons/Search.svg'
 import AddPlus from './icons/AddPlus.svg'
 
-import Image from 'next/image'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 
 import { ButtonProfile } from './components/buttonProfile'
 
-import { useUiStore } from '@/stores/ui-store'
-
 export default function Aside() {
-  const context = useAsidebar()
-  const openAddTask = useUiStore((s) => s.openAddTask)
-  const openSearch = useUiStore((s) => s.openSearch)
-
-  if (!context) return null
+  const asideBarOpen = useSidebarStore((s) => s.asideBarOpen)
+  const toggleSidebar = useSidebarStore((s) => s.toggleSidebar)
+  const { openAddTask, openSearch } = useModalNavigation()
+  const pathname = usePathname()
+  const isNotificationActive = pathname === '/notification'
 
   return (
     <header
       className={clsx(
         'bg-surface-sidebar relative h-screen transition-[width] duration-1000',
-        context.asideBarOpen ? 'w-70' : 'w-0'
+        asideBarOpen ? 'w-70' : 'w-0',
       )}
     >
       <div
         className={clsx(
           'transition-opacity duration-300',
-          context.asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
-          !context.asideBarOpen && 'pointer-events-none'
+          asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
+          !asideBarOpen && 'pointer-events-none',
         )}
       >
         {/* Profile */}
@@ -47,22 +47,23 @@ export default function Aside() {
 
           <div className="flex gap-1">
             <Link
-              className="hover:bg-interactive-hover-soft rounded-md px-2 py-1"
+              className="group hover:bg-interactive-hover-soft rounded-md px-2 py-1"
               href="/notification"
             >
-              <Image
+              <AsideNavIcon
                 src={NotificationNotify}
-                width={20}
-                height={20}
-                alt="Icono Notificaciones"
+                size={20}
+                active={isNotificationActive}
               />
             </Link>
 
             <button
-              className="hover:bg-interactive-hover-soft rounded-md px-2 py-1"
-              onClick={context.click_button_asidebar}
+              type="button"
+              className="group hover:bg-interactive-hover-soft rounded-md px-2 py-1"
+              onClick={toggleSidebar}
+              aria-label="Alternar menú lateral"
             >
-              <Image src={Sidebar} width={20} height={20} alt="Icono Menú" />
+              <AsideNavIcon src={Sidebar} size={20} />
             </button>
           </div>
         </div>
@@ -74,16 +75,15 @@ export default function Aside() {
               <button
                 type="button"
                 className={clsx(
-                  'hover:bg-interactive-hover-soft text-text-primary text-md',
-                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
+                  'group hover:bg-interactive-hover-soft text-text-primary text-md',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1',
                 )}
                 onClick={openAddTask}
               >
-                <Image
+                <AsideNavIcon
                   src={AddPlus}
-                  width={24}
-                  height={24}
-                  alt="Agregar tarea"
+                  size={24}
+                  variant="accent"
                 />
                 Agregar tarea
               </button>
@@ -93,12 +93,12 @@ export default function Aside() {
               <button
                 type="button"
                 className={clsx(
-                  'hover:bg-interactive-hover-soft text-text-primary text-md',
-                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
+                  'group hover:bg-interactive-hover-soft text-text-primary text-md',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1',
                 )}
                 onClick={openSearch}
               >
-                <Image src={Search} width={18} height={18} alt="Buscador" />
+                <AsideNavIcon src={Search} size={18} />
                 Buscar
               </button>
             </li>
@@ -108,15 +108,10 @@ export default function Aside() {
                 <LinkPages
                   text={item.text}
                   link={item.link}
+                  iconSrc={item.icon}
+                  iconSize={item.width}
                   fontsize={item.fontSize}
-                >
-                  <Image
-                    src={item.icon}
-                    width={item.width}
-                    height={item.height}
-                    alt={item.text}
-                  />
-                </LinkPages>
+                />
               </li>
             ))}
           </ul>
@@ -126,13 +121,17 @@ export default function Aside() {
       <div
         className={clsx(
           'bg-surface-sidebar absolute bottom-0 left-0 mb-4 h-10 w-full px-3 transition-opacity',
-          context.asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
-          !context.asideBarOpen && 'pointer-events-none'
+          asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
+          !asideBarOpen && 'pointer-events-none',
         )}
       >
-        <LinkPages text="Bandeja" link="/inbox" fontsize="text-md">
-          <Image src={Home} width={24} height={24} alt="Icono Bandeja" />
-        </LinkPages>
+        <LinkPages
+          text="Bandeja"
+          link="/inbox"
+          iconSrc={Home}
+          iconSize={24}
+          fontsize="text-md"
+        />
       </div>
     </header>
   )
