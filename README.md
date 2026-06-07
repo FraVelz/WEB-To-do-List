@@ -29,6 +29,7 @@ Guías técnicas (español e inglés): [docs/README.md](docs/README.md) · [docs
 - [React 19](https://react.dev/) — Biblioteca UI
 - [TypeScript](https://www.typescriptlang.org/) — Tipado estático
 - [Tailwind CSS 4](https://tailwindcss.com/) — Estilos utilitarios
+- [Firebase](https://firebase.google.com/) — Auth + Firestore
 
 ## 📄 Información
 

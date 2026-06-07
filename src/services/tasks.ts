@@ -1,3 +1,14 @@
+import {
+  createDemoTask,
+  deleteDemoTask,
+  listDemoTaskLabels,
+  listDemoTasks,
+  patchDemoTask,
+} from '@/lib/demo/local-store'
+import { isDemoMode } from '@/lib/demo/is-demo-mode'
+
+import { authFetch } from './auth-fetch'
+
 export type TaskDto = {
   id: string
   title: string
@@ -17,12 +28,16 @@ export async function fetchTasks(params: {
   q?: string
   label?: string
 }): Promise<TaskDto[]> {
+  if (isDemoMode()) {
+    return listDemoTasks(params)
+  }
+
   const sp = new URLSearchParams()
   if (params.filter) sp.set('filter', params.filter)
   if (params.q) sp.set('q', params.q)
   if (params.label) sp.set('label', params.label)
 
-  const res = await fetch(`/api/tasks?${sp.toString()}`, {
+  const res = await authFetch(`/api/tasks?${sp.toString()}`, {
     cache: 'no-store',
   })
 
@@ -43,9 +58,12 @@ export async function createTask(data: {
   label?: string | null
   priority?: number
 }): Promise<TaskDto> {
-  const res = await fetch('/api/tasks', {
+  if (isDemoMode()) {
+    return createDemoTask(data)
+  }
+
+  const res = await authFetch('/api/tasks', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
 
@@ -70,9 +88,14 @@ export async function patchTask(
     label: string | null
   }>
 ): Promise<TaskDto> {
-  const res = await fetch(`/api/tasks/${id}`, {
+  if (isDemoMode()) {
+    const updated = patchDemoTask(id, data)
+    if (!updated) throw new Error('Tarea no encontrada')
+    return updated
+  }
+
+  const res = await authFetch(`/api/tasks/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   })
 
@@ -87,7 +110,13 @@ export async function patchTask(
 }
 
 export async function deleteTask(id: string): Promise<void> {
-  const res = await fetch(`/api/tasks/${id}`, { method: 'DELETE' })
+  if (isDemoMode()) {
+    const ok = deleteDemoTask(id)
+    if (!ok) throw new Error('Tarea no encontrada')
+    return
+  }
+
+  const res = await authFetch(`/api/tasks/${id}`, { method: 'DELETE' })
   if (!res.ok) {
     const err = await res.json().catch(() => ({}))
     throw new Error(
@@ -97,7 +126,11 @@ export async function deleteTask(id: string): Promise<void> {
 }
 
 export async function fetchTaskLabels(): Promise<string[]> {
-  const res = await fetch('/api/task-labels', { cache: 'no-store' })
+  if (isDemoMode()) {
+    return listDemoTaskLabels()
+  }
+
+  const res = await authFetch('/api/task-labels', { cache: 'no-store' })
   if (!res.ok) {
     throw new Error('Error al cargar etiquetas')
   }

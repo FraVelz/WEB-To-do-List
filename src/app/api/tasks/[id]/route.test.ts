@@ -3,17 +3,18 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { DELETE, PATCH } from './route'
 
 const mocks = vi.hoisted(() => ({
-  update: vi.fn(),
+  requireUserId: vi.fn(),
+  updateTask: vi.fn(),
   deleteTask: vi.fn(),
 }))
 
-vi.mock('@/lib/prisma', () => ({
-  prisma: {
-    task: {
-      update: mocks.update,
-      delete: mocks.deleteTask,
-    },
-  },
+vi.mock('@/lib/firebase/verify-auth', () => ({
+  requireUserId: mocks.requireUserId,
+}))
+
+vi.mock('@/lib/firebase/repositories/tasks', () => ({
+  updateTask: mocks.updateTask,
+  deleteTask: mocks.deleteTask,
 }))
 
 const ctx = (id: string) =>
@@ -23,8 +24,10 @@ const ctx = (id: string) =>
 
 describe('PATCH /api/tasks/[id]', () => {
   beforeEach(() => {
-    mocks.update.mockReset()
-    mocks.update.mockResolvedValue({
+    mocks.requireUserId.mockReset()
+    mocks.updateTask.mockReset()
+    mocks.requireUserId.mockResolvedValue('user-1')
+    mocks.updateTask.mockResolvedValue({
       id: '1',
       title: 'T',
       description: null,
@@ -32,8 +35,8 @@ describe('PATCH /api/tasks/[id]', () => {
       dueDate: null,
       priority: 0,
       label: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
   })
 
@@ -46,7 +49,7 @@ describe('PATCH /api/tasks/[id]', () => {
     const res = await PATCH(req, ctx('1'))
 
     expect(res.status).toBe(400)
-    expect(mocks.update).not.toHaveBeenCalled()
+    expect(mocks.updateTask).not.toHaveBeenCalled()
   })
 
   it('actualiza completed', async () => {
@@ -58,17 +61,18 @@ describe('PATCH /api/tasks/[id]', () => {
     const res = await PATCH(req, ctx('abc'))
 
     expect(res.status).toBe(200)
-    expect(mocks.update).toHaveBeenCalledWith({
-      where: { id: 'abc' },
-      data: { completed: true },
+    expect(mocks.updateTask).toHaveBeenCalledWith('user-1', 'abc', {
+      completed: true,
     })
   })
 })
 
 describe('DELETE /api/tasks/[id]', () => {
   beforeEach(() => {
+    mocks.requireUserId.mockReset()
     mocks.deleteTask.mockReset()
-    mocks.deleteTask.mockResolvedValue({})
+    mocks.requireUserId.mockResolvedValue('user-1')
+    mocks.deleteTask.mockResolvedValue(true)
   })
 
   it('elimina por id', async () => {
@@ -78,6 +82,6 @@ describe('DELETE /api/tasks/[id]', () => {
     )
 
     expect(res.status).toBe(200)
-    expect(mocks.deleteTask).toHaveBeenCalledWith({ where: { id: 'x' } })
+    expect(mocks.deleteTask).toHaveBeenCalledWith('user-1', 'x')
   })
 })

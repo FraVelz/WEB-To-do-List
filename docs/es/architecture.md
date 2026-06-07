@@ -8,6 +8,7 @@ Visión general de la estructura de **WEB To-Do List** (Next.js App Router).
 - **React 19** — componentes y hooks.
 - **TypeScript** — tipado en todo el código fuente.
 - **Tailwind CSS 4** — estilos con `@import "tailwindcss"` y tokens en CSS.
+- **Firebase** — Authentication + Firestore (datos por usuario).
 
 ## Organización de carpetas (`src/`)
 
@@ -66,11 +67,19 @@ Las rutas bajo `(app)/` comparten este shell. Las APIs en `src/app/api/` no usan
 
 ## Modo demo
 
-En `/`, además del formulario de login simulado, existe **“Probar en modo demo”**: entra a `/inbox` sin credenciales.
+En `/`, además del formulario de login con Firebase, existe **“Probar en modo demo”**: entra sin credenciales ni conexión al backend.
 
-- El modo (`demo` o `user`) se guarda en `sessionStorage` vía [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) y [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
+- **Modo demo** — datos en `localStorage` (`src/lib/demo/local-store.ts`); solo interfaz local.
+- **Modo usuario** — Firebase Auth + Firestore vía APIs.
+- El modo se guarda en `sessionStorage` vía [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) y [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
 - En modo demo, el layout `(app)` muestra [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) y el perfil del sidebar indica “Usuario demo”.
-- Al cerrar sesión en `/logout` se borra el modo guardado.
+- Al cerrar sesión en `/logout`, demo solo borra la sesión; usuario real también llama a `signOut` de Firebase.
+
+## Datos (Firebase)
+
+- **Firestore** almacena tareas y notificaciones por `userId` (solo modo usuario).
+- Las rutas API en `src/app/api/` verifican el token JWT de Firebase con Admin SDK y delegan en `src/lib/firebase/repositories/`.
+- El cliente envía `Authorization: Bearer <token>` desde [`src/services/auth-fetch.ts`](../src/services/auth-fetch.ts).
 
 ## Estado global (Zustand)
 

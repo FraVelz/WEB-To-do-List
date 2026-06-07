@@ -2,6 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { fetchNotifications, markNotificationRead } from './notifications'
 
+vi.mock('@/lib/firebase/auth-client', () => ({
+  getIdToken: vi.fn().mockResolvedValue('test-token'),
+}))
+
 describe('notifications (cliente fetch)', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
@@ -41,11 +45,11 @@ describe('notifications (cliente fetch)', () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true })
     vi.stubGlobal('fetch', fetchMock)
 
-    await markNotificationRead(42)
+    await markNotificationRead('notif-42')
 
-    expect(fetchMock).toHaveBeenCalledWith('/api/notifications/42', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/notifications/notif-42', {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+      headers: expect.any(Headers),
       body: JSON.stringify({ read: true }),
     })
   })

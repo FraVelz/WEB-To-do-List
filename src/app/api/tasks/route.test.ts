@@ -3,79 +3,78 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { GET, POST } from './route'
 
 const mocks = vi.hoisted(() => ({
-  findMany: vi.fn(),
-  create: vi.fn(),
+  requireUserId: vi.fn(),
+  listTasks: vi.fn(),
+  createTask: vi.fn(),
 }))
 
-vi.mock('@/lib/prisma', () => ({
-  prisma: {
-    task: {
-      findMany: mocks.findMany,
-      create: mocks.create,
-    },
-  },
+vi.mock('@/lib/firebase/verify-auth', () => ({
+  requireUserId: mocks.requireUserId,
+}))
+
+vi.mock('@/lib/firebase/repositories/tasks', () => ({
+  listTasks: mocks.listTasks,
+  createTask: mocks.createTask,
 }))
 
 describe('GET /api/tasks', () => {
   beforeEach(() => {
-    mocks.findMany.mockReset()
-    mocks.create.mockReset()
-    mocks.findMany.mockResolvedValue([])
+    mocks.requireUserId.mockReset()
+    mocks.listTasks.mockReset()
+    mocks.createTask.mockReset()
+    mocks.requireUserId.mockResolvedValue('user-1')
+    mocks.listTasks.mockResolvedValue([])
   })
 
   it('filtra inbox con completed false', async () => {
     const req = new Request('http://localhost/api/tasks?filter=inbox')
     await GET(req)
 
-    expect(mocks.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({ completed: false }),
-      })
-    )
+    expect(mocks.listTasks).toHaveBeenCalledWith('user-1', {
+      filter: 'inbox',
+      q: undefined,
+      label: undefined,
+    })
   })
 
-  it('filtra completed con completed true', async () => {
+  it('filtra completed', async () => {
     await GET(new Request('http://localhost/api/tasks?filter=completed'))
 
-    expect(mocks.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({ completed: true }),
-      })
-    )
+    expect(mocks.listTasks).toHaveBeenCalledWith('user-1', {
+      filter: 'completed',
+      q: undefined,
+      label: undefined,
+    })
   })
 
-  it('añade búsqueda insensible en título y descripción', async () => {
-    await GET(new Request('http://localhost/api/tasks?q=  hola  '))
-
-    expect(mocks.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({
-          OR: [
-            { title: { contains: 'hola', mode: 'insensitive' } },
-            { description: { contains: 'hola', mode: 'insensitive' } },
-          ],
-        }),
-      })
-    )
-  })
-
-  it('aplica label cuando viene en query', async () => {
+  it('pasa búsqueda y label al repositorio', async () => {
     await GET(
-      new Request('http://localhost/api/tasks?filter=inbox&label=Trabajo')
+      new Request('http://localhost/api/tasks?filter=inbox&q=  hola  &label=Trabajo')
     )
 
-    expect(mocks.findMany).toHaveBeenCalledWith(
-      expect.objectContaining({
-        where: expect.objectContaining({ label: 'Trabajo' }),
-      })
+    expect(mocks.listTasks).toHaveBeenCalledWith('user-1', {
+      filter: 'inbox',
+      q: 'hola',
+      label: 'Trabajo',
+    })
+  })
+
+  it('devuelve 401 si no hay token', async () => {
+    const { NextResponse } = await import('next/server')
+    mocks.requireUserId.mockResolvedValue(
+      NextResponse.json({ error: 'No autorizado' }, { status: 401 })
     )
+
+    const res = await GET(new Request('http://localhost/api/tasks'))
+    expect(res.status).toBe(401)
   })
 })
 
 describe('POST /api/tasks', () => {
   beforeEach(() => {
-    mocks.findMany.mockReset()
-    mocks.create.mockReset()
+    mocks.requireUserId.mockReset()
+    mocks.createTask.mockReset()
+    mocks.requireUserId.mockResolvedValue('user-1')
   })
 
   it('rechaza título vacío con 400', async () => {
@@ -89,11 +88,11 @@ describe('POST /api/tasks', () => {
     expect(res.status).toBe(400)
     const body = await res.json()
     expect(body.error).toMatch(/título/i)
-    expect(mocks.create).not.toHaveBeenCalled()
+    expect(mocks.createTask).not.toHaveBeenCalled()
   })
 
   it('crea tarea con datos válidos', async () => {
-    mocks.create.mockResolvedValue({
+    mocks.createTask.mockResolvedValue({
       id: 'c1',
       title: 'Ok',
       description: null,
@@ -101,8 +100,8 @@ describe('POST /api/tasks', () => {
       dueDate: null,
       priority: 0,
       label: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
 
     const req = new Request('http://localhost/api/tasks', {
@@ -113,14 +112,12 @@ describe('POST /api/tasks', () => {
     const res = await POST(req)
 
     expect(res.status).toBe(200)
-    expect(mocks.create).toHaveBeenCalledWith({
-      data: expect.objectContaining({
-        title: 'Ok',
-        description: null,
-        label: null,
-        dueDate: null,
-        priority: 0,
-      }),
+    expect(mocks.createTask).toHaveBeenCalledWith('user-1', {
+      title: 'Ok',
+      description: null,
+      label: null,
+      dueDate: null,
+      priority: 0,
     })
   })
 })

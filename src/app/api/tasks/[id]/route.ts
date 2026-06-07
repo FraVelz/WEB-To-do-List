@@ -1,10 +1,14 @@
-import { prisma } from '@/lib/prisma'
+import { deleteTask, updateTask } from '@/lib/firebase/repositories/tasks'
+import { requireUserId } from '@/lib/firebase/verify-auth'
 import { NextResponse } from 'next/server'
 
 type RouteContext = { params: Promise<{ id: string }> }
 
 export async function PATCH(req: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId(req)
+    if (userId instanceof NextResponse) return userId
+
     const { id } = await context.params
     const body = (await req.json()) as Record<string, unknown>
 
@@ -48,10 +52,10 @@ export async function PATCH(req: Request, context: RouteContext) {
         typeof body.label === 'string' ? body.label.trim() || null : null
     }
 
-    const task = await prisma.task.update({
-      where: { id },
-      data,
-    })
+    const task = await updateTask(userId, id, data)
+    if (!task) {
+      return NextResponse.json({ error: 'Tarea no encontrada' }, { status: 404 })
+    }
 
     return NextResponse.json(task)
   } catch (e) {
@@ -65,8 +69,15 @@ export async function PATCH(req: Request, context: RouteContext) {
 
 export async function DELETE(_req: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId(_req)
+    if (userId instanceof NextResponse) return userId
+
     const { id } = await context.params
-    await prisma.task.delete({ where: { id } })
+    const ok = await deleteTask(userId, id)
+    if (!ok) {
+      return NextResponse.json({ error: 'Tarea no encontrada' }, { status: 404 })
+    }
+
     return NextResponse.json({ ok: true })
   } catch (e) {
     console.error('DELETE /api/tasks/[id]', e)

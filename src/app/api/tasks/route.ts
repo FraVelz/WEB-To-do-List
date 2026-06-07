@@ -1,67 +1,22 @@
-import { prisma } from '@/lib/prisma'
-import type { Prisma } from '@prisma/client'
+import {
+  createTask,
+  listTasks,
+  type TaskFilter,
+} from '@/lib/firebase/repositories/tasks'
+import { requireUserId } from '@/lib/firebase/verify-auth'
 import { NextResponse } from 'next/server'
-
-function utcDayRange(ref: Date = new Date()) {
-  const start = new Date(
-    Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth(), ref.getUTCDate())
-  )
-  const end = new Date(start.getTime() + 86400000)
-  return { start, end }
-}
 
 export async function GET(req: Request) {
   try {
+    const userId = await requireUserId(req)
+    if (userId instanceof NextResponse) return userId
+
     const { searchParams } = new URL(req.url)
     const q = searchParams.get('q')?.trim()
-    const filter = searchParams.get('filter') ?? 'inbox'
+    const filter = (searchParams.get('filter') ?? 'inbox') as TaskFilter
     const label = searchParams.get('label')?.trim()
 
-    const where: Prisma.TaskWhereInput = {}
-
-    if (label) {
-      where.label = label
-    }
-
-    if (q) {
-      where.OR = [
-        { title: { contains: q, mode: 'insensitive' } },
-        { description: { contains: q, mode: 'insensitive' } },
-      ]
-    }
-
-    const { start: dayStart } = utcDayRange()
-    const weekEnd = new Date(dayStart.getTime() + 7 * 86400000)
-
-    switch (filter) {
-      case 'completed':
-        where.completed = true
-        break
-      case 'today': {
-        const { start, end } = utcDayRange()
-        where.completed = false
-        where.dueDate = { gte: start, lt: end }
-        break
-      }
-      case 'next':
-        where.completed = false
-        where.dueDate = { gte: dayStart, lt: weekEnd }
-        break
-      case 'inbox':
-      default:
-        where.completed = false
-        break
-    }
-
-    const tasks = await prisma.task.findMany({
-      where,
-      orderBy: [
-        { completed: 'asc' },
-        { dueDate: 'asc' },
-        { createdAt: 'desc' },
-      ],
-    })
-
+    const tasks = await listTasks(userId, { filter, q, label })
     return NextResponse.json(tasks)
   } catch (e) {
     console.error('GET /api/tasks', e)
@@ -74,9 +29,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const userId = await requireUserId(req)
+    if (userId instanceof NextResponse) return userId
+
     const body = (await req.json()) as Record<string, unknown>
-    const title =
-      typeof body.title === 'string' ? body.title.trim() : ''
+    const title = typeof body.title === 'string' ? body.title.trim() : ''
     if (!title) {
       return NextResponse.json(
         { error: 'El título es obligatorio' },
@@ -103,8 +60,12 @@ export async function POST(req: Request) {
         ? body.priority
         : 0
 
-    const task = await prisma.task.create({
-      data: { title, description, label, dueDate, priority },
+    const task = await createTask(userId, {
+      title,
+      description,
+      label,
+      dueDate,
+      priority,
     })
 
     return NextResponse.json(task)

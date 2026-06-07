@@ -8,6 +8,7 @@ High-level structure of **WEB To-Do List** (Next.js App Router).
 - **React 19** — components and hooks.
 - **TypeScript** — typing across the source tree.
 - **Tailwind CSS 4** — styles via `@import "tailwindcss"` and CSS tokens.
+- **Firebase** — Authentication + Firestore (per-user data).
 
 ## Folder layout (`src/`)
 
@@ -36,7 +37,7 @@ Current routes with a defined page:
 | `/profile`      | Account profile.         |
 | `/billing`      | Billing.                 |
 | `/settings`     | Settings.                |
-| `/logout`       | Sign out (simulated).    |
+| `/logout`       | Sign out (Firebase).     |
 
 The sidebar exposes “Add task” and “Search” as buttons; they may be wired to routes or modals as the product evolves.
 
@@ -65,11 +66,19 @@ Routes under `(app)/` share this shell. APIs under `src/app/api/` do not use the
 
 ## Demo mode
 
-At `/`, besides the simulated sign-in form, **“Try demo mode”** opens `/inbox` without credentials.
+At `/`, besides Firebase email/password sign-in, **“Try demo mode”** opens the UI without credentials or backend access.
 
-- Mode (`demo` or `user`) is stored in `sessionStorage` via [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) and [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
+- **Demo mode** — data in `localStorage` (`src/lib/demo/local-store.ts`); local UI only.
+- **User mode** — Firebase Auth + Firestore via APIs.
+- Mode is stored in `sessionStorage` via [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) and [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
 - In demo mode, the `(app)` layout shows [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) and the sidebar profile reads “Demo user”.
-- Signing out at `/logout` clears the stored mode.
+- Signing out at `/logout` clears demo session only; real users also call Firebase `signOut`.
+
+## Data (Firebase)
+
+- **Firestore** stores tasks and notifications scoped by `userId` (user mode only).
+- API routes under `src/app/api/` verify the Firebase JWT with Admin SDK and delegate to `src/lib/firebase/repositories/`.
+- The client sends `Authorization: Bearer <token>` via [`src/services/auth-fetch.ts`](../src/services/auth-fetch.ts).
 
 ## Global state (Zustand)
 
