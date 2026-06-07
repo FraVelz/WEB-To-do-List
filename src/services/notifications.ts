@@ -1,5 +1,14 @@
+import {
+  createDemoNotification,
+  listDemoNotifications,
+  markDemoNotificationRead,
+} from '@/lib/demo/local-store'
+import { isDemoMode } from '@/lib/demo/is-demo-mode'
+
+import { authFetch } from './auth-fetch'
+
 export type NotificationDto = {
-  id: number
+  id: string
   title: string
   content: string
   color: string
@@ -9,10 +18,14 @@ export type NotificationDto = {
 export async function fetchNotifications(params?: {
   unreadOnly?: boolean
 }): Promise<NotificationDto[]> {
+  if (isDemoMode()) {
+    return listDemoNotifications(params?.unreadOnly ?? false)
+  }
+
   const sp = new URLSearchParams()
   if (params?.unreadOnly) sp.set('unread', 'true')
 
-  const res = await fetch(`/api/notifications?${sp.toString()}`, {
+  const res = await authFetch(`/api/notifications?${sp.toString()}`, {
     cache: 'no-store',
   })
 
@@ -23,10 +36,15 @@ export async function fetchNotifications(params?: {
   return res.json() as Promise<NotificationDto[]>
 }
 
-export async function markNotificationRead(id: number): Promise<void> {
-  const res = await fetch(`/api/notifications/${id}`, {
+export async function markNotificationRead(id: string): Promise<void> {
+  if (isDemoMode()) {
+    const ok = markDemoNotificationRead(id)
+    if (!ok) throw new Error('Notificación no encontrada')
+    return
+  }
+
+  const res = await authFetch(`/api/notifications/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ read: true }),
   })
 
@@ -44,9 +62,12 @@ export async function sendNotification({
   content: string
   color: string
 }) {
-  const res = await fetch('/api/notifications', {
+  if (isDemoMode()) {
+    return createDemoNotification({ title, content, color })
+  }
+
+  const res = await authFetch('/api/notifications', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ title, content, color }),
   })
 

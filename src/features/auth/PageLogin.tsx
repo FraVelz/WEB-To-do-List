@@ -1,19 +1,42 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { signInUser } from '@/lib/firebase/auth-client'
 import { useAuthSessionStore } from '@/stores/auth-session-store'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+function firebaseAuthMessage(error: unknown): string {
+  if (
+    typeof error === 'object' &&
+    error !== null &&
+    'code' in error &&
+    typeof (error as { code: string }).code === 'string'
+  ) {
+    const code = (error as { code: string }).code
+    if (code === 'auth/invalid-email') return 'Email no válido.'
+    if (code === 'auth/wrong-password') return 'Contraseña incorrecta.'
+    if (code === 'auth/weak-password') {
+      return 'La contraseña debe tener al menos 6 caracteres.'
+    }
+    if (code === 'auth/invalid-credential') {
+      return 'Credenciales incorrectas.'
+    }
+  }
+
+  if (error instanceof Error && error.message) return error.message
+  return 'No se pudo iniciar sesión.'
+}
+
 export function PageLogin() {
   const router = useRouter()
   const enterDemo = useAuthSessionStore((s) => s.enterDemo)
-  const enterUser = useAuthSessionStore((s) => s.enterUser)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError(null)
 
@@ -22,8 +45,15 @@ export function PageLogin() {
       return
     }
 
-    enterUser()
-    router.push('/inbox')
+    setLoading(true)
+    try {
+      await signInUser(email, password)
+      router.push('/inbox')
+    } catch (err) {
+      setError(firebaseAuthMessage(err))
+    } finally {
+      setLoading(false)
+    }
   }
 
   function handleDemo() {
@@ -39,7 +69,7 @@ export function PageLogin() {
           Iniciar sesión
         </h1>
         <p className="text-text-secondary mt-2 text-center text-sm">
-          Autenticación simulada: cualquier credencial inicia una sesión de prueba.
+          Entra con Firebase o explora la interfaz en modo demo sin conexión.
         </p>
 
         <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -56,6 +86,7 @@ export function PageLogin() {
               onChange={(e) => setEmail(e.target.value)}
               className="border-border-default bg-surface-app text-text-primary focus-visible:ring-ring/50 rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
               placeholder="tu@email.com"
+              disabled={loading}
             />
           </div>
 
@@ -75,6 +106,7 @@ export function PageLogin() {
               onChange={(e) => setPassword(e.target.value)}
               className="border-border-default bg-surface-app text-text-primary focus-visible:ring-ring/50 rounded-lg border px-3 py-2 text-sm outline-none focus-visible:ring-3"
               placeholder="••••••••"
+              disabled={loading}
             />
           </div>
 
@@ -84,8 +116,8 @@ export function PageLogin() {
             </p>
           ) : null}
 
-          <Button type="submit" className="mt-2 w-full">
-            Entrar
+          <Button type="submit" className="mt-2 w-full" disabled={loading}>
+            {loading ? 'Entrando…' : 'Entrar'}
           </Button>
         </form>
 
@@ -98,11 +130,17 @@ export function PageLogin() {
           </p>
         </div>
 
-        <Button type="button" variant="outline" className="w-full" onClick={handleDemo}>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={handleDemo}
+          disabled={loading}
+        >
           Probar en modo demo
         </Button>
         <p className="text-text-secondary mt-3 text-center text-xs">
-          Entra sin credenciales y explora la app con datos de ejemplo.
+          Sin Firebase ni credenciales: datos de ejemplo en tu navegador.
         </p>
       </div>
     </main>

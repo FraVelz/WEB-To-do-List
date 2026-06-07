@@ -8,6 +8,10 @@ import {
   patchTask,
 } from './tasks'
 
+vi.mock('@/lib/firebase/auth-client', () => ({
+  getIdToken: vi.fn().mockResolvedValue('test-token'),
+}))
+
 describe('tasks (cliente fetch)', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
@@ -25,8 +29,13 @@ describe('tasks (cliente fetch)', () => {
 
     expect(fetchMock).toHaveBeenCalledWith(
       '/api/tasks?filter=inbox&q=hola&label=Trabajo',
-      expect.objectContaining({ cache: 'no-store' })
+      expect.objectContaining({
+        cache: 'no-store',
+        headers: expect.any(Headers),
+      })
     )
+    const headers = fetchMock.mock.calls[0][1].headers as Headers
+    expect(headers.get('Authorization')).toBe('Bearer test-token')
   })
 
   it('fetchTasks lanza con mensaje del servidor si res.ok es false', async () => {
@@ -65,13 +74,9 @@ describe('tasks (cliente fetch)', () => {
       '/api/tasks',
       expect.objectContaining({
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           title: 'Nueva',
           description: 'desc',
-          dueDate: undefined,
-          label: undefined,
-          priority: undefined,
         }),
       })
     )
@@ -114,6 +119,7 @@ describe('tasks (cliente fetch)', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('/api/tasks/id-1', {
       method: 'DELETE',
+      headers: expect.any(Headers),
     })
   })
 
@@ -128,6 +134,7 @@ describe('tasks (cliente fetch)', () => {
 
     expect(fetchMock).toHaveBeenCalledWith('/api/task-labels', {
       cache: 'no-store',
+      headers: expect.any(Headers),
     })
     expect(labels).toEqual(['a', 'b'])
   })

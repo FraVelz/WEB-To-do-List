@@ -6,7 +6,7 @@ on:
     paths:
       - "src/**"
       - "public/**"
-      - "prisma/**"
+      - "scripts/**"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -15,7 +15,6 @@ on:
       - "postcss.config.*"
       - "eslint.config.*"
       - "globals.d.ts"
-      - "prisma.config.ts"
       - "vitest.config.*"
       - "vitest.setup.*"
       - "react-doctor.config.json"
@@ -25,7 +24,7 @@ on:
     paths:
       - "src/**"
       - "public/**"
-      - "prisma/**"
+      - "scripts/**"
       - "package.json"
       - "pnpm-lock.yaml"
       - "pnpm-workspace.yaml"
@@ -34,7 +33,6 @@ on:
       - "postcss.config.*"
       - "eslint.config.*"
       - "globals.d.ts"
-      - "prisma.config.ts"
       - "vitest.config.*"
       - "vitest.setup.*"
       - "react-doctor.config.json"
@@ -61,9 +59,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Generate Prisma Client
-        run: pnpm exec prisma generate
 
       - name: Lint
         run: pnpm run lint

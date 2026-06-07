@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 
+import { AuthProvider } from '@/components/auth/AuthProvider'
+import { FirebaseAnalytics } from '@/components/auth/FirebaseAnalytics'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from '@/lib/theme'
 
@@ -29,7 +31,12 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className={`${geistSans.variable} bg-surface-app antialiased`}>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <FirebaseAnalytics />
+            {children}
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

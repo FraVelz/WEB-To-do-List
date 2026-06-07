@@ -23,7 +23,7 @@ export function DemoModeBanner() {
       <p>
         <span className="text-text-heading font-medium">Modo demo</span>
         {' — '}
-        Explora la app con datos de ejemplo. Los cambios no representan una cuenta real.
+        Explora la interfaz con datos de ejemplo guardados en tu navegador.
       </p>
       <Link
         href="/logout"
