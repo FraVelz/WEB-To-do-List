@@ -8,28 +8,28 @@ import {
 
 import { getFirebaseAuth, isFirebaseConfigured } from './client'
 
-function isUserNotFound(error: unknown): boolean {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    'code' in error &&
-    (error as { code: string }).code === 'auth/user-not-found'
-  )
-}
-
 export async function signInUser(email: string, password: string) {
   if (!isFirebaseConfigured()) {
     throw new Error('Firebase no está configurado. Usa el modo demo o completa .env.')
   }
-  const auth = getFirebaseAuth()
-  try {
-    return await signInWithEmailAndPassword(auth, email.trim(), password)
-  } catch (error) {
-    if (isUserNotFound(error)) {
-      return createUserWithEmailAndPassword(auth, email.trim(), password)
-    }
-    throw error
+
+  return signInWithEmailAndPassword(
+    getFirebaseAuth(),
+    email.trim(),
+    password
+  )
+}
+
+export async function signUpUser(email: string, password: string) {
+  if (!isFirebaseConfigured()) {
+    throw new Error('Firebase no está configurado. Usa el modo demo o completa .env.')
   }
+
+  return createUserWithEmailAndPassword(
+    getFirebaseAuth(),
+    email.trim(),
+    password
+  )
 }
 
 export async function signOutUser() {
