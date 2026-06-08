@@ -1,27 +1,24 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
 import { useAuthSessionStore } from '@/stores/auth-session-store'
 
 export function AuthGate({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const pathname = usePathname()
   const mode = useAuthSessionStore((s) => s.mode)
   const hydrated = useAuthSessionStore((s) => s.hydrated)
   const hydrate = useAuthSessionStore((s) => s.hydrate)
-  const isLogoutRoute = pathname === '/logout'
-
   useEffect(() => {
     hydrate()
   }, [hydrate])
 
   useEffect(() => {
-    if (hydrated && !mode && !isLogoutRoute) {
+    if (hydrated && !mode) {
       router.replace('/')
     }
-  }, [hydrated, mode, isLogoutRoute, router])
+  }, [hydrated, mode, router])
 
   if (!hydrated) {
     return (
@@ -31,7 +28,7 @@ export function AuthGate({ children }: { children: React.ReactNode }) {
     )
   }
 
-  if (!mode && !isLogoutRoute) {
+  if (!mode) {
     return (
       <div className="text-text-secondary flex flex-1 items-center justify-center text-sm">
         Cargando sesión…

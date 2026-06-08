@@ -8,22 +8,25 @@ type ModalRouteShellProps = {
   children: ReactNode
   className?: string
   align?: 'center' | 'top'
+  onClose?: () => void
 }
 
 export function ModalRouteShell({
   children,
   className,
   align = 'center',
+  onClose,
 }: ModalRouteShellProps) {
   const { closeModal } = useModalNavigation()
+  const handleClose = onClose ?? closeModal
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModal()
+      if (e.key === 'Escape') handleClose()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [closeModal])
+  }, [handleClose])
 
   return (
     <div
@@ -34,7 +37,7 @@ export function ModalRouteShell({
           : 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4')
       }
       role="presentation"
-      onClick={closeModal}
+      onClick={handleClose}
     >
       <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
