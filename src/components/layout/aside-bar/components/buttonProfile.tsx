@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  CreditCardIcon,
-  LogOutIcon,
-  SettingsIcon,
-  UserIcon,
-} from 'lucide-react'
+import { LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -53,15 +48,6 @@ export function ButtonProfile() {
           >
             <UserIcon />
             Perfil
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link
-            href="/billing"
-            className="flex cursor-pointer items-center gap-1.5"
-          >
-            <CreditCardIcon />
-            Facturación
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

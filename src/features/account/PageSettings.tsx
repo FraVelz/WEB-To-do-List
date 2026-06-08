@@ -23,9 +23,9 @@ function ToggleRow({
   onCheckedChange: (v: boolean) => void
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
-      <div className="flex min-w-0 gap-3">
-        <Icon className="text-text-secondary mt-0.5 size-5 shrink-0" aria-hidden />
+    <div className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0">
+      <div className="flex min-w-0 items-center gap-3">
+        <Icon className="text-text-secondary size-5 shrink-0" aria-hidden />
         <div>
           <label htmlFor={id} className="text-text-heading cursor-pointer text-sm font-medium">
             {title}
