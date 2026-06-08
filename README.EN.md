@@ -4,7 +4,7 @@
 
 Modern task management app built with Next.js. Organize your life and work with an intuitive interface and clean design.
 
-![Screenshot](public/images/screenshot.png)
+![Screenshot](docs/assets/screenshot.png)
 
 ## 📚 Documentation
 

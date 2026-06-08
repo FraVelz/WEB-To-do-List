@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - "src/**"
-      - "public/**"
+      - "docs/assets/**"
       - "scripts/**"
       - "package.json"
       - "pnpm-lock.yaml"
@@ -23,7 +23,7 @@ on:
     branches: [main]
     paths:
       - "src/**"
-      - "public/**"
+      - "docs/assets/**"
       - "scripts/**"
       - "package.json"
       - "pnpm-lock.yaml"

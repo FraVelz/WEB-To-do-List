@@ -5,7 +5,7 @@
 Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vida y tu trabajo con una interfaz intuitiva
 y un diseño limpio.
 
-![Captura de pantalla](public/images/screenshot.png)
+![Captura de pantalla](docs/assets/screenshot.png)
 
 ## 📚 Documentación
 
