@@ -2,18 +2,47 @@
 
 import Header from '@/components/layout/header/Header'
 import { Button } from '@/components/ui/button'
-import { MailIcon, UserIcon } from 'lucide-react'
+import { MailIcon } from 'lucide-react'
+import { useRef } from 'react'
 import { toast } from 'sonner'
 
+import { ProfileAvatar } from './components/ProfileAvatar'
 import { useUserProfile } from './hooks/useUserProfile'
 
 export function PageProfile() {
-  const { email, displayName, setDisplayName, bio, setBio, save, ready } =
-    useUserProfile()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const {
+    email,
+    displayName,
+    setDisplayName,
+    bio,
+    setBio,
+    avatarUrl,
+    setAvatarFromFile,
+    removeAvatar,
+    save,
+    ready,
+  } = useUserProfile()
 
   function handleSave() {
     if (!save()) return
     toast.success('Cambios guardados.')
+  }
+
+  async function handleAvatarChange(file: File | undefined) {
+    if (!file) return
+    const outcome = await setAvatarFromFile(file)
+    if (!outcome.ok) {
+      toast.error(outcome.error)
+      return
+    }
+    toast.success('Foto de perfil actualizada.')
+  }
+
+  function handleRemoveAvatar() {
+    if (!removeAvatar()) return
+    if (fileInputRef.current) fileInputRef.current.value = ''
+    toast.success('Foto de perfil eliminada.')
   }
 
   return (
@@ -23,13 +52,47 @@ export function PageProfile() {
       <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-4">
         <h1 className="text-text-heading text-2xl font-bold">Perfil</h1>
         <p className="text-text-secondary mt-1 text-sm">
-          Datos de tu cuenta y preferencias básicas.
+          Datos de tu cuenta y preferencias básicas. La foto se guarda en este
+          navegador por usuario.
         </p>
 
         <div className="border-border-default mt-8 max-w-xl rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-6">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="bg-interactive-hover-soft flex size-20 shrink-0 items-center justify-center rounded-full">
-              <UserIcon className="text-text-secondary size-10" aria-hidden />
+            <div className="flex flex-col items-center gap-3 sm:items-start">
+              <ProfileAvatar src={avatarUrl} size="lg" />
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                disabled={!ready}
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  void handleAvatarChange(file)
+                }}
+              />
+              <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={!ready}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Cambiar foto
+                </Button>
+                {avatarUrl ? (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    disabled={!ready}
+                    onClick={handleRemoveAvatar}
+                  >
+                    Quitar foto
+                  </Button>
+                ) : null}
+              </div>
             </div>
             <div className="min-w-0 flex-1 space-y-4">
               <div>
