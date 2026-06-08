@@ -6,7 +6,11 @@ Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vi
 y un diseño limpio.
 
 <p align="center">
-  <img src="src/app/icon.svg" alt="To-do — icono de la aplicación" width="96" />
+  <img
+    src="docs/assets/opengraph-preview.svg"
+    alt="Vista previa Open Graph de To-do al compartir el enlace"
+    width="720"
+  />
 </p>
 
 ## 📚 Documentación

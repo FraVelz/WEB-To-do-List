@@ -5,7 +5,11 @@
 Modern task management app built with Next.js. Organize your life and work with an intuitive interface and clean design.
 
 <p align="center">
-  <img src="src/app/icon.svg" alt="To-do app icon" width="96" />
+  <img
+    src="docs/assets/opengraph-preview.svg"
+    alt="To-do Open Graph preview when sharing the link"
+    width="720"
+  />
 </p>
 
 ## 📚 Documentation
