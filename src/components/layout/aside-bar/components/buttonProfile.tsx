@@ -8,7 +8,10 @@ import {
 } from 'lucide-react'
 
 import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+import { LogoutConfirmModal } from '@/features/account/components/LogoutConfirmModal'
+import { useUserProfile } from '@/features/account/hooks/useUserProfile'
 
 import { AsideNavIcon } from '../AsideNavIcon'
 import DownArrow from '../icons/DownArrow.svg'
@@ -23,14 +26,14 @@ import {
 import { useAuthSessionStore } from '@/stores/auth-session-store'
 
 export function ButtonProfile() {
-  const mode = useAuthSessionStore((s) => s.mode)
+  const [logoutOpen, setLogoutOpen] = useState(false)
   const hydrate = useAuthSessionStore((s) => s.hydrate)
 
   useEffect(() => {
     hydrate()
   }, [hydrate])
 
-  const displayName = mode === 'demo' ? 'Usuario demo' : 'Fravelz'
+  const { displayName } = useUserProfile()
 
   return (
     <DropdownMenu>
@@ -71,16 +74,17 @@ export function ButtonProfile() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem variant="destructive" asChild>
-          <Link
-            href="/logout"
-            className="flex cursor-pointer items-center gap-1.5"
-          >
-            <LogOutIcon />
-            Cerrar sesión
-          </Link>
+        <DropdownMenuItem
+          variant="destructive"
+          className="cursor-pointer"
+          onSelect={() => setLogoutOpen(true)}
+        >
+          <LogOutIcon />
+          Cerrar sesión
         </DropdownMenuItem>
       </DropdownMenuContent>
+
+      <LogoutConfirmModal open={logoutOpen} onOpenChange={setLogoutOpen} />
     </DropdownMenu>
   )
 }

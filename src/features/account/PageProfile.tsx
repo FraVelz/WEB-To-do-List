@@ -3,13 +3,18 @@
 import Header from '@/components/layout/header/Header'
 import { Button } from '@/components/ui/button'
 import { MailIcon, UserIcon } from 'lucide-react'
-import { useState } from 'react'
 import { toast } from 'sonner'
 
+import { useUserProfile } from './hooks/useUserProfile'
+
 export function PageProfile() {
-  const [name, setName] = useState('Fravelz')
-  const [email, setEmail] = useState('fravelz@ejemplo.com')
-  const [bio, setBio] = useState('')
+  const { email, displayName, setDisplayName, bio, setBio, save, ready } =
+    useUserProfile()
+
+  function handleSave() {
+    if (!save()) return
+    toast.success('Cambios guardados.')
+  }
 
   return (
     <>
@@ -36,9 +41,10 @@ export function PageProfile() {
                 </label>
                 <input
                   id="profile-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  disabled={!ready}
+                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary disabled:opacity-60 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
                 />
               </div>
               <div>
@@ -53,8 +59,8 @@ export function PageProfile() {
                   id="profile-email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                  readOnly
+                  className="border-border-default bg-surface-app text-text-secondary w-full cursor-default rounded-lg border px-3 py-2 text-sm outline-none"
                 />
               </div>
               <div>
@@ -69,14 +75,12 @@ export function PageProfile() {
                   rows={3}
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
+                  disabled={!ready}
                   placeholder="Una línea sobre ti…"
-                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary placeholder:text-muted-foreground w-full resize-y rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary placeholder:text-muted-foreground disabled:opacity-60 w-full resize-y rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
                 />
               </div>
-              <Button
-                type="button"
-                onClick={() => toast.success('Cambios guardados (solo en esta sesión).')}
-              >
+              <Button type="button" disabled={!ready} onClick={handleSave}>
                 Guardar cambios
               </Button>
             </div>
