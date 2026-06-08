@@ -35,12 +35,6 @@ Completa `.env` con las credenciales de Firebase Console (config web + service a
 2. Activa **Authentication → Email/Password**.
 3. Crea **Firestore** y despliega `firestore.rules`.
 4. Copia la config web a `NEXT_PUBLIC_FIREBASE_*` y la service account a `FIREBASE_SERVICE_ACCOUNT_JSON`.
-5. (Opcional) Seed de datos para una cuenta real:
-
-```bash
-pnpm db:seed
-```
-
 ## Scripts disponibles
 
 | Comando             | Descripción                                                               |
@@ -48,7 +42,6 @@ pnpm db:seed
 | `pnpm dev`          | Servidor de desarrollo en [http://localhost:3000](http://localhost:3000). |
 | `pnpm build`        | Compilación de producción (Next.js optimizado).                           |
 | `pnpm start`        | Sirve la build de producción (ejecutar tras `pnpm build`).                |
-| `pnpm db:seed`      | Seed opcional en Firestore para cuentas reales.                          |
 | `pnpm lint`         | ESLint sobre el proyecto.                                                 |
 | `pnpm lint:fix`     | ESLint con correcciones automáticas cuando sea posible.                   |
 | `pnpm format`       | Formatea con Prettier.                                                    |

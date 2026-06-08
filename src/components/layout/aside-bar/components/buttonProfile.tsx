@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import { LogoutConfirmModal } from '@/features/account/components/LogoutConfirmModal'
+import { ProfileAvatar } from '@/features/account/components/ProfileAvatar'
 import { useUserProfile } from '@/features/account/hooks/useUserProfile'
 
 import { AsideNavIcon } from '../AsideNavIcon'
@@ -28,13 +29,13 @@ export function ButtonProfile() {
     hydrate()
   }, [hydrate])
 
-  const { displayName } = useUserProfile()
+  const { displayName, avatarUrl } = useUserProfile()
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
-          <div className="border-border-default size-6 rounded-full border bg-[var(--theme-on-primary)]" />
+          <ProfileAvatar src={avatarUrl} size="sm" />
           <p className="text-text-sidebar text-sm">{displayName}</p>
           <AsideNavIcon src={DownArrow} size={12} className="opacity-80" />
         </button>

@@ -5,7 +5,9 @@
 Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vida y tu trabajo con una interfaz intuitiva
 y un diseño limpio.
 
-![Captura de pantalla](docs/assets/screenshot.png)
+<p align="center">
+  <img src="src/app/icon.svg" alt="To-do — icono de la aplicación" width="96" />
+</p>
 
 ## 📚 Documentación
 

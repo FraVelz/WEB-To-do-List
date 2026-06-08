@@ -28,12 +28,6 @@ Fill in `.env` with your Firebase web config and Admin service account credentia
 
 > **Demo mode:** does not require Firebase. It uses browser `localStorage` to explore the UI.
 
-5. (Optional, real accounts only) Seed Firestore data:
-
-```bash
-pnpm db:seed
-```
-
 ## Available scripts
 
 | Command             | Description                                                           |
@@ -41,7 +35,6 @@ pnpm db:seed
 | `pnpm dev`          | Development server at [http://localhost:3000](http://localhost:3000). |
 | `pnpm build`        | Production build (optimized Next.js output).                          |
 | `pnpm start`        | Serves the production build (run after `pnpm build`).                 |
-| `pnpm db:seed`      | Creates sample tasks and notifications for the demo account.          |
 | `pnpm lint`         | Run ESLint across the project.                                        |
 | `pnpm lint:fix`     | ESLint with auto-fixes where possible.                                |
 | `pnpm format`       | Format with Prettier.                                                 |
