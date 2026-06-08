@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none" role="img" aria-label="To-do  Organiza tu día">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A0A0A"/>
+      <stop offset="0.55" stop-color="#141414"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="180" y1="80" x2="520" y2="560" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="320" cy="315" r="280" fill="url(#glow)"/>
+
+  <g transform="translate(132 165)">
+    <rect width="180" height="180" rx="36" fill="url(#accent)"/>
+    <rect x="42" y="38" width="96" height="104" rx="14" fill="#F8FAFC"/>
+    <path
+      d="M58 78 68.5 88.5 86.5 69.5"
+      stroke="#2563EB"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M96 76h34M58 104h72M58 124h52"
+      stroke="#CBD5E1"
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+  </g>
+
+  <text
+    x="360"
+    y="285"
+    fill="#FAFAFA"
+    font-family="system-ui, -apple-system, Segoe UI, sans-serif"
+    font-size="112"
+    font-weight="700"
+    letter-spacing="-2"
+  >
+    To-do
+  </text>
+
+  <text
+    x="362"
+    y="360"
+    fill="#A3A3A3"
+    font-family="system-ui, -apple-system, Segoe UI, sans-serif"
+    font-size="40"
+    font-weight="500"
+  >
+    Organiza tu día
+  </text>
+
+  <g transform="translate(362 410)">
+    <rect width="210" height="52" rx="26" fill="rgba(59,130,246,0.14)" stroke="rgba(96,165,250,0.35)" stroke-width="2"/>
+    <text
+      x="105"
+      y="34"
+      fill="#60A5FA"
+      font-family="system-ui, -apple-system, Segoe UI, sans-serif"
+      font-size="22"
+      font-weight="600"
+      text-anchor="middle"
+    >
+      Tareas · Notificaciones
+    </text>
+  </g>
+
+  <rect x="362" y="490" width="320" height="52" rx="26" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+  <text
+    x="522"
+    y="524"
+    fill="#E5E5E5"
+    font-family="system-ui, -apple-system, Segoe UI, sans-serif"
+    font-size="22"
+    font-weight="500"
+    text-anchor="middle"
+  >
+    Bandeja · Hoy · Próximo
+  </text>
+</svg>
