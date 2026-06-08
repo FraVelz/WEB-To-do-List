@@ -8,7 +8,6 @@ import { AsideNavIcon } from '@/components/layout/aside-bar/AsideNavIcon'
 import Premium from './icons/Premium.svg'
 import Sidebar from './../aside-bar/icons/Sidebar.svg'
 
-import Image from 'next/image'
 import clsx from 'clsx'
 
 import { ThemeToggle } from '@/components/theme/ThemeToggle'
@@ -46,7 +45,7 @@ export default function Header({
           className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
           onClick={openPro}
         >
-          <Image src={Premium} width={20} height={20} alt="Down Arrow" />
+          <AsideNavIcon src={Premium} size={20} variant="heading" />
           <p className="text-text-heading text-sm">Prueba Pro gratis</p>
         </button>
 

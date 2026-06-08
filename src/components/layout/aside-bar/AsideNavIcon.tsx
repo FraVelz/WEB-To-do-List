@@ -4,7 +4,7 @@ import type { StaticImageData } from 'next/image'
 type AsideNavIconProps = {
   src: string | StaticImageData
   size?: number
-  variant?: 'default' | 'accent'
+  variant?: 'default' | 'accent' | 'heading'
   active?: boolean
   className?: string
 }
@@ -29,6 +29,7 @@ export function AsideNavIcon({
         'inline-block shrink-0 transition-colors duration-150',
         active && 'bg-icon-sidebar-active',
         !active && variant === 'accent' && 'bg-icon-action',
+        !active && variant === 'heading' && 'bg-text-heading',
         !active &&
           variant === 'default' &&
           'bg-icon-sidebar group-hover:bg-text-primary',
