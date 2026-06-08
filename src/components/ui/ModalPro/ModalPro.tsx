@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 
 import ClosedIcon from './icons/ClosedIcon.svg'
-import ModalProImg from './icons/img-box-premium.png'
+import ProIllustration from './icons/pro-illustration.svg'
 
 const PRO_FEATURES = [
   {
@@ -171,7 +171,7 @@ export default function ModalPro() {
           </button>
 
           <Image
-            src={ModalProImg}
+            src={ProIllustration}
             className="mt-4 select-none lg:mt-8"
             draggable={false}
             width={220}
