@@ -1,6 +1,7 @@
 'use client'
 
 import Header from '@/components/layout/header/Header'
+import clsx from 'clsx'
 import type { LucideIcon } from 'lucide-react'
 import { BellIcon, GlobeIcon, MoonIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -39,18 +40,17 @@ function ToggleRow({
         role="switch"
         aria-checked={checked}
         onClick={() => onCheckedChange(!checked)}
-        className={
-          checked
-            ? 'bg-interactive-primary relative inline-flex h-6 w-11 shrink-0 rounded-full transition-colors'
-            : 'bg-interactive-hover-soft relative inline-flex h-6 w-11 shrink-0 rounded-full transition-colors'
-        }
+        className={clsx(
+          'relative inline-flex h-6 w-11 shrink-0 rounded-full transition-colors',
+          checked ? 'bg-interactive-primary' : 'bg-interactive-hover-soft',
+        )}
       >
         <span
-          className={
-            checked
-              ? 'translate-x-5 bg-surface-app pointer-events-none inline-block size-5 rounded-full shadow-sm transition-transform'
-              : 'translate-x-0.5 bg-surface-app pointer-events-none inline-block size-5 rounded-full shadow-sm transition-transform'
-          }
+          aria-hidden
+          className={clsx(
+            'bg-surface-app pointer-events-none absolute top-1/2 size-5 -translate-y-1/2 rounded-full shadow-sm transition-[left]',
+            checked ? 'left-[22px]' : 'left-0.5',
+          )}
         />
       </button>
     </div>

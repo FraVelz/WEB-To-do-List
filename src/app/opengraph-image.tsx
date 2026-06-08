@@ -6,6 +6,17 @@ export const alt = SITE_TITLE
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
+const pillBase = {
+  display: 'flex',
+  alignItems: 'center',
+  alignSelf: 'flex-start',
+  padding: '10px 22px',
+  borderRadius: 26,
+  fontSize: 22,
+  lineHeight: 1.2,
+  whiteSpace: 'nowrap' as const,
+}
+
 export default function OpenGraphImage() {
   return new ImageResponse(
     (
@@ -17,8 +28,21 @@ export default function OpenGraphImage() {
           alignItems: 'center',
           background: 'linear-gradient(135deg, #0A0A0A 0%, #141414 55%, #0F172A 100%)',
           padding: '72px 80px',
+          position: 'relative',
         }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            width: '55%',
+            height: '100%',
+            background:
+              'radial-gradient(circle at 28% 50%, rgba(37, 99, 235, 0.28) 0%, rgba(37, 99, 235, 0) 72%)',
+          }}
+        />
+
         <div
           style={{
             width: 180,
@@ -29,6 +53,8 @@ export default function OpenGraphImage() {
             alignItems: 'center',
             justifyContent: 'center',
             marginRight: 48,
+            flexShrink: 0,
+            position: 'relative',
           }}
         >
           <div
@@ -63,7 +89,14 @@ export default function OpenGraphImage() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 16,
+            position: 'relative',
+          }}
+        >
           <div
             style={{
               fontSize: 96,
@@ -76,34 +109,38 @@ export default function OpenGraphImage() {
             To-do
           </div>
           <div style={{ fontSize: 38, color: '#A3A3A3', lineHeight: 1.2 }}>
-            Organiza tu dia
+            Organiza tu día
           </div>
-          <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 12,
+              marginTop: 8,
+            }}
+          >
             <div
               style={{
-                padding: '10px 22px',
-                borderRadius: 26,
+                ...pillBase,
                 background: 'rgba(59,130,246,0.14)',
                 border: '2px solid rgba(96,165,250,0.35)',
                 color: '#60A5FA',
-                fontSize: 22,
                 fontWeight: 600,
               }}
             >
-              Tareas / Notificaciones
+              Tareas · Notificaciones
             </div>
             <div
               style={{
-                padding: '10px 22px',
-                borderRadius: 26,
+                ...pillBase,
                 background: 'rgba(255,255,255,0.06)',
                 border: '2px solid rgba(255,255,255,0.12)',
                 color: '#E5E5E5',
-                fontSize: 22,
                 fontWeight: 500,
               }}
             >
-              Bandeja / Hoy / Proximo
+              Bandeja · Hoy · Próximo
             </div>
           </div>
         </div>
