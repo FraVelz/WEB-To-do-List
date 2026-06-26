@@ -31,14 +31,14 @@ export default function Aside() {
     <header
       className={clsx(
         'bg-surface-sidebar relative h-screen transition-[width] duration-1000',
-        asideBarOpen ? 'w-70' : 'w-0',
+        asideBarOpen ? 'w-70' : 'w-0'
       )}
     >
       <div
         className={clsx(
           'transition-opacity duration-300',
           asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
-          !asideBarOpen && 'pointer-events-none',
+          !asideBarOpen && 'pointer-events-none'
         )}
       >
         {/* Profile */}
@@ -76,15 +76,11 @@ export default function Aside() {
                 type="button"
                 className={clsx(
                   'group hover:bg-interactive-hover-soft text-text-primary text-md',
-                  'flex w-full items-center gap-3 rounded-md px-2 py-1',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
                 )}
                 onClick={openAddTask}
               >
-                <AsideNavIcon
-                  src={AddPlus}
-                  size={24}
-                  variant="accent"
-                />
+                <AsideNavIcon src={AddPlus} size={24} variant="accent" />
                 Agregar tarea
               </button>
             </li>
@@ -94,7 +90,7 @@ export default function Aside() {
                 type="button"
                 className={clsx(
                   'group hover:bg-interactive-hover-soft text-text-primary text-md',
-                  'flex w-full items-center gap-3 rounded-md px-2 py-1',
+                  'flex w-full items-center gap-3 rounded-md px-2 py-1'
                 )}
                 onClick={openSearch}
               >
@@ -122,7 +118,7 @@ export default function Aside() {
         className={clsx(
           'bg-surface-sidebar absolute bottom-0 left-0 mb-4 h-10 w-full px-3 transition-opacity',
           asideBarOpen ? 'opacity-100 delay-500' : 'opacity-0 delay-0',
-          !asideBarOpen && 'pointer-events-none',
+          !asideBarOpen && 'pointer-events-none'
         )}
       >
         <LinkPages

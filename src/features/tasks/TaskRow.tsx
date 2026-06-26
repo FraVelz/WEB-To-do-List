@@ -75,7 +75,7 @@ export function TaskRow({ task }: Props) {
       <button
         type="button"
         onClick={remove}
-        className="text-text-secondary hover:text-[var(--color-state-error)] shrink-0 rounded-md p-1.5"
+        className="text-text-secondary shrink-0 rounded-md p-1.5 hover:text-[var(--color-state-error)]"
         aria-label="Eliminar tarea"
       >
         <Trash2Icon className="size-4" />

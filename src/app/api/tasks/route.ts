@@ -71,9 +71,6 @@ export async function POST(req: Request) {
     return NextResponse.json(task)
   } catch (e) {
     console.error('POST /api/tasks', e)
-    return NextResponse.json(
-      { error: 'Error al crear tarea' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error al crear tarea' }, { status: 500 })
   }
 }

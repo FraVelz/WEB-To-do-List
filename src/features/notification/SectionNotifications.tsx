@@ -3,15 +3,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { fetchNotifications, type NotificationDto } from '@/services/notifications'
+import {
+  fetchNotifications,
+  type NotificationDto,
+} from '@/services/notifications'
 
 import { NotificationRow } from './components/NotificationRow'
 
-export function SectionNotification({
-  unreadOnly,
-}: {
-  unreadOnly?: boolean
-}) {
+export function SectionNotification({ unreadOnly }: { unreadOnly?: boolean }) {
   const [items, setItems] = useState<NotificationDto[]>([])
 
   const load = useCallback(() => {

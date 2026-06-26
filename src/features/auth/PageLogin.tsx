@@ -133,7 +133,10 @@ export function PageLogin() {
 
         <form className="mt-6 flex flex-col gap-4" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="email" className="text-text-primary text-sm font-medium">
+            <label
+              htmlFor="email"
+              className="text-text-primary text-sm font-medium"
+            >
               Email
             </label>
             <input

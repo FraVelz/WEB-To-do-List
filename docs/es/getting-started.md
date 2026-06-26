@@ -35,6 +35,7 @@ Completa `.env` con las credenciales de Firebase Console (config web + service a
 2. Activa **Authentication → Email/Password**.
 3. Crea **Firestore** y despliega `firestore.rules`.
 4. Copia la config web a `NEXT_PUBLIC_FIREBASE_*` y la service account a `FIREBASE_SERVICE_ACCOUNT_JSON`.
+
 ## Scripts disponibles
 
 | Comando             | Descripción                                                               |

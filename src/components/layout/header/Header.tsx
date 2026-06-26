@@ -30,9 +30,7 @@ export default function Header({
       <button
         className={clsx(
           'hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1',
-          !asideBarOpen
-            ? ''
-            : 'pointer-events-none cursor-default opacity-0'
+          !asideBarOpen ? '' : 'pointer-events-none cursor-default opacity-0'
         )}
         onClick={toggleSidebar}
       >

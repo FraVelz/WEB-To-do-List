@@ -32,9 +32,7 @@ describe('GET /api/notifications', () => {
   })
 
   it('filtra no leídas con unread=true', async () => {
-    await GET(
-      new Request('http://localhost/api/notifications?unread=true')
-    )
+    await GET(new Request('http://localhost/api/notifications?unread=true'))
 
     expect(mocks.listNotifications).toHaveBeenCalledWith('user-1', true)
   })

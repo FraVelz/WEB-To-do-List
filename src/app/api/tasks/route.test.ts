@@ -49,7 +49,9 @@ describe('GET /api/tasks', () => {
 
   it('pasa búsqueda y label al repositorio', async () => {
     await GET(
-      new Request('http://localhost/api/tasks?filter=inbox&q=  hola  &label=Trabajo')
+      new Request(
+        'http://localhost/api/tasks?filter=inbox&q=  hola  &label=Trabajo'
+      )
     )
 
     expect(mocks.listTasks).toHaveBeenCalledWith('user-1', {

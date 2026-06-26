@@ -27,7 +27,7 @@ export function LinkPages({
         'group hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-3 py-2 transition-colors',
         isActive
           ? 'bg-surface-accent-soft text-text-accent'
-          : 'text-text-primary',
+          : 'text-text-primary'
       )}
     >
       <AsideNavIcon src={iconSrc} size={iconSize} active={isActive} />

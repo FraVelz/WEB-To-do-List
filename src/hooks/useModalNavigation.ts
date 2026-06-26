@@ -3,11 +3,7 @@
 import { useRouter, usePathname } from 'next/navigation'
 import { useCallback } from 'react'
 
-import {
-  MODAL_PATHS,
-  isModalPath,
-  type ModalPath,
-} from '@/lib/modal-routes'
+import { MODAL_PATHS, isModalPath, type ModalPath } from '@/lib/modal-routes'
 
 export function useModalNavigation() {
   const router = useRouter()
@@ -24,7 +20,7 @@ export function useModalNavigation() {
       if (pathname === path) return
       router.push(path)
     },
-    [pathname, router],
+    [pathname, router]
   )
 
   return {

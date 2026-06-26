@@ -107,7 +107,7 @@ export function PageProfile() {
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
                   disabled={!ready}
-                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary disabled:opacity-60 w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 disabled:opacity-60"
                 />
               </div>
               <div>
@@ -140,7 +140,7 @@ export function PageProfile() {
                   onChange={(e) => setBio(e.target.value)}
                   disabled={!ready}
                   placeholder="Una línea sobre ti…"
-                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary placeholder:text-muted-foreground disabled:opacity-60 w-full resize-y rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2"
+                  className="border-border-default bg-surface-app focus:ring-ring text-text-primary placeholder:text-muted-foreground w-full resize-y rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 disabled:opacity-60"
                 />
               </div>
               <Button type="button" disabled={!ready} onClick={handleSave}>
