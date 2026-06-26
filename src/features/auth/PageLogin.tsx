@@ -67,9 +67,9 @@ export function PageLogin() {
         await signInUser(email, password)
       }
       router.push('/inbox')
+      setLoading(false)
     } catch (err) {
       setError(firebaseAuthMessage(err, view))
-    } finally {
       setLoading(false)
     }
   }

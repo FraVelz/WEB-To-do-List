@@ -31,7 +31,8 @@ export function LogoutConfirmModal({
       }
       clearSession()
       onOpenChange(false)
-    } finally {
+      setLoading(false)
+    } catch {
       setLoading(false)
     }
   }
