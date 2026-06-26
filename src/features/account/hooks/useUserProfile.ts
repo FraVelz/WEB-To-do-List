@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { subscribeAuthState } from '@/lib/firebase/auth-client'
 import { useAuthSessionStore } from '@/stores/auth-session-store'
@@ -33,12 +33,39 @@ function loadProfileFromStorage(profileKey: string, fallbackName: string) {
 
 export function useUserProfile() {
   const mode = useAuthSessionStore((s) => s.mode)
+  const hydrated = useAuthSessionStore((s) => s.hydrated)
   const hydrate = useAuthSessionStore((s) => s.hydrate)
-  const [email, setEmail] = useState('')
-  const [displayName, setDisplayName] = useState('')
-  const [bio, setBio] = useState('')
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
-  const [ready, setReady] = useState(false)
+  const [userEmail, setUserEmail] = useState('')
+  const [userDisplayName, setUserDisplayName] = useState('')
+  const [userBio, setUserBio] = useState('')
+  const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
+  const [userLoaded, setUserLoaded] = useState(false)
+  const [profileRevision, setProfileRevision] = useState(0)
+
+  const demoProfile = useMemo(
+    () =>
+      mode === 'demo'
+        ? loadProfileFromStorage(DEMO_PROFILE_KEY, 'Usuario demo')
+        : null,
+    [mode, profileRevision],
+  )
+
+  const email =
+    mode === 'demo' ? DEMO_PROFILE_EMAIL : mode === 'user' ? userEmail : ''
+  const displayName =
+    mode === 'demo'
+      ? (demoProfile?.displayName ?? '')
+      : mode === 'user'
+        ? userDisplayName
+        : ''
+  const bio =
+    mode === 'demo' ? (demoProfile?.bio ?? '') : mode === 'user' ? userBio : ''
+  const avatarUrl =
+    mode === 'demo'
+      ? (demoProfile?.avatarUrl ?? null)
+      : mode === 'user'
+        ? userAvatarUrl
+        : null
 
   const profileKey =
     mode === 'demo' ? DEMO_PROFILE_KEY : email.trim().toLowerCase()
@@ -46,11 +73,39 @@ export function useUserProfile() {
   const applyStoredProfile = useCallback(
     (key: string, fallbackName: string) => {
       const stored = loadProfileFromStorage(key, fallbackName)
-      setDisplayName(stored.displayName)
-      setBio(stored.bio)
-      setAvatarUrl(stored.avatarUrl)
+      setUserDisplayName(stored.displayName)
+      setUserBio(stored.bio)
+      setUserAvatarUrl(stored.avatarUrl)
     },
     [],
+  )
+
+  const bumpProfileRevision = useCallback(() => {
+    setProfileRevision((revision) => revision + 1)
+  }, [])
+
+  const setDisplayName = useCallback(
+    (value: string) => {
+      if (mode === 'demo') {
+        writeStoredProfile(DEMO_PROFILE_KEY, { displayName: value })
+        bumpProfileRevision()
+        return
+      }
+      if (mode === 'user') setUserDisplayName(value)
+    },
+    [mode, bumpProfileRevision],
+  )
+
+  const setBio = useCallback(
+    (value: string) => {
+      if (mode === 'demo') {
+        writeStoredProfile(DEMO_PROFILE_KEY, { bio: value })
+        bumpProfileRevision()
+        return
+      }
+      if (mode === 'user') setUserBio(value)
+    },
+    [mode, bumpProfileRevision],
   )
 
   useEffect(() => {
@@ -58,38 +113,28 @@ export function useUserProfile() {
   }, [hydrate])
 
   useEffect(() => {
-    if (mode === 'demo') {
-      setEmail(DEMO_PROFILE_EMAIL)
-      applyStoredProfile(DEMO_PROFILE_KEY, 'Usuario demo')
-      setReady(true)
-      return
-    }
-
-    if (mode !== 'user') {
-      setEmail('')
-      setDisplayName('')
-      setBio('')
-      setAvatarUrl(null)
-      setReady(false)
-      return
-    }
+    if (mode !== 'user') return
 
     return subscribeAuthState((user) => {
-      const userEmail = user?.email?.trim() ?? ''
-      setEmail(userEmail)
+      const nextEmail = user?.email?.trim() ?? ''
+      setUserEmail(nextEmail)
 
-      if (userEmail) {
-        const key = userEmail.toLowerCase()
-        applyStoredProfile(key, displayNameFromEmail(userEmail))
+      if (nextEmail) {
+        const key = nextEmail.toLowerCase()
+        applyStoredProfile(key, displayNameFromEmail(nextEmail))
       } else {
-        setDisplayName('')
-        setBio('')
-        setAvatarUrl(null)
+        setUserDisplayName('')
+        setUserBio('')
+        setUserAvatarUrl(null)
       }
 
-      setReady(true)
+      setUserLoaded(true)
     })
   }, [mode, applyStoredProfile])
+
+  const ready =
+    hydrated &&
+    (mode === 'demo' || (mode !== null && mode !== 'user') || userLoaded)
 
   useEffect(() => {
     if (!profileKey) return
@@ -97,18 +142,17 @@ export function useUserProfile() {
     function onProfileUpdate(event: Event) {
       const detail = (event as CustomEvent<{ profileKey: string }>).detail
       if (detail?.profileKey !== profileKey) return
-      const fallback =
-        mode === 'demo'
-          ? 'Usuario demo'
-          : email
-            ? displayNameFromEmail(email)
-            : 'Usuario'
+      if (mode === 'demo') {
+        bumpProfileRevision()
+        return
+      }
+      const fallback = email ? displayNameFromEmail(email) : 'Usuario'
       applyStoredProfile(profileKey, fallback)
     }
 
     window.addEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
     return () => window.removeEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
-  }, [profileKey, mode, email, applyStoredProfile])
+  }, [profileKey, mode, email, applyStoredProfile, bumpProfileRevision])
 
   const persistProfile = useCallback(
     (
@@ -123,7 +167,7 @@ export function useUserProfile() {
   )
 
   const save = useCallback(() => {
-    return persistProfile(
+    const saved = persistProfile(
       {
         displayName: displayName.trim() || undefined,
         bio: bio.trim() || undefined,
@@ -131,7 +175,9 @@ export function useUserProfile() {
       },
       { dropAvatar: !avatarUrl },
     )
-  }, [persistProfile, displayName, bio, avatarUrl])
+    if (saved && mode === 'demo') bumpProfileRevision()
+    return saved
+  }, [persistProfile, displayName, bio, avatarUrl, mode, bumpProfileRevision])
 
   const setAvatarFromFile = useCallback(
     async (file: File) => {
@@ -150,19 +196,21 @@ export function useUserProfile() {
         reader.readAsDataURL(file)
       })
 
-      setAvatarUrl(dataUrl)
+      if (mode === 'user') setUserAvatarUrl(dataUrl)
       persistProfile({ avatarUrl: dataUrl })
+      if (mode === 'demo') bumpProfileRevision()
       return { ok: true as const }
     },
-    [profileKey, persistProfile],
+    [profileKey, persistProfile, mode, bumpProfileRevision],
   )
 
   const removeAvatar = useCallback(() => {
     if (!profileKey) return false
-    setAvatarUrl(null)
+    if (mode === 'user') setUserAvatarUrl(null)
     clearStoredAvatar(profileKey)
+    if (mode === 'demo') bumpProfileRevision()
     return true
-  }, [profileKey])
+  }, [profileKey, mode, bumpProfileRevision])
 
   return {
     mode,
