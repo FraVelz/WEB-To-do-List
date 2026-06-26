@@ -13,7 +13,5 @@ export const MODAL_PATH_LIST: ModalPath[] = [
 ]
 
 export function isModalPath(pathname: string): boolean {
-  return MODAL_PATH_LIST.some(
-    (p) => pathname === p || pathname.endsWith(p),
-  )
+  return MODAL_PATH_LIST.some((p) => pathname === p || pathname.endsWith(p))
 }

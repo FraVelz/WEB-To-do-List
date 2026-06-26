@@ -33,7 +33,7 @@ export function AsideNavIcon({
         !active &&
           variant === 'default' &&
           'bg-icon-sidebar group-hover:bg-text-primary',
-        className,
+        className
       )}
       style={{
         width: size,

@@ -3,12 +3,7 @@ import type { Metadata } from 'next'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import { FirebaseAnalytics } from '@/components/auth/FirebaseAnalytics'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
-import {
-  getSiteUrl,
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_TITLE,
-} from '@/lib/site'
+import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '@/lib/site'
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from '@/lib/theme'
 
 import { Geist } from 'next/font/google'

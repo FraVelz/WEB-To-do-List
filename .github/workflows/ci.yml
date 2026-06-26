@@ -4,39 +4,39 @@ on:
   push:
     branches: [main]
     paths:
-      - "src/**"
-      - "docs/**"
-      - "scripts/**"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - "next.config.*"
-      - "tsconfig.json"
-      - "postcss.config.*"
-      - "eslint.config.*"
-      - "globals.d.ts"
-      - "vitest.config.*"
-      - "vitest.setup.*"
-      - "react-doctor.config.json"
-      - ".github/workflows/**"
+      - 'src/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'next.config.*'
+      - 'tsconfig.json'
+      - 'postcss.config.*'
+      - 'eslint.config.*'
+      - 'globals.d.ts'
+      - 'vitest.config.*'
+      - 'vitest.setup.*'
+      - 'react-doctor.config.json'
+      - '.github/workflows/**'
   pull_request:
     branches: [main]
     paths:
-      - "src/**"
-      - "docs/**"
-      - "scripts/**"
-      - "package.json"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - "next.config.*"
-      - "tsconfig.json"
-      - "postcss.config.*"
-      - "eslint.config.*"
-      - "globals.d.ts"
-      - "vitest.config.*"
-      - "vitest.setup.*"
-      - "react-doctor.config.json"
-      - ".github/workflows/**"
+      - 'src/**'
+      - 'docs/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'next.config.*'
+      - 'tsconfig.json'
+      - 'postcss.config.*'
+      - 'eslint.config.*'
+      - 'globals.d.ts'
+      - 'vitest.config.*'
+      - 'vitest.setup.*'
+      - 'react-doctor.config.json'
+      - '.github/workflows/**'
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -54,8 +54,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

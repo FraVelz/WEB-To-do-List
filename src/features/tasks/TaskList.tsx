@@ -45,9 +45,7 @@ export function TaskList({ filter, label }: Props) {
   }, [filter, label, version])
 
   if (loading) {
-    return (
-      <p className="text-text-secondary mt-6 text-sm">Cargando tareas…</p>
-    )
+    return <p className="text-text-secondary mt-6 text-sm">Cargando tareas…</p>
   }
 
   if (tasks.length === 0) {

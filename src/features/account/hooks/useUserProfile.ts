@@ -16,11 +16,7 @@ import {
 } from '../utils/profile-storage'
 
 const MAX_AVATAR_BYTES = 512_000
-const ACCEPTED_AVATAR_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-])
+const ACCEPTED_AVATAR_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
 
 function loadProfileFromStorage(profileKey: string, fallbackName: string) {
   const stored = readStoredProfile(profileKey)
@@ -47,7 +43,7 @@ export function useUserProfile() {
       mode === 'demo'
         ? loadProfileFromStorage(DEMO_PROFILE_KEY, 'Usuario demo')
         : null,
-    [mode, profileRevision],
+    [mode, profileRevision]
   )
 
   const email =
@@ -77,7 +73,7 @@ export function useUserProfile() {
       setUserBio(stored.bio)
       setUserAvatarUrl(stored.avatarUrl)
     },
-    [],
+    []
   )
 
   const bumpProfileRevision = useCallback(() => {
@@ -93,7 +89,7 @@ export function useUserProfile() {
       }
       if (mode === 'user') setUserDisplayName(value)
     },
-    [mode, bumpProfileRevision],
+    [mode, bumpProfileRevision]
   )
 
   const setBio = useCallback(
@@ -105,7 +101,7 @@ export function useUserProfile() {
       }
       if (mode === 'user') setUserBio(value)
     },
-    [mode, bumpProfileRevision],
+    [mode, bumpProfileRevision]
   )
 
   useEffect(() => {
@@ -151,19 +147,20 @@ export function useUserProfile() {
     }
 
     window.addEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
-    return () => window.removeEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
+    return () =>
+      window.removeEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
   }, [profileKey, mode, email, applyStoredProfile, bumpProfileRevision])
 
   const persistProfile = useCallback(
     (
       patch: { displayName?: string; bio?: string; avatarUrl?: string },
-      options?: { dropAvatar?: boolean },
+      options?: { dropAvatar?: boolean }
     ) => {
       if (!profileKey) return false
       writeStoredProfile(profileKey, patch, options)
       return true
     },
-    [profileKey],
+    [profileKey]
   )
 
   const save = useCallback(() => {
@@ -173,7 +170,7 @@ export function useUserProfile() {
         bio: bio.trim() || undefined,
         ...(avatarUrl ? { avatarUrl } : {}),
       },
-      { dropAvatar: !avatarUrl },
+      { dropAvatar: !avatarUrl }
     )
     if (saved && mode === 'demo') bumpProfileRevision()
     return saved
@@ -181,12 +178,16 @@ export function useUserProfile() {
 
   const setAvatarFromFile = useCallback(
     async (file: File) => {
-      if (!profileKey) return { ok: false as const, error: 'Sin sesión activa.' }
+      if (!profileKey)
+        return { ok: false as const, error: 'Sin sesión activa.' }
       if (!ACCEPTED_AVATAR_TYPES.has(file.type)) {
         return { ok: false as const, error: 'Usa JPG, PNG o WebP.' }
       }
       if (file.size > MAX_AVATAR_BYTES) {
-        return { ok: false as const, error: 'La imagen debe pesar menos de 512 KB.' }
+        return {
+          ok: false as const,
+          error: 'La imagen debe pesar menos de 512 KB.',
+        }
       }
 
       const dataUrl = await new Promise<string>((resolve, reject) => {
@@ -201,7 +202,7 @@ export function useUserProfile() {
       if (mode === 'demo') bumpProfileRevision()
       return { ok: true as const }
     },
-    [profileKey, persistProfile, mode, bumpProfileRevision],
+    [profileKey, persistProfile, mode, bumpProfileRevision]
   )
 
   const removeAvatar = useCallback(() => {

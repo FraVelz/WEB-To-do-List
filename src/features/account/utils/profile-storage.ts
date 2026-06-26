@@ -39,7 +39,7 @@ export function readStoredProfile(profileKey: string): StoredProfile {
 export function writeStoredProfile(
   profileKey: string,
   data: StoredProfile,
-  options?: { dropAvatar?: boolean },
+  options?: { dropAvatar?: boolean }
 ): void {
   if (!profileKey) return
   const map = readProfileMap()
@@ -49,7 +49,7 @@ export function writeStoredProfile(
   writeProfileMap(map)
   if (typeof window !== 'undefined') {
     window.dispatchEvent(
-      new CustomEvent(PROFILE_UPDATE_EVENT, { detail: { profileKey } }),
+      new CustomEvent(PROFILE_UPDATE_EVENT, { detail: { profileKey } })
     )
   }
 }
@@ -69,7 +69,7 @@ export function clearStoredAvatar(profileKey: string): void {
   writeProfileMap(map)
   if (typeof window !== 'undefined') {
     window.dispatchEvent(
-      new CustomEvent(PROFILE_UPDATE_EVENT, { detail: { profileKey } }),
+      new CustomEvent(PROFILE_UPDATE_EVENT, { detail: { profileKey } })
     )
   }
 }

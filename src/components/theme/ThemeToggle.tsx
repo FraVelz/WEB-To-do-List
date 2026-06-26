@@ -11,7 +11,10 @@ type ThemeToggleProps = {
   showLabel?: boolean
 }
 
-export function ThemeToggle({ className, showLabel = false }: ThemeToggleProps) {
+export function ThemeToggle({
+  className,
+  showLabel = false,
+}: ThemeToggleProps) {
   const theme = useThemeStore((s) => s.theme)
   const hydrated = useThemeStore((s) => s.hydrated)
   const hydrate = useThemeStore((s) => s.hydrate)

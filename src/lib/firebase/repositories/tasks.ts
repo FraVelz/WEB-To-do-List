@@ -109,8 +109,12 @@ export async function listTasks(
 
   tasks.sort((a, b) => {
     if (a.completed !== b.completed) return a.completed ? 1 : -1
-    const aDue = a.dueDate ? new Date(a.dueDate).getTime() : Number.MAX_SAFE_INTEGER
-    const bDue = b.dueDate ? new Date(b.dueDate).getTime() : Number.MAX_SAFE_INTEGER
+    const aDue = a.dueDate
+      ? new Date(a.dueDate).getTime()
+      : Number.MAX_SAFE_INTEGER
+    const bDue = b.dueDate
+      ? new Date(b.dueDate).getTime()
+      : Number.MAX_SAFE_INTEGER
     if (aDue !== bDue) return aDue - bDue
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   })
@@ -171,7 +175,9 @@ export async function updateTask(
     return null
   }
 
-  const patch: Record<string, unknown> = { updatedAt: FieldValue.serverTimestamp() }
+  const patch: Record<string, unknown> = {
+    updatedAt: FieldValue.serverTimestamp(),
+  }
   if (data.title !== undefined) patch.title = data.title
   if (data.description !== undefined) patch.description = data.description
   if (data.completed !== undefined) patch.completed = data.completed

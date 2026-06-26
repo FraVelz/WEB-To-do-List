@@ -28,7 +28,7 @@ export function ProfileAvatar({
         'border-border-default shrink-0 overflow-hidden rounded-full border bg-[var(--theme-on-primary)]',
         sizeClasses[size],
         !src && 'bg-interactive-hover-soft flex items-center justify-center',
-        className,
+        className
       )}
     >
       {src ? (

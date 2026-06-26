@@ -1,10 +1,6 @@
 import { create } from 'zustand'
 
-import {
-  readAuthMode,
-  writeAuthMode,
-  type AuthMode,
-} from '@/lib/auth-session'
+import { readAuthMode, writeAuthMode, type AuthMode } from '@/lib/auth-session'
 
 type AuthSessionState = {
   mode: AuthMode | null

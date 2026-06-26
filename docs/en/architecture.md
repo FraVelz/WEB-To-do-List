@@ -25,19 +25,19 @@ High-level structure of **WEB To-Do List** (Next.js App Router).
 
 Current routes with a defined page:
 
-| Route           | Notes                    |
-| --------------- | ------------------------ |
+| Route           | Notes                               |
+| --------------- | ----------------------------------- |
 | `/`             | Sign-in or demo mode (public zone). |
-| `/inbox`        | Inbox.                   |
-| `/today`        | “Today” view.            |
-| `/next`         | “Upcoming” view.         |
-| `/filters`      | Filters and labels.      |
-| `/completed`    | Completed tasks.         |
-| `/notification` | Notifications.           |
-| `/profile`      | Account profile.         |
-| `/billing`      | Billing.                 |
-| `/settings`     | Settings.                |
-| `/logout`       | Sign out (Firebase).     |
+| `/inbox`        | Inbox.                              |
+| `/today`        | “Today” view.                       |
+| `/next`         | “Upcoming” view.                    |
+| `/filters`      | Filters and labels.                 |
+| `/completed`    | Completed tasks.                    |
+| `/notification` | Notifications.                      |
+| `/profile`      | Account profile.                    |
+| `/billing`      | Billing.                            |
+| `/settings`     | Settings.                           |
+| `/logout`       | Sign out (Firebase).                |
 
 The sidebar exposes “Add task” and “Search” as buttons; they may be wired to routes or modals as the product evolves.
 
@@ -82,22 +82,22 @@ At `/`, besides Firebase email/password sign-in, **“Try demo mode”** opens t
 
 ## Global state (Zustand)
 
-| Store | Role |
-| ----- | ---- |
-| `useSidebarStore` | Sidebar open/close |
-| `useThemeStore` | Light/dark theme |
-| `useAuthSessionStore` | Demo / user session |
-| `useTasksRefreshStore` | Task list refresh |
+| Store                  | Role                |
+| ---------------------- | ------------------- |
+| `useSidebarStore`      | Sidebar open/close  |
+| `useThemeStore`        | Light/dark theme    |
+| `useAuthSessionStore`  | Demo / user session |
+| `useTasksRefreshStore` | Task list refresh   |
 
 ## Modals and URL (parallel routes)
 
 Modals use the **`@modal`** slot in `(app)/layout.tsx` (`{ children, modal }`).
 
-| URL | Modal |
-| --- | ----- |
+| URL         | Modal    |
+| ----------- | -------- |
 | `/add-task` | New task |
-| `/search` | Search |
-| `/pro` | Pro |
+| `/search`   | Search   |
+| `/pro`      | Pro      |
 
 Intercepting routes `(.)add-task`, etc. keep the background page on in-app navigation; `router.back()` or Escape closes the modal. Hook: `useModalNavigation()`.
 

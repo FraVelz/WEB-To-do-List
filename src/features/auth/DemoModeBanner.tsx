@@ -19,7 +19,7 @@ export function DemoModeBanner() {
   return (
     <div
       role="status"
-      className="border-border-default bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] text-text-secondary flex shrink-0 items-center justify-between gap-3 border-b px-4 py-2 text-sm"
+      className="border-border-default text-text-secondary flex shrink-0 items-center justify-between gap-3 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm"
     >
       <p>
         <span className="text-text-heading font-medium">Modo demo</span>

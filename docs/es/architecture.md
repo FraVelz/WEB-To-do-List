@@ -25,19 +25,19 @@ Visión general de la estructura de **WEB To-Do List** (Next.js App Router).
 
 Rutas actuales con página definida:
 
-| Ruta            | Notas                                      |
-| --------------- | ------------------------------------------ |
+| Ruta            | Notas                                        |
+| --------------- | -------------------------------------------- |
 | `/`             | Inicio de sesión o modo demo (zona pública). |
-| `/inbox`        | Bandeja de entrada.                        |
-| `/today`        | Vista “Hoy”.                               |
-| `/next`         | Vista “Próximo”.                           |
-| `/filters`      | Filtros y etiquetas.                       |
-| `/completed`    | Completado.                                |
-| `/notification` | Notificaciones.                            |
-| `/profile`      | Perfil de cuenta.                          |
-| `/billing`      | Facturación.                               |
-| `/settings`     | Ajustes.                                   |
-| `/logout`       | Cerrar sesión (simulado).                  |
+| `/inbox`        | Bandeja de entrada.                          |
+| `/today`        | Vista “Hoy”.                                 |
+| `/next`         | Vista “Próximo”.                             |
+| `/filters`      | Filtros y etiquetas.                         |
+| `/completed`    | Completado.                                  |
+| `/notification` | Notificaciones.                              |
+| `/profile`      | Perfil de cuenta.                            |
+| `/billing`      | Facturación.                                 |
+| `/settings`     | Ajustes.                                     |
+| `/logout`       | Cerrar sesión (simulado).                    |
 
 La barra lateral incluye acciones “Agregar tarea” y “Buscar” como botones; pueden enlazarse a rutas o modales según
 evolucione el producto.
@@ -83,22 +83,22 @@ En `/`, además del formulario de login con Firebase, existe **“Probar en modo
 
 ## Estado global (Zustand)
 
-| Store | Uso |
-| ----- | --- |
-| `useSidebarStore` | Apertura/cierre de la barra lateral |
-| `useThemeStore` | Tema claro/oscuro |
-| `useAuthSessionStore` | Sesión demo / usuario |
-| `useTasksRefreshStore` | Refresco de listas de tareas |
+| Store                  | Uso                                 |
+| ---------------------- | ----------------------------------- |
+| `useSidebarStore`      | Apertura/cierre de la barra lateral |
+| `useThemeStore`        | Tema claro/oscuro                   |
+| `useAuthSessionStore`  | Sesión demo / usuario               |
+| `useTasksRefreshStore` | Refresco de listas de tareas        |
 
 ## Modales y URL (parallel routes)
 
 Los modales usan el slot **`@modal`** en `(app)/layout.tsx` (`{ children, modal }`).
 
-| URL | Modal |
-| --- | ----- |
+| URL         | Modal       |
+| ----------- | ----------- |
 | `/add-task` | Nueva tarea |
-| `/search` | Búsqueda |
-| `/pro` | Pro |
+| `/search`   | Búsqueda    |
+| `/pro`      | Pro         |
 
 Rutas interceptadas `(.)add-task`, etc. mantienen la página de fondo al navegar desde la app; `router.back()` o Escape cierra el modal. Hook: `useModalNavigation()`.
 

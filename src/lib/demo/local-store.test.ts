@@ -33,9 +33,9 @@ describe('demo local-store', () => {
     expect(patched?.completed).toBe(true)
 
     expect(deleteDemoTask(created.id)).toBe(true)
-    expect(listDemoTasks({ filter: 'completed' }).some((t) => t.id === created.id)).toBe(
-      false
-    )
+    expect(
+      listDemoTasks({ filter: 'completed' }).some((t) => t.id === created.id)
+    ).toBe(false)
   })
 
   it('lista etiquetas únicas', () => {

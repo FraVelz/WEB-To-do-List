@@ -79,7 +79,10 @@ export async function updateNotificationRead(
   const ref = getAdminDb().collection(COLLECTION).doc(id)
   const existing = await ref.get()
 
-  if (!existing.exists || (existing.data() as NotificationDoc).userId !== userId) {
+  if (
+    !existing.exists ||
+    (existing.data() as NotificationDoc).userId !== userId
+  ) {
     return null
   }
 

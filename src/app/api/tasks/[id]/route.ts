@@ -54,7 +54,10 @@ export async function PATCH(req: Request, context: RouteContext) {
 
     const task = await updateTask(userId, id, data)
     if (!task) {
-      return NextResponse.json({ error: 'Tarea no encontrada' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'Tarea no encontrada' },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json(task)
@@ -75,7 +78,10 @@ export async function DELETE(_req: Request, context: RouteContext) {
     const { id } = await context.params
     const ok = await deleteTask(userId, id)
     if (!ok) {
-      return NextResponse.json({ error: 'Tarea no encontrada' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'Tarea no encontrada' },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json({ ok: true })

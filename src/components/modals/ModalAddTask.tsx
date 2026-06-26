@@ -33,14 +33,14 @@ export function ModalAddTask() {
       dueDate: dueDate ? new Date(dueDate).toISOString() : null,
     }).then(
       () => ({ ok: true as const }),
-      (e: unknown) => ({ ok: false as const, error: e }),
+      (e: unknown) => ({ ok: false as const, error: e })
     )
 
     if (!outcome.ok) {
       toast.error(
         outcome.error instanceof Error
           ? outcome.error.message
-          : 'Error al crear',
+          : 'Error al crear'
       )
     } else {
       toast.success('Tarea creada')
@@ -127,7 +127,7 @@ export function ModalAddTask() {
             disabled={loading}
             className={clsx(
               'bg-interactive-primary hover:bg-interactive-primary-hover text-text-primary rounded-md px-4 py-2 text-sm font-semibold',
-              loading && 'opacity-60',
+              loading && 'opacity-60'
             )}
           >
             {loading ? 'Guardando…' : 'Crear'}
