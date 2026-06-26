@@ -59,7 +59,8 @@ export function clearStoredAvatar(profileKey: string): void {
   const map = readProfileMap()
   const current = map[profileKey]
   if (!current?.avatarUrl) return
-  const { avatarUrl: _removed, ...rest } = current
+  const { avatarUrl: _avatarUrl, ...rest } = current
+  void _avatarUrl
   if (Object.keys(rest).length > 0) {
     map[profileKey] = rest
   } else {
