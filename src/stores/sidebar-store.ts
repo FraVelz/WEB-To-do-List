@@ -7,7 +7,8 @@ type SidebarState = {
 }
 
 export const useSidebarStore = create<SidebarState>((set) => ({
-  asideBarOpen: true,
+  // Cerrado por defecto: en mobile evita flash del drawer; desktop lo abre al montar
+  asideBarOpen: false,
   toggleSidebar: () => set((s) => ({ asideBarOpen: !s.asideBarOpen })),
   setSidebarOpen: (open) => set({ asideBarOpen: open }),
 }))

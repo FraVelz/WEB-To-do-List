@@ -49,7 +49,7 @@ export function PageProfile() {
     <>
       <Header />
 
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-4">
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 md:px-6">
         <h1 className="text-text-heading text-2xl font-bold">Perfil</h1>
         <p className="text-text-secondary mt-1 text-sm">
           Datos de tu cuenta y preferencias básicas. La foto se guarda en este

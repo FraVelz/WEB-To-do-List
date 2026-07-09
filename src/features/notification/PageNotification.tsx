@@ -13,9 +13,11 @@ export function PageNotification() {
     <>
       <Header></Header>
 
-      <div className="flex items-center justify-center">
+      <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-4 py-4 md:px-6">
         <div className="w-full max-w-3xl">
-          <h1 className="text-3xl font-bold">Notificaciones</h1>
+          <h1 className="text-text-heading text-2xl font-bold md:text-3xl">
+            Notificaciones
+          </h1>
 
           <div className="bg-interactive-hover-soft mt-7 flex w-fit gap-3 rounded-full px-1 py-1">
             <button

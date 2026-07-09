@@ -11,10 +11,10 @@ export default function AppLayout({
   modal: React.ReactNode
 }>) {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
+    <div className="flex min-h-screen overflow-x-hidden font-sans">
       <Aside />
 
-      <div className="bg-surface-app flex h-screen flex-1 flex-col">
+      <div className="bg-surface-app flex h-screen min-w-0 flex-1 flex-col">
         <DemoModeBanner />
         <AuthGate>{children}</AuthGate>
       </div>
