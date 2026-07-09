@@ -19,17 +19,22 @@ export function DemoModeBanner() {
   return (
     <div
       role="status"
-      className="border-border-default text-text-secondary flex shrink-0 items-center justify-between gap-3 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm"
+      className="border-border-default text-text-secondary flex shrink-0 flex-col gap-2 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3"
     >
-      <p>
+      <p className="min-w-0 leading-snug">
         <span className="text-text-heading font-medium">Modo demo</span>
-        {' — '}
-        Explora la interfaz con datos de ejemplo guardados en tu navegador.
+        <span className="hidden sm:inline">
+          {' — '}
+          Explora la interfaz con datos de ejemplo guardados en tu navegador.
+        </span>
+        <span className="text-text-secondary sm:hidden">
+          {' — '}Datos de ejemplo en el navegador.
+        </span>
       </p>
       <button
         type="button"
         onClick={() => setLogoutOpen(true)}
-        className="text-text-accent hover:text-text-heading shrink-0 font-medium whitespace-nowrap underline-offset-2 hover:underline"
+        className="text-text-accent hover:text-text-heading shrink-0 self-start font-medium whitespace-nowrap underline-offset-2 hover:underline sm:self-auto"
       >
         Salir del demo
       </button>

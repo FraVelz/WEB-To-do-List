@@ -25,26 +25,37 @@ export default function Header({
 
   return (
     <aside
-      className={clsx('flex h-fit w-full justify-between px-6 py-3', className)}
+      className={clsx(
+        'flex h-fit w-full justify-between px-4 py-3 md:px-6',
+        className
+      )}
     >
       <button
+        type="button"
+        aria-label="Abrir menú lateral"
+        aria-expanded={asideBarOpen}
         className={clsx(
           'hover:bg-interactive-hover-soft flex w-fit items-center justify-center gap-1 rounded-md px-2 py-1',
-          !asideBarOpen ? '' : 'pointer-events-none cursor-default opacity-0'
+          asideBarOpen
+            ? 'pointer-events-none cursor-default opacity-0'
+            : 'opacity-100'
         )}
         onClick={toggleSidebar}
       >
         <AsideNavIcon src={Sidebar} size={20} />
       </button>
 
-      <div className="flex items-center gap-2">
+      <div className="flex min-w-0 items-center gap-1 sm:gap-2">
         <ThemeToggle />
         <button
+          type="button"
           className="hover:bg-interactive-hover-soft flex items-center justify-center gap-1 rounded-md px-2 py-1"
           onClick={openPro}
         >
           <AsideNavIcon src={Premium} size={20} variant="heading" />
-          <p className="text-text-heading text-sm">Prueba Pro gratis</p>
+          <p className="text-text-heading hidden text-sm sm:inline">
+            Prueba Pro gratis
+          </p>
         </button>
 
         {children}

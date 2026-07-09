@@ -8,7 +8,7 @@ export function PageInbox() {
     <>
       <Header />
 
-      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-6 py-4">
+      <main className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 md:px-6">
         <h1 className="text-text-heading text-2xl font-bold">
           Bandeja de entrada
         </h1>

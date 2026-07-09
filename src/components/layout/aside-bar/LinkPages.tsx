@@ -11,18 +11,21 @@ export function LinkPages({
   link,
   text,
   fontsize,
+  onNavigate,
 }: {
   iconSrc: string | StaticImageData
   iconSize?: number
   text: string
   link: string
   fontsize?: string
+  onNavigate?: () => void
 }) {
   const isActive = usePathLink({ href: link })
 
   return (
     <Link
       href={link}
+      onClick={onNavigate}
       className={clsx(
         'group hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-3 py-2 transition-colors',
         isActive
