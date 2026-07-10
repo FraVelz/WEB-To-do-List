@@ -31,7 +31,7 @@ function readServiceAccount() {
   return null
 }
 
-export function getAdminApp(): App {
+function getAdminApp(): App {
   if (adminApp) return adminApp
   if (getApps().length > 0) {
     adminApp = getApps()[0]

@@ -258,21 +258,3 @@ export function markDemoNotificationRead(id: string): boolean {
   writeData(data)
   return true
 }
-
-export function createDemoNotification(input: {
-  title: string
-  content: string
-  color: string
-}): NotificationDto {
-  const data = readData()
-  const notification: NotificationDto = {
-    id: createId('notif'),
-    title: input.title,
-    content: input.content,
-    color: input.color,
-    read: false,
-  }
-  data.notifications.unshift(notification)
-  writeData(data)
-  return notification
-}

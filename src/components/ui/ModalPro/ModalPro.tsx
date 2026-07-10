@@ -69,12 +69,10 @@ export default function ModalPro() {
 
   return (
     <ModalRouteShell className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 px-4 py-8">
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="modal-pro-title"
         className="z-10 flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl shadow-2xl lg:max-h-[42rem] lg:flex-row"
-        tabIndex={-1}
       >
         <div className="bg-surface-app flex max-h-[70vh] flex-col gap-4 overflow-y-auto p-6 lg:max-h-none lg:basis-3/5 lg:rounded-tl-3xl lg:rounded-bl-3xl">
           <div className="flex items-start gap-3">
@@ -216,7 +214,7 @@ export default function ModalPro() {
             producto ni servicio oficial.
           </p>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }

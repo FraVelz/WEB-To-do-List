@@ -1,5 +1,4 @@
 import {
-  createDemoNotification,
   listDemoNotifications,
   markDemoNotificationRead,
 } from '@/lib/demo/local-store'
@@ -51,32 +50,4 @@ export async function markNotificationRead(id: string): Promise<void> {
   if (!res.ok) {
     throw new Error('Error al marcar notificación')
   }
-}
-
-export async function sendNotification({
-  title,
-  content,
-  color,
-}: {
-  title: string
-  content: string
-  color: string
-}) {
-  if (isDemoMode()) {
-    return createDemoNotification({ title, content, color })
-  }
-
-  const res = await authFetch('/api/notifications', {
-    method: 'POST',
-    body: JSON.stringify({ title, content, color }),
-  })
-
-  const raw = await res.text()
-
-  if (!res.ok) {
-    console.warn('POST /api/notifications falló:', res.status, raw)
-    return null
-  }
-
-  return JSON.parse(raw) as unknown
 }

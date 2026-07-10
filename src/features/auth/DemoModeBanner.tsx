@@ -17,10 +17,7 @@ export function DemoModeBanner() {
   if (mode !== 'demo') return null
 
   return (
-    <div
-      role="status"
-      className="border-border-default text-text-secondary flex shrink-0 flex-col gap-2 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3"
-    >
+    <output className="border-border-default text-text-secondary flex shrink-0 flex-col gap-2 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3">
       <p className="min-w-0 leading-snug">
         <span className="text-text-heading font-medium">Modo demo</span>
         <span className="hidden sm:inline">
@@ -40,6 +37,6 @@ export function DemoModeBanner() {
       </button>
 
       <LogoutConfirmModal open={logoutOpen} onOpenChange={setLogoutOpen} />
-    </div>
+    </output>
   )
 }
