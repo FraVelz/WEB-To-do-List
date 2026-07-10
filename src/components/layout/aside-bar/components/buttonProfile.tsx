@@ -34,7 +34,10 @@ export function ButtonProfile() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1">
+        <button
+          type="button"
+          className="hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-2 py-1"
+        >
           <ProfileAvatar src={avatarUrl} size="sm" />
           <p className="text-text-sidebar text-sm">{displayName}</p>
           <AsideNavIcon src={DownArrow} size={12} className="opacity-80" />

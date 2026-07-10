@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { subscribeAuthState } from '@/lib/firebase/auth-client'
 import { useAuthSessionStore } from '@/stores/auth-session-store'
@@ -36,15 +36,12 @@ export function useUserProfile() {
   const [userBio, setUserBio] = useState('')
   const [userAvatarUrl, setUserAvatarUrl] = useState<string | null>(null)
   const [userLoaded, setUserLoaded] = useState(false)
-  const [profileRevision, setProfileRevision] = useState(0)
+  const [, setProfileRevision] = useState(0)
 
-  const demoProfile = useMemo(
-    () =>
-      mode === 'demo'
-        ? loadProfileFromStorage(DEMO_PROFILE_KEY, 'Usuario demo')
-        : null,
-    [mode, profileRevision]
-  )
+  const demoProfile =
+    mode === 'demo'
+      ? loadProfileFromStorage(DEMO_PROFILE_KEY, 'Usuario demo')
+      : null
 
   const email =
     mode === 'demo' ? DEMO_PROFILE_EMAIL : mode === 'user' ? userEmail : ''
@@ -66,43 +63,27 @@ export function useUserProfile() {
   const profileKey =
     mode === 'demo' ? DEMO_PROFILE_KEY : email.trim().toLowerCase()
 
-  const applyStoredProfile = useCallback(
-    (key: string, fallbackName: string) => {
-      const stored = loadProfileFromStorage(key, fallbackName)
-      setUserDisplayName(stored.displayName)
-      setUserBio(stored.bio)
-      setUserAvatarUrl(stored.avatarUrl)
-    },
-    []
-  )
-
-  const bumpProfileRevision = useCallback(() => {
+  function bumpProfileRevision() {
     setProfileRevision((revision) => revision + 1)
-  }, [])
+  }
 
-  const setDisplayName = useCallback(
-    (value: string) => {
-      if (mode === 'demo') {
-        writeStoredProfile(DEMO_PROFILE_KEY, { displayName: value })
-        bumpProfileRevision()
-        return
-      }
-      if (mode === 'user') setUserDisplayName(value)
-    },
-    [mode, bumpProfileRevision]
-  )
+  function setDisplayName(value: string) {
+    if (mode === 'demo') {
+      writeStoredProfile(DEMO_PROFILE_KEY, { displayName: value })
+      bumpProfileRevision()
+      return
+    }
+    if (mode === 'user') setUserDisplayName(value)
+  }
 
-  const setBio = useCallback(
-    (value: string) => {
-      if (mode === 'demo') {
-        writeStoredProfile(DEMO_PROFILE_KEY, { bio: value })
-        bumpProfileRevision()
-        return
-      }
-      if (mode === 'user') setUserBio(value)
-    },
-    [mode, bumpProfileRevision]
-  )
+  function setBio(value: string) {
+    if (mode === 'demo') {
+      writeStoredProfile(DEMO_PROFILE_KEY, { bio: value })
+      bumpProfileRevision()
+      return
+    }
+    if (mode === 'user') setUserBio(value)
+  }
 
   useEffect(() => {
     hydrate()
@@ -117,7 +98,13 @@ export function useUserProfile() {
 
       if (nextEmail) {
         const key = nextEmail.toLowerCase()
-        applyStoredProfile(key, displayNameFromEmail(nextEmail))
+        const stored = loadProfileFromStorage(
+          key,
+          displayNameFromEmail(nextEmail)
+        )
+        setUserDisplayName(stored.displayName)
+        setUserBio(stored.bio)
+        setUserAvatarUrl(stored.avatarUrl)
       } else {
         setUserDisplayName('')
         setUserBio('')
@@ -126,7 +113,7 @@ export function useUserProfile() {
 
       setUserLoaded(true)
     })
-  }, [mode, applyStoredProfile])
+  }, [mode])
 
   const ready =
     hydrated &&
@@ -143,27 +130,27 @@ export function useUserProfile() {
         return
       }
       const fallback = email ? displayNameFromEmail(email) : 'Usuario'
-      applyStoredProfile(profileKey, fallback)
+      const stored = loadProfileFromStorage(profileKey, fallback)
+      setUserDisplayName(stored.displayName)
+      setUserBio(stored.bio)
+      setUserAvatarUrl(stored.avatarUrl)
     }
 
     window.addEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
     return () =>
       window.removeEventListener(PROFILE_UPDATE_EVENT, onProfileUpdate)
-  }, [profileKey, mode, email, applyStoredProfile, bumpProfileRevision])
+  }, [profileKey, mode, email])
 
-  const persistProfile = useCallback(
-    (
-      patch: { displayName?: string; bio?: string; avatarUrl?: string },
-      options?: { dropAvatar?: boolean }
-    ) => {
-      if (!profileKey) return false
-      writeStoredProfile(profileKey, patch, options)
-      return true
-    },
-    [profileKey]
-  )
+  function persistProfile(
+    patch: { displayName?: string; bio?: string; avatarUrl?: string },
+    options?: { dropAvatar?: boolean }
+  ) {
+    if (!profileKey) return false
+    writeStoredProfile(profileKey, patch, options)
+    return true
+  }
 
-  const save = useCallback(() => {
+  function save() {
     const saved = persistProfile(
       {
         displayName: displayName.trim() || undefined,
@@ -174,44 +161,40 @@ export function useUserProfile() {
     )
     if (saved && mode === 'demo') bumpProfileRevision()
     return saved
-  }, [persistProfile, displayName, bio, avatarUrl, mode, bumpProfileRevision])
+  }
 
-  const setAvatarFromFile = useCallback(
-    async (file: File) => {
-      if (!profileKey)
-        return { ok: false as const, error: 'Sin sesión activa.' }
-      if (!ACCEPTED_AVATAR_TYPES.has(file.type)) {
-        return { ok: false as const, error: 'Usa JPG, PNG o WebP.' }
+  async function setAvatarFromFile(file: File) {
+    if (!profileKey) return { ok: false as const, error: 'Sin sesión activa.' }
+    if (!ACCEPTED_AVATAR_TYPES.has(file.type)) {
+      return { ok: false as const, error: 'Usa JPG, PNG o WebP.' }
+    }
+    if (file.size > MAX_AVATAR_BYTES) {
+      return {
+        ok: false as const,
+        error: 'La imagen debe pesar menos de 512 KB.',
       }
-      if (file.size > MAX_AVATAR_BYTES) {
-        return {
-          ok: false as const,
-          error: 'La imagen debe pesar menos de 512 KB.',
-        }
-      }
+    }
 
-      const dataUrl = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader()
-        reader.onload = () => resolve(String(reader.result))
-        reader.onerror = () => reject(new Error('No se pudo leer la imagen.'))
-        reader.readAsDataURL(file)
-      })
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result))
+      reader.onerror = () => reject(new Error('No se pudo leer la imagen.'))
+      reader.readAsDataURL(file)
+    })
 
-      if (mode === 'user') setUserAvatarUrl(dataUrl)
-      persistProfile({ avatarUrl: dataUrl })
-      if (mode === 'demo') bumpProfileRevision()
-      return { ok: true as const }
-    },
-    [profileKey, persistProfile, mode, bumpProfileRevision]
-  )
+    if (mode === 'user') setUserAvatarUrl(dataUrl)
+    persistProfile({ avatarUrl: dataUrl })
+    if (mode === 'demo') bumpProfileRevision()
+    return { ok: true as const }
+  }
 
-  const removeAvatar = useCallback(() => {
+  function removeAvatar() {
     if (!profileKey) return false
     if (mode === 'user') setUserAvatarUrl(null)
     clearStoredAvatar(profileKey)
     if (mode === 'demo') bumpProfileRevision()
     return true
-  }, [profileKey, mode, bumpProfileRevision])
+  }
 
   return {
     mode,

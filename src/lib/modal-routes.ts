@@ -6,7 +6,7 @@ export const MODAL_PATHS = {
 
 export type ModalPath = (typeof MODAL_PATHS)[keyof typeof MODAL_PATHS]
 
-export const MODAL_PATH_LIST: ModalPath[] = [
+const MODAL_PATH_LIST: ModalPath[] = [
   MODAL_PATHS.addTask,
   MODAL_PATHS.search,
   MODAL_PATHS.pro,

@@ -64,6 +64,7 @@ export function PageProfile() {
                 ref={fileInputRef}
                 type="file"
                 accept="image/jpeg,image/png,image/webp"
+                aria-label="Seleccionar foto de perfil"
                 className="sr-only"
                 disabled={!ready}
                 onChange={(e) => {

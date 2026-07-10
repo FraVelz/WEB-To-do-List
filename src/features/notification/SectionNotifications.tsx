@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import {
@@ -13,15 +13,17 @@ import { NotificationRow } from './components/NotificationRow'
 export function SectionNotification({ unreadOnly }: { unreadOnly?: boolean }) {
   const [items, setItems] = useState<NotificationDto[]>([])
 
-  const load = useCallback(() => {
+  function load() {
+    fetchNotifications({ unreadOnly })
+      .then(setItems)
+      .catch(() => toast.error('No se pudieron cargar las notificaciones'))
+  }
+
+  useEffect(() => {
     fetchNotifications({ unreadOnly })
       .then(setItems)
       .catch(() => toast.error('No se pudieron cargar las notificaciones'))
   }, [unreadOnly])
-
-  useEffect(() => {
-    load()
-  }, [load])
 
   return (
     <section>

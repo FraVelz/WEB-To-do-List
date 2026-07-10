@@ -1,5 +1,6 @@
 import clsx from 'clsx'
 import { UserIcon } from 'lucide-react'
+import Image from 'next/image'
 
 type ProfileAvatarProps = {
   src?: string | null
@@ -25,18 +26,21 @@ export function ProfileAvatar({
   return (
     <div
       className={clsx(
-        'border-border-default shrink-0 overflow-hidden rounded-full border bg-[var(--theme-on-primary)]',
+        'border-border-default relative shrink-0 overflow-hidden rounded-full border bg-[var(--theme-on-primary)]',
         sizeClasses[size],
         !src && 'bg-interactive-hover-soft flex items-center justify-center',
         className
       )}
     >
       {src ? (
-        <img
+        <Image
           src={src}
           alt=""
+          fill
+          sizes={size === 'lg' ? '80px' : '24px'}
           className="size-full object-cover"
           draggable={false}
+          unoptimized
         />
       ) : (
         <UserIcon

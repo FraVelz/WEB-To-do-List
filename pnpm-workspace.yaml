@@ -1,6 +1,16 @@
 packages:
   - '.'
 
+minimumReleaseAge: 10080
+
+minimumReleaseAgeExclude:
+  - '@next/eslint-plugin-next'
+  - '@next/env'
+  - browserslist
+  - eslint-config-next
+
+trustPolicy: no-downgrade
+
 allowBuilds:
   '@firebase/util': set this to true or false
   protobufjs: set this to true or false

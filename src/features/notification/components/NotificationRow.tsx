@@ -32,20 +32,13 @@ export function NotificationRow({ item, onUpdated }: Props) {
   }
 
   return (
-    <div
+    <button
+      type="button"
       className={clsx(
         'hover:bg-interactive-hover-soft flex w-full cursor-pointer gap-3 rounded-lg px-3 py-2 text-left',
         !item.read && 'bg-interactive-hover-soft/40'
       )}
-      role="button"
-      tabIndex={0}
       onClick={handleOpen}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          handleOpen()
-        }
-      }}
     >
       <div>
         <div className={clsx('size-8 rounded-full p-2', bgColor)} />
@@ -57,6 +50,6 @@ export function NotificationRow({ item, onUpdated }: Props) {
           {item.content}
         </p>
       </div>
-    </div>
+    </button>
   )
 }

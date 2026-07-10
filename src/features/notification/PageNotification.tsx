@@ -21,6 +21,7 @@ export function PageNotification() {
 
           <div className="bg-interactive-hover-soft mt-7 flex w-fit gap-3 rounded-full px-1 py-1">
             <button
+              type="button"
               className={clsx(
                 `text-text-primary rounded-full px-2 py-1 text-[14px] font-bold`,
                 {
@@ -35,6 +36,7 @@ export function PageNotification() {
             </button>
 
             <button
+              type="button"
               className={clsx(
                 `text-text-primary rounded-full px-2 py-1 text-[14px] font-bold`,
                 {

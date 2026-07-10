@@ -17,6 +17,15 @@
       "react-doctor/rerender-state-only-in-handlers",
       "react-doctor/async-defer-await",
       "react-doctor/prefer-useReducer"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "src/lib/firebase/repositories/notifications.ts",
+          "src/lib/firebase/repositories/tasks.ts"
+        ],
+        "rules": ["react-doctor/firebase-query-filter-as-auth"]
+      }
     ]
   }
 }

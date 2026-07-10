@@ -7,6 +7,7 @@ import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '@/lib/site'
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from '@/lib/theme'
 
 import { Geist } from 'next/font/google'
+import Script from 'next/script'
 import './globals.css'
 
 const geistSans = Geist({
@@ -55,7 +56,11 @@ export default function RootLayout({
   return (
     <html lang="es" data-theme={DEFAULT_THEME} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
       </head>
       <body className={`${geistSans.variable} bg-surface-app antialiased`}>
         <ThemeProvider>

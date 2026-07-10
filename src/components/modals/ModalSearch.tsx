@@ -51,9 +51,8 @@ export function ModalSearch() {
 
   return (
     <ModalRouteShell align="top">
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="modal-search-title"
         className="border-border-default bg-surface-sidebar w-full max-w-lg rounded-xl border shadow-xl"
       >
@@ -67,6 +66,7 @@ export function ModalSearch() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            aria-label="Buscar tareas"
             placeholder="Buscar por título o descripción…"
             className="border-border-default bg-surface-app text-text-primary mt-3 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
             autoFocus
@@ -116,7 +116,7 @@ export function ModalSearch() {
             Cerrar
           </button>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }

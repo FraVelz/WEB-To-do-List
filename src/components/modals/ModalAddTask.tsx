@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import clsx from 'clsx'
 
@@ -56,84 +56,84 @@ export function ModalAddTask() {
 
   return (
     <ModalRouteShell>
-      <form
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="modal-add-task-title"
         className="border-border-default bg-surface-sidebar w-full max-w-md rounded-xl border p-6 shadow-xl"
-        onSubmit={onSubmit}
       >
-        <h2
-          id="modal-add-task-title"
-          className="text-text-heading text-lg font-bold"
-        >
-          Nueva tarea
-        </h2>
+        <form onSubmit={onSubmit}>
+          <h2
+            id="modal-add-task-title"
+            className="text-text-heading text-lg font-bold"
+          >
+            Nueva tarea
+          </h2>
 
-        <label className="mt-4 block text-sm text-[var(--color-muted-foreground)]">
-          Título
-          <input
-            required
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
-            placeholder="Qué hay que hacer"
-            autoFocus
-          />
-        </label>
-
-        <label className="mt-3 block text-sm text-[var(--color-muted-foreground)]">
-          Descripción (opcional)
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={3}
-            className="border-border-default bg-surface-app text-text-primary mt-1 w-full resize-none rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
-          />
-        </label>
-
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
-          <label className="block text-sm text-[var(--color-muted-foreground)]">
-            Fecha límite
+          <label className="mt-4 block text-sm text-[var(--color-muted-foreground)]">
+            Título
             <input
-              type="datetime-local"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
+              placeholder="Qué hay que hacer"
+              autoFocus
             />
           </label>
 
-          <label className="block text-sm text-[var(--color-muted-foreground)]">
-            Etiqueta
-            <input
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
-              placeholder="Ej. Trabajo"
+          <label className="mt-3 block text-sm text-[var(--color-muted-foreground)]">
+            Descripción (opcional)
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              className="border-border-default bg-surface-app text-text-primary mt-1 w-full resize-none rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
             />
           </label>
-        </div>
 
-        <div className="mt-6 flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={closeModal}
-            className="hover:bg-interactive-hover-soft rounded-md px-4 py-2 text-sm"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className={clsx(
-              'bg-interactive-primary hover:bg-interactive-primary-hover text-text-primary rounded-md px-4 py-2 text-sm font-semibold',
-              loading && 'opacity-60'
-            )}
-          >
-            {loading ? 'Guardando…' : 'Crear'}
-          </button>
-        </div>
-      </form>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            <label className="block text-sm text-[var(--color-muted-foreground)]">
+              Fecha límite
+              <input
+                type="datetime-local"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
+              />
+            </label>
+
+            <label className="block text-sm text-[var(--color-muted-foreground)]">
+              Etiqueta
+              <input
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
+                className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
+                placeholder="Ej. Trabajo"
+              />
+            </label>
+          </div>
+
+          <div className="mt-6 flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={closeModal}
+              className="hover:bg-interactive-hover-soft rounded-md px-4 py-2 text-sm"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className={clsx(
+                'bg-interactive-primary hover:bg-interactive-primary-hover text-text-primary rounded-md px-4 py-2 text-sm font-semibold',
+                loading && 'opacity-60'
+              )}
+            >
+              {loading ? 'Guardando…' : 'Crear'}
+            </button>
+          </div>
+        </form>
+      </dialog>
     </ModalRouteShell>
   )
 }
