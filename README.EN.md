@@ -1,6 +1,6 @@
 # 📋 WEB To-Do List
 
-[Spanish version](README.md)
+This document is in English. [Versión en español](./README.md)
 
 Modern task management app built with Next.js. Organize your life and work with an intuitive interface and clean design.
 
