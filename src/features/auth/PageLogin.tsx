@@ -84,13 +84,36 @@ export function PageLogin() {
 
   return (
     <main className="w-full max-w-md px-6">
-      <div className="border-border-default rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8">
-        <h1 className="text-text-heading text-center text-2xl font-bold">
-          {isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
+      <div className="mb-8 text-center">
+        <p className="text-text-accent text-sm font-semibold tracking-wide uppercase">
+          WEB To-Do List
+        </p>
+        <h1 className="text-text-heading mt-2 text-3xl font-bold tracking-tight">
+          Inbox, Hoy y Próximo
         </h1>
+        <p className="text-text-secondary mt-2 text-sm">
+          Entra a la demo sin cuenta, o inicia sesión para guardar tus tareas.
+        </p>
+        <Button
+          type="button"
+          className="mt-5 w-full"
+          onClick={handleDemo}
+          disabled={loading}
+        >
+          Abrir modo demo
+        </Button>
+        <p className="text-text-secondary mt-2 text-xs">
+          Datos de ejemplo en tu navegador — sin Firebase.
+        </p>
+      </div>
+
+      <div className="border-border-default rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8">
+        <h2 className="text-text-heading text-center text-xl font-bold">
+          {isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
+        </h2>
         <p className="text-text-secondary mt-2 text-center text-sm">
           {isLogin
-            ? 'Entra con tu cuenta o explora la interfaz en modo demo.'
+            ? 'Usa email y contraseña si ya tienes cuenta.'
             : 'Regístrate con email y contraseña para guardar tus tareas.'}
         </p>
 
@@ -215,28 +238,6 @@ export function PageLogin() {
               </button>
             </>
           )}
-        </p>
-
-        <div className="relative my-6">
-          <div className="border-border-default absolute inset-0 flex items-center">
-            <span className="border-border-default w-full border-t" />
-          </div>
-          <p className="text-text-secondary relative mx-auto w-fit bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] px-3 text-xs">
-            o
-          </p>
-        </div>
-
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full"
-          onClick={handleDemo}
-          disabled={loading}
-        >
-          Probar en modo demo
-        </Button>
-        <p className="text-text-secondary mt-3 text-center text-xs">
-          Sin Firebase ni credenciales: datos de ejemplo en tu navegador.
         </p>
       </div>
     </main>
