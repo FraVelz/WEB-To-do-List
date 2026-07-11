@@ -21,6 +21,27 @@ describe('useAuthSessionStore', () => {
     expect(useAuthSessionStore.getState().mode).toBe('demo')
   })
 
+  it('pasa de demo a user cuando Firebase reporta usuario', () => {
+    useAuthSessionStore.getState().enterDemo()
+    useAuthSessionStore.getState().syncFromFirebase('user')
+    expect(useAuthSessionStore.getState().mode).toBe('user')
+    expect(sessionStorage.getItem('todo-auth-mode')).toBe('user')
+  })
+
+  it('enterUser fija modo user', () => {
+    useAuthSessionStore.getState().enterDemo()
+    useAuthSessionStore.getState().enterUser()
+    expect(useAuthSessionStore.getState().mode).toBe('user')
+    expect(sessionStorage.getItem('todo-auth-mode')).toBe('user')
+  })
+
+  it('limpia user a null al sincronizar signed-out', () => {
+    useAuthSessionStore.getState().syncFromFirebase('user')
+    useAuthSessionStore.getState().syncFromFirebase(null)
+    expect(useAuthSessionStore.getState().mode).toBeNull()
+    expect(sessionStorage.getItem('todo-auth-mode')).toBeNull()
+  })
+
   it('limpia la sesión', () => {
     useAuthSessionStore.getState().syncFromFirebase('user')
     useAuthSessionStore.getState().clear()
