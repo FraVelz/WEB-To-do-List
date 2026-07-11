@@ -7,6 +7,7 @@ type AuthSessionState = {
   hydrated: boolean
   hydrate: () => void
   enterDemo: () => void
+  enterUser: () => void
   syncFromFirebase: (mode: AuthMode | null) => void
   clear: () => void
 }
@@ -19,10 +20,23 @@ export const useAuthSessionStore = create<AuthSessionState>((set) => ({
     writeAuthMode('demo')
     set({ mode: 'demo', hydrated: true })
   },
+  enterUser: () => {
+    writeAuthMode('user')
+    set({ mode: 'user', hydrated: true })
+  },
   syncFromFirebase: (mode) => {
+    // Firebase user always wins (login from demo must leave demo).
+    if (mode === 'user') {
+      writeAuthMode('user')
+      set({ mode: 'user', hydrated: true })
+      return
+    }
+
+    // Signed out: clear only if we were in user mode; leave demo alone.
     if (readAuthMode() === 'demo') return
-    writeAuthMode(mode)
-    set({ mode, hydrated: true })
+
+    writeAuthMode(null)
+    set({ mode: null, hydrated: true })
   },
   clear: () => {
     writeAuthMode(null)
