@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import Link from 'next/link'
 
-import { LogoutConfirmModal } from '@/features/account/components/LogoutConfirmModal'
 import { useAuthSessionStore } from '@/stores/auth-session-store'
 
 export function DemoModeBanner() {
-  const [logoutOpen, setLogoutOpen] = useState(false)
   const mode = useAuthSessionStore((s) => s.mode)
   const hydrate = useAuthSessionStore((s) => s.hydrate)
 
@@ -28,15 +27,12 @@ export function DemoModeBanner() {
           {' — '}Datos de ejemplo en el navegador.
         </span>
       </p>
-      <button
-        type="button"
-        onClick={() => setLogoutOpen(true)}
+      <Link
+        href="/login"
         className="text-text-accent hover:text-text-heading shrink-0 self-start font-medium whitespace-nowrap underline-offset-2 hover:underline sm:self-auto"
       >
-        Salir del demo
-      </button>
-
-      <LogoutConfirmModal open={logoutOpen} onOpenChange={setLogoutOpen} />
+        Iniciar sesión
+      </Link>
     </output>
   )
 }
