@@ -2,6 +2,7 @@
 
 import { LogOutIcon } from 'lucide-react'
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { Button } from '@/components/ui/button'
@@ -37,10 +38,11 @@ export function LogoutConfirmModal({
     }
   }
 
-  return (
+  return createPortal(
     <ModalRouteShell onClose={() => onOpenChange(false)}>
-      <dialog
-        open
+      <div
+        role="dialog"
+        aria-modal="true"
         aria-labelledby="logout-modal-title"
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8 text-center shadow-xl"
       >
@@ -77,7 +79,8 @@ export function LogoutConfirmModal({
             Cancelar
           </Button>
         </div>
-      </dialog>
-    </ModalRouteShell>
+      </div>
+    </ModalRouteShell>,
+    document.body
   )
 }

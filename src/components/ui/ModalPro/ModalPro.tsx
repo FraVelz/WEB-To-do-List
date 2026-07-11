@@ -68,9 +68,10 @@ export default function ModalPro() {
   }
 
   return (
-    <ModalRouteShell className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/50 px-4 py-8">
-      <dialog
-        open
+    <ModalRouteShell>
+      <div
+        role="dialog"
+        aria-modal="true"
         aria-labelledby="modal-pro-title"
         className="z-10 flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl shadow-2xl lg:max-h-[42rem] lg:flex-row"
       >
@@ -214,7 +215,7 @@ export default function ModalPro() {
             producto ni servicio oficial.
           </p>
         </div>
-      </dialog>
+      </div>
     </ModalRouteShell>
   )
 }

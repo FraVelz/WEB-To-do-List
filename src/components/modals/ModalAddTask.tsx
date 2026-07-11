@@ -56,8 +56,9 @@ export function ModalAddTask() {
 
   return (
     <ModalRouteShell>
-      <dialog
-        open
+      <div
+        role="dialog"
+        aria-modal="true"
         aria-labelledby="modal-add-task-title"
         className="border-border-default bg-surface-sidebar w-full max-w-md rounded-xl border p-6 shadow-xl"
       >
@@ -133,7 +134,7 @@ export function ModalAddTask() {
             </button>
           </div>
         </form>
-      </dialog>
+      </div>
     </ModalRouteShell>
   )
 }
