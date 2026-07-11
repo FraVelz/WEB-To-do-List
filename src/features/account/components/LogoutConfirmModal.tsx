@@ -22,14 +22,12 @@ export function LogoutConfirmModal({
   const clearSession = useAuthSessionStore((s) => s.clear)
   const mode = useAuthSessionStore((s) => s.mode)
 
-  if (!open) return null
+  if (!open || mode !== 'user') return null
 
   async function handleLogout() {
     setLoading(true)
     try {
-      if (mode === 'user') {
-        await signOutUser()
-      }
+      await signOutUser()
       clearSession()
       onOpenChange(false)
       setLoading(false)
@@ -57,9 +55,8 @@ export function LogoutConfirmModal({
           ¿Salir de la cuenta en este dispositivo?
         </p>
         <p className="text-text-secondary mt-2 text-sm">
-          {mode === 'demo'
-            ? 'Saldrás del modo demo. Podrás volver a entrar cuando quieras desde la pantalla de inicio.'
-            : 'Se cerrará tu sesión de Firebase. Podrás volver a entrar cuando quieras desde la pantalla de inicio.'}
+          Se cerrará tu sesión. Volverás al modo demo en este dispositivo con
+          los datos de ejemplo del navegador.
         </p>
         <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:justify-center">
           <Button
