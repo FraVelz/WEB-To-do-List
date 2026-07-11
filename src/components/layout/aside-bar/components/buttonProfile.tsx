@@ -1,6 +1,6 @@
 'use client'
 
-import { LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react'
+import { LogInIcon, LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react'
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -24,6 +24,7 @@ import { useAuthSessionStore } from '@/stores/auth-session-store'
 export function ButtonProfile() {
   const [logoutOpen, setLogoutOpen] = useState(false)
   const hydrate = useAuthSessionStore((s) => s.hydrate)
+  const mode = useAuthSessionStore((s) => s.mode)
 
   useEffect(() => {
     hydrate()
@@ -64,17 +65,31 @@ export function ButtonProfile() {
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          variant="destructive"
-          className="cursor-pointer"
-          onSelect={() => setLogoutOpen(true)}
-        >
-          <LogOutIcon />
-          Cerrar sesión
-        </DropdownMenuItem>
+        {mode === 'demo' ? (
+          <DropdownMenuItem asChild>
+            <Link
+              href="/login"
+              className="flex cursor-pointer items-center gap-1.5"
+            >
+              <LogInIcon />
+              Iniciar sesión
+            </Link>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem
+            variant="destructive"
+            className="cursor-pointer"
+            onSelect={() => setLogoutOpen(true)}
+          >
+            <LogOutIcon />
+            Cerrar sesión
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
 
-      <LogoutConfirmModal open={logoutOpen} onOpenChange={setLogoutOpen} />
+      {mode === 'user' ? (
+        <LogoutConfirmModal open={logoutOpen} onOpenChange={setLogoutOpen} />
+      ) : null}
     </DropdownMenu>
   )
 }
