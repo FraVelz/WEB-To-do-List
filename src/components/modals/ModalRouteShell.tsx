@@ -34,12 +34,17 @@ export function ModalRouteShell({
         className ??
         (align === 'top'
           ? 'fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/60 px-4 pt-[10vh] pb-12'
-          : 'fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4')
+          : 'fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 px-4 py-8')
       }
       role="presentation"
       onClick={handleClose}
     >
-      <div onClick={(e) => e.stopPropagation()}>{children}</div>
+      <div
+        className="flex w-full justify-center"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {children}
+      </div>
     </div>
   )
 }
