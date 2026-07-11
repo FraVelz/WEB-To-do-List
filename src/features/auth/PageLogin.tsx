@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { signInUser, signUpUser } from '@/lib/firebase/auth-client'
 import { useAuthSessionStore } from '@/stores/auth-session-store'
 import clsx from 'clsx'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -38,7 +39,7 @@ function firebaseAuthMessage(error: unknown, view: AuthView): string {
 
 export function PageLogin() {
   const router = useRouter()
-  const enterDemo = useAuthSessionStore((s) => s.enterDemo)
+  const enterUser = useAuthSessionStore((s) => s.enterUser)
   const [view, setView] = useState<AuthView>('login')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -66,18 +67,12 @@ export function PageLogin() {
       } else {
         await signInUser(email, password)
       }
+      enterUser()
       router.push('/inbox')
-      setLoading(false)
     } catch (err) {
       setError(firebaseAuthMessage(err, view))
       setLoading(false)
     }
-  }
-
-  function handleDemo() {
-    setError(null)
-    enterDemo()
-    router.push('/inbox')
   }
 
   const isLogin = view === 'login'
@@ -89,36 +84,18 @@ export function PageLogin() {
           WEB To-Do List
         </p>
         <h1 className="text-text-heading mt-2 text-3xl font-bold tracking-tight">
-          Inbox, Hoy y Próximo
+          {isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
         </h1>
         <p className="text-text-secondary mt-2 text-sm">
-          Entra a la demo sin cuenta, o inicia sesión para guardar tus tareas.
-        </p>
-        <Button
-          type="button"
-          className="mt-5 w-full"
-          onClick={handleDemo}
-          disabled={loading}
-        >
-          Abrir modo demo
-        </Button>
-        <p className="text-text-secondary mt-2 text-xs">
-          Datos de ejemplo en tu navegador — sin Firebase.
-        </p>
-      </div>
-
-      <div className="border-border-default rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8">
-        <h2 className="text-text-heading text-center text-xl font-bold">
-          {isLogin ? 'Iniciar sesión' : 'Crear cuenta'}
-        </h2>
-        <p className="text-text-secondary mt-2 text-center text-sm">
           {isLogin
             ? 'Usa email y contraseña si ya tienes cuenta.'
             : 'Regístrate con email y contraseña para guardar tus tareas.'}
         </p>
+      </div>
 
+      <div className="border-border-default rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8">
         <div
-          className="border-border-default mt-6 grid grid-cols-2 gap-1 rounded-lg border p-1"
+          className="border-border-default grid grid-cols-2 gap-1 rounded-lg border p-1"
           role="tablist"
           aria-label="Acceso"
         >
@@ -240,6 +217,15 @@ export function PageLogin() {
           )}
         </p>
       </div>
+
+      <p className="text-text-secondary mt-6 text-center text-sm">
+        <Link
+          href="/inbox"
+          className="text-text-accent hover:text-text-heading font-medium underline-offset-2 hover:underline"
+        >
+          Continuar sin cuenta
+        </Link>
+      </p>
     </main>
   )
 }
