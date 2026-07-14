@@ -1,20 +1,26 @@
 'use client'
 
-import { ChevronDownIcon, PlusIcon } from 'lucide-react'
+import { PlusIcon } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
-import clsx from 'clsx'
 
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { NameInputModal } from '@/features/projects/components/NameInputModal'
+import { DraggableSectionBlock } from '@/features/projects/dnd/DraggableSectionBlock'
+import { DraggableTaskItem } from '@/features/projects/dnd/DraggableTaskItem'
+import {
+  applySectionMove,
+  applyTaskMove,
+} from '@/features/projects/dnd/reorder'
+import type { InsertEdge } from '@/features/projects/dnd/types'
 import {
   createSection,
   fetchSections,
+  reorderSections,
   type SectionDto,
 } from '@/services/projects'
-import { fetchTasks, type TaskDto } from '@/services/tasks'
+import { fetchTasks, reorderTasks, type TaskDto } from '@/services/tasks'
 import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
-import { TaskRow } from '@/features/tasks/TaskRow'
 
 type Props = {
   projectId: string
@@ -29,8 +35,21 @@ function readCollapsed(sectionId: string) {
   return localStorage.getItem(collapsedKey(sectionId)) === '1'
 }
 
+function targetIndexFromEdge(
+  sortedIds: string[],
+  targetId: string,
+  edge: InsertEdge,
+  draggedId: string
+) {
+  const withoutDragged = sortedIds.filter((id) => id !== draggedId)
+  const targetPos = withoutDragged.indexOf(targetId)
+  if (targetPos === -1) return withoutDragged.length
+  return edge === 'before' ? targetPos : targetPos + 1
+}
+
 export function TaskListBySections({ projectId }: Props) {
   const version = useTasksRefreshStore((s) => s.version)
+  const bump = useTasksRefreshStore((s) => s.bump)
   const { openAddTask } = useModalNavigation()
   const [sections, setSections] = useState<SectionDto[]>([])
   const [tasks, setTasks] = useState<TaskDto[]>([])
@@ -68,7 +87,10 @@ export function TaskListBySections({ projectId }: Props) {
   }, [projectId, version])
 
   const unsectioned = useMemo(
-    () => tasks.filter((t) => !t.sectionId),
+    () =>
+      tasks
+        .filter((t) => !t.sectionId)
+        .sort((a, b) => a.order - b.order),
     [tasks]
   )
 
@@ -80,8 +102,19 @@ export function TaskListBySections({ projectId }: Props) {
         map.get(t.sectionId)!.push(t)
       }
     }
+    for (const [id, list] of map) {
+      map.set(
+        id,
+        [...list].sort((a, b) => a.order - b.order)
+      )
+    }
     return map
   }, [sections, tasks])
+
+  const sortedSections = useMemo(
+    () => [...sections].sort((a, b) => a.order - b.order),
+    [sections]
+  )
 
   function toggle(sectionId: string) {
     setCollapsed((prev) => {
@@ -100,64 +133,146 @@ export function TaskListBySections({ projectId }: Props) {
     toast.success('Sección creada')
   }
 
+  async function persistTaskUpdates(
+    nextTasks: TaskDto[],
+    updates: Array<{ id: string; order: number; sectionId: string | null }>
+  ) {
+    const prev = tasks
+    setTasks(nextTasks)
+    try {
+      await reorderTasks(updates)
+    } catch (e) {
+      setTasks(prev)
+      toast.error(e instanceof Error ? e.message : 'Error al reordenar')
+      bump()
+    }
+  }
+
+  async function persistSectionUpdates(
+    nextSections: SectionDto[],
+    updates: Array<{ id: string; order: number }>
+  ) {
+    const prev = sections
+    setSections(nextSections)
+    try {
+      await reorderSections(updates)
+    } catch (e) {
+      setSections(prev)
+      toast.error(e instanceof Error ? e.message : 'Error al reordenar')
+      bump()
+    }
+  }
+
+  function handleTaskDropOnTask(args: {
+    draggedTaskId: string
+    targetTaskId: string
+    sectionId: string | null
+    edge: InsertEdge
+  }) {
+    const bucket = tasks
+      .filter((t) => t.sectionId === args.sectionId)
+      .sort((a, b) => a.order - b.order)
+    const ids = bucket.map((t) => t.id)
+    const index = targetIndexFromEdge(
+      ids,
+      args.targetTaskId,
+      args.edge,
+      args.draggedTaskId
+    )
+    const { tasks: next, updates } = applyTaskMove(
+      tasks,
+      args.draggedTaskId,
+      args.sectionId,
+      index
+    )
+    void persistTaskUpdates(
+      next.map((t) => {
+        const full = tasks.find((x) => x.id === t.id)!
+        return { ...full, sectionId: t.sectionId, order: t.order }
+      }),
+      updates
+    )
+  }
+
+  function handleTaskDropOnSection(sectionId: string | null, taskId: string) {
+    const bucketLen = tasks.filter((t) => t.sectionId === sectionId).length
+    const moving = tasks.find((t) => t.id === taskId)
+    const index =
+      moving?.sectionId === sectionId ? Math.max(0, bucketLen - 1) : bucketLen
+    const { tasks: next, updates } = applyTaskMove(
+      tasks,
+      taskId,
+      sectionId,
+      index
+    )
+    void persistTaskUpdates(
+      next.map((t) => {
+        const full = tasks.find((x) => x.id === t.id)!
+        return { ...full, sectionId: t.sectionId, order: t.order }
+      }),
+      updates
+    )
+  }
+
+  function handleSectionDrop(args: {
+    draggedSectionId: string
+    targetSectionId: string
+    edge: InsertEdge
+  }) {
+    const ids = sortedSections.map((s) => s.id)
+    const index = targetIndexFromEdge(
+      ids,
+      args.targetSectionId,
+      args.edge,
+      args.draggedSectionId
+    )
+    const { sections: next, updates } = applySectionMove(
+      sortedSections,
+      args.draggedSectionId,
+      index
+    )
+    void persistSectionUpdates(next, updates)
+  }
+
   if (loading) {
     return <p className="text-text-secondary mt-6 text-sm">Cargando…</p>
   }
 
   return (
     <div className="mt-6 flex max-w-2xl flex-col gap-4">
-      {sections.map((section) => {
+      {sortedSections.map((section) => {
         const sectionTasks = bySection.get(section.id) ?? []
         const isCollapsed = collapsed[section.id]
         return (
-          <section key={section.id}>
-            <div className="group flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => toggle(section.id)}
-                className="text-text-heading flex min-w-0 flex-1 items-center gap-2 text-left font-semibold"
-              >
-                <ChevronDownIcon
-                  className={clsx(
-                    'text-text-secondary size-4 shrink-0 transition-transform',
-                    isCollapsed && '-rotate-90'
-                  )}
+          <DraggableSectionBlock
+            key={section.id}
+            section={section}
+            taskCount={sectionTasks.length}
+            collapsed={Boolean(isCollapsed)}
+            onToggle={() => toggle(section.id)}
+            onAddTask={() =>
+              openAddTask({ projectId, sectionId: section.id })
+            }
+            onDropSection={handleSectionDrop}
+            onDropTaskOnSection={(taskId) =>
+              handleTaskDropOnSection(section.id, taskId)
+            }
+          >
+            <ul className="mt-2 flex flex-col gap-2">
+              {sectionTasks.map((task) => (
+                <DraggableTaskItem
+                  key={task.id}
+                  task={task}
+                  onDropTask={handleTaskDropOnTask}
                 />
-                <span className="truncate">{section.name}</span>
-                <span className="text-text-secondary text-sm font-normal">
-                  {sectionTasks.length}
-                </span>
-              </button>
-              <button
-                type="button"
-                onClick={() =>
-                  openAddTask({
-                    projectId,
-                    sectionId: section.id,
-                  })
-                }
-                className="text-interactive-primary hover:bg-interactive-hover-soft rounded p-1 opacity-0 group-hover:opacity-100"
-                aria-label={`Añadir tarea a ${section.name}`}
-              >
-                <PlusIcon className="size-4" />
-              </button>
-            </div>
-
-            {!isCollapsed && (
-              <ul className="mt-2 flex flex-col gap-2">
-                {sectionTasks.map((task) => (
-                  <li key={task.id}>
-                    <TaskRow task={task} hideProjectMeta />
-                  </li>
-                ))}
-                {sectionTasks.length === 0 && (
-                  <li className="text-text-secondary px-2 text-sm">
-                    Sin tareas en esta sección.
-                  </li>
-                )}
-              </ul>
-            )}
-          </section>
+              ))}
+              {sectionTasks.length === 0 && (
+                <li className="text-text-secondary px-2 text-sm">
+                  Sin tareas en esta sección.
+                </li>
+              )}
+            </ul>
+          </DraggableSectionBlock>
         )
       })}
 
@@ -166,9 +281,11 @@ export function TaskListBySections({ projectId }: Props) {
           <h3 className="text-text-heading font-semibold">Sin sección</h3>
           <ul className="mt-2 flex flex-col gap-2">
             {unsectioned.map((task) => (
-              <li key={task.id}>
-                <TaskRow task={task} hideProjectMeta />
-              </li>
+              <DraggableTaskItem
+                key={task.id}
+                task={task}
+                onDropTask={handleTaskDropOnTask}
+              />
             ))}
           </ul>
         </section>
