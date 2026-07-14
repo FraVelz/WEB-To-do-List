@@ -21,6 +21,7 @@ export async function PATCH(req: Request, context: RouteContext) {
       label?: string | null
       projectId?: string | null
       sectionId?: string | null
+      order?: number
     } = {}
 
     if (typeof body.title === 'string') {
@@ -64,6 +65,9 @@ export async function PATCH(req: Request, context: RouteContext) {
         typeof body.sectionId === 'string'
           ? body.sectionId.trim() || null
           : null
+    }
+    if (typeof body.order === 'number' && Number.isFinite(body.order)) {
+      data.order = body.order
     }
 
     const task = await updateTask(userId, id, data)

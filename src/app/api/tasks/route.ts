@@ -93,6 +93,11 @@ export async function POST(req: Request) {
           ? body.sectionId.trim() || null
           : null
 
+    const order =
+      typeof body.order === 'number' && Number.isFinite(body.order)
+        ? body.order
+        : undefined
+
     const task = await createTask(userId, {
       title,
       description,
@@ -101,6 +106,7 @@ export async function POST(req: Request) {
       priority,
       projectId,
       sectionId,
+      order,
     })
 
     return NextResponse.json(task)

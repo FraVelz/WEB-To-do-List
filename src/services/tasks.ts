@@ -21,6 +21,7 @@ export type TaskDto = {
   label: string | null
   projectId: string | null
   sectionId: string | null
+  order: number
   completedAt: string | null
   createdAt: string
   updatedAt: string
@@ -91,6 +92,7 @@ export async function createTask(data: {
   priority?: number
   projectId?: string | null
   sectionId?: string | null
+  order?: number
 }): Promise<TaskDto> {
   if (isDemoMode()) {
     return createDemoTask(data)
@@ -122,6 +124,7 @@ export async function patchTask(
     label: string | null
     projectId: string | null
     sectionId: string | null
+    order: number
   }>
 ): Promise<TaskDto> {
   if (isDemoMode()) {
