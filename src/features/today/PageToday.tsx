@@ -1,6 +1,7 @@
 'use client'
 
 import Header from '@/components/layout/header/Header'
+import { OverdueSection } from '@/features/tasks/components/OverdueSection'
 import { TaskList } from '@/features/tasks/TaskList'
 
 export function PageToday() {
@@ -13,7 +14,11 @@ export function PageToday() {
         <p className="text-text-secondary mt-1 text-sm">
           Tareas con fecha para hoy (UTC).
         </p>
-        <TaskList filter="today" />
+        <OverdueSection />
+        <section className="mt-6">
+          <h2 className="text-text-heading max-w-2xl font-semibold">Hoy</h2>
+          <TaskList filter="today" />
+        </section>
       </main>
     </>
   )

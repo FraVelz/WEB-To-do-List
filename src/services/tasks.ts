@@ -1,9 +1,11 @@
 import {
+  countDemoTasks,
   createDemoTask,
   deleteDemoTask,
   listDemoTaskLabels,
   listDemoTasks,
   patchDemoTask,
+  rescheduleDemoTasks,
 } from '@/lib/demo/local-store'
 import { isDemoMode } from '@/lib/demo/is-demo-mode'
 
@@ -17,16 +19,33 @@ export type TaskDto = {
   dueDate: string | null
   priority: number
   label: string | null
+  projectId: string | null
+  sectionId: string | null
+  completedAt: string | null
   createdAt: string
   updatedAt: string
 }
 
-export type TaskFilter = 'inbox' | 'today' | 'next' | 'completed'
+export type TaskFilter =
+  | 'inbox'
+  | 'today'
+  | 'next'
+  | 'completed'
+  | 'overdue'
+  | 'all'
+
+export type TaskCounts = {
+  inbox: number
+  today: number
+  next: number
+  overdue: number
+}
 
 export async function fetchTasks(params: {
   filter?: TaskFilter
   q?: string
   label?: string
+  projectId?: string
 }): Promise<TaskDto[]> {
   if (isDemoMode()) {
     return listDemoTasks(params)
@@ -36,6 +55,7 @@ export async function fetchTasks(params: {
   if (params.filter) sp.set('filter', params.filter)
   if (params.q) sp.set('q', params.q)
   if (params.label) sp.set('label', params.label)
+  if (params.projectId) sp.set('projectId', params.projectId)
 
   const res = await authFetch(`/api/tasks?${sp.toString()}`, {
     cache: 'no-store',
@@ -51,12 +71,26 @@ export async function fetchTasks(params: {
   return res.json() as Promise<TaskDto[]>
 }
 
+export async function fetchTaskCounts(): Promise<TaskCounts> {
+  if (isDemoMode()) {
+    return countDemoTasks()
+  }
+
+  const res = await authFetch('/api/tasks/counts', { cache: 'no-store' })
+  if (!res.ok) {
+    throw new Error('Error al cargar conteos')
+  }
+  return res.json() as Promise<TaskCounts>
+}
+
 export async function createTask(data: {
   title: string
   description?: string | null
   dueDate?: string | null
   label?: string | null
   priority?: number
+  projectId?: string | null
+  sectionId?: string | null
 }): Promise<TaskDto> {
   if (isDemoMode()) {
     return createDemoTask(data)
@@ -86,6 +120,8 @@ export async function patchTask(
     dueDate: string | null
     priority: number
     label: string | null
+    projectId: string | null
+    sectionId: string | null
   }>
 ): Promise<TaskDto> {
   if (isDemoMode()) {
@@ -107,6 +143,30 @@ export async function patchTask(
   }
 
   return res.json() as Promise<TaskDto>
+}
+
+export async function rescheduleTasks(
+  ids: string[],
+  dueDate: string
+): Promise<number> {
+  if (isDemoMode()) {
+    return rescheduleDemoTasks(ids, dueDate)
+  }
+
+  const res = await authFetch('/api/tasks/reschedule', {
+    method: 'POST',
+    body: JSON.stringify({ ids, dueDate }),
+  })
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(
+      typeof err.error === 'string' ? err.error : 'Error al reprogramar'
+    )
+  }
+
+  const body = (await res.json()) as { updated: number }
+  return body.updated
 }
 
 export async function deleteTask(id: string): Promise<void> {

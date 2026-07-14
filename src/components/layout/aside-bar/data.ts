@@ -43,6 +43,13 @@ export const asideItems: AsideItem[] = [
     height: 20,
   },
   {
+    text: 'Reportes',
+    link: '/reports',
+    icon: Complete,
+    width: 20,
+    height: 20,
+  },
+  {
     text: 'Completado',
     link: '/completed',
     icon: Complete,

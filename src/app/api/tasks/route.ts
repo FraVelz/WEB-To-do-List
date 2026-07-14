@@ -6,17 +6,36 @@ import {
 import { requireUserId } from '@/lib/firebase/verify-auth'
 import { NextResponse } from 'next/server'
 
+const VALID_FILTERS = new Set<TaskFilter>([
+  'inbox',
+  'today',
+  'next',
+  'completed',
+  'overdue',
+  'all',
+])
+
 export async function GET(req: Request) {
   try {
     const userId = await requireUserId(req)
     if (userId instanceof NextResponse) return userId
 
     const { searchParams } = new URL(req.url)
-    const q = searchParams.get('q')?.trim()
-    const filter = (searchParams.get('filter') ?? 'inbox') as TaskFilter
-    const label = searchParams.get('label')?.trim()
+    const q = searchParams.get('q')?.trim() || undefined
+    const label = searchParams.get('label')?.trim() || undefined
+    const projectId = searchParams.get('projectId')?.trim() || undefined
+    const filterParam = searchParams.get('filter')
+    const filter =
+      filterParam && VALID_FILTERS.has(filterParam as TaskFilter)
+        ? (filterParam as TaskFilter)
+        : undefined
 
-    const tasks = await listTasks(userId, { filter, q, label })
+    const tasks = await listTasks(userId, {
+      filter: projectId ? filter : (filter ?? 'inbox'),
+      q,
+      label,
+      projectId,
+    })
     return NextResponse.json(tasks)
   } catch (e) {
     console.error('GET /api/tasks', e)
@@ -60,12 +79,28 @@ export async function POST(req: Request) {
         ? body.priority
         : 0
 
+    const projectId =
+      body.projectId === null
+        ? null
+        : typeof body.projectId === 'string'
+          ? body.projectId.trim() || null
+          : null
+
+    const sectionId =
+      body.sectionId === null
+        ? null
+        : typeof body.sectionId === 'string'
+          ? body.sectionId.trim() || null
+          : null
+
     const task = await createTask(userId, {
       title,
       description,
       label,
       dueDate,
       priority,
+      projectId,
+      sectionId,
     })
 
     return NextResponse.json(task)

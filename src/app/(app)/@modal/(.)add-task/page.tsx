@@ -1,5 +1,11 @@
+import { Suspense } from 'react'
+
 import { ModalAddTask } from '@/components/modals/ModalAddTask'
 
 export default function AddTaskModalPage() {
-  return <ModalAddTask />
+  return (
+    <Suspense fallback={null}>
+      <ModalAddTask />
+    </Suspense>
+  )
 }

@@ -12,6 +12,7 @@ export function LinkPages({
   text,
   fontsize,
   onNavigate,
+  badge,
 }: {
   iconSrc: string | StaticImageData
   iconSize?: number
@@ -19,6 +20,7 @@ export function LinkPages({
   link: string
   fontsize?: string
   onNavigate?: () => void
+  badge?: number
 }) {
   const isActive = usePathLink({ href: link })
 
@@ -34,7 +36,19 @@ export function LinkPages({
       )}
     >
       <AsideNavIcon src={iconSrc} size={iconSize} active={isActive} />
-      <p className={fontsize ?? 'text-sm'}>{text}</p>
+      <p className={clsx('min-w-0 flex-1', fontsize ?? 'text-sm')}>{text}</p>
+      {badge != null && badge > 0 && (
+        <span
+          className={clsx(
+            'rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums',
+            isActive
+              ? 'bg-interactive-primary text-text-primary'
+              : 'bg-surface-accent-soft text-text-accent'
+          )}
+        >
+          {badge}
+        </span>
+      )}
     </Link>
   )
 }
