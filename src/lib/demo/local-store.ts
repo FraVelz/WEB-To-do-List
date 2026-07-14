@@ -32,13 +32,7 @@ type SectionDto = {
   updatedAt: string
 }
 
-type TaskFilter =
-  | 'inbox'
-  | 'today'
-  | 'next'
-  | 'completed'
-  | 'overdue'
-  | 'all'
+type TaskFilter = 'inbox' | 'today' | 'next' | 'completed' | 'overdue' | 'all'
 
 type TaskCounts = {
   inbox: number
@@ -85,9 +79,7 @@ function seedData(): DemoData {
   const sectionOrg = createId('section')
   const sectionVal = createId('section')
   const sectionCyber = createId('section')
-  const overdue = new Date(
-    Date.UTC(2025, 8, 27, 12, 0, 0)
-  ).toISOString()
+  const overdue = new Date(Date.UTC(2025, 8, 27, 12, 0, 0)).toISOString()
 
   return {
     projects: [
@@ -499,7 +491,9 @@ export function reorderDemoTasks(
     return {
       ...task,
       order: update.order,
-      ...(update.sectionId !== undefined ? { sectionId: update.sectionId } : {}),
+      ...(update.sectionId !== undefined
+        ? { sectionId: update.sectionId }
+        : {}),
       updatedAt: now,
     }
   })
@@ -507,10 +501,7 @@ export function reorderDemoTasks(
   return count
 }
 
-export function rescheduleDemoTasks(
-  ids: string[],
-  dueDate: string
-): number {
+export function rescheduleDemoTasks(ids: string[], dueDate: string): number {
   const data = readData()
   const idSet = new Set(ids)
   let count = 0
@@ -597,7 +588,12 @@ export function deleteDemoProject(id: string): boolean {
   data.sections = data.sections.filter((s) => s.projectId !== id)
   data.tasks = data.tasks.map((t) =>
     t.projectId === id
-      ? { ...t, projectId: null, sectionId: null, updatedAt: new Date().toISOString() }
+      ? {
+          ...t,
+          projectId: null,
+          sectionId: null,
+          updatedAt: new Date().toISOString(),
+        }
       : t
   )
   writeData(data)

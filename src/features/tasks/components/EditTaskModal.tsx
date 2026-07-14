@@ -31,6 +31,15 @@ function toLocalInput(iso: string | null) {
 }
 
 export function EditTaskModal({ open, task, onOpenChange }: Props) {
+  if (!open) return null
+
+  return createPortal(
+    <EditTaskModalForm key={task.id} task={task} onOpenChange={onOpenChange} />,
+    document.body
+  )
+}
+
+function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
   const bump = useTasksRefreshStore((s) => s.bump)
   const [title, setTitle] = useState(task.title)
   const [description, setDescription] = useState(task.description ?? '')
@@ -44,34 +53,27 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!open) return
-    setTitle(task.title)
-    setDescription(task.description ?? '')
-    setLabel(task.label ?? '')
-    setDueDate(toLocalInput(task.dueDate))
-    setPriority(task.priority)
-    setProjectId(task.projectId ?? '')
-    setSectionId(task.sectionId ?? '')
-  }, [open, task])
-
-  useEffect(() => {
-    if (!open) return
     fetchProjects()
       .then(setProjects)
       .catch(() => setProjects([]))
-  }, [open])
+  }, [])
 
   useEffect(() => {
-    if (!open || !projectId) {
-      setSections([])
-      return
-    }
+    if (!projectId) return
+    let cancelled = false
     fetchSections(projectId)
-      .then(setSections)
-      .catch(() => setSections([]))
-  }, [open, projectId])
+      .then((data) => {
+        if (!cancelled) setSections(data)
+      })
+      .catch(() => {
+        if (!cancelled) setSections([])
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [projectId])
 
-  if (!open) return null
+  const visibleSections = projectId ? sections : []
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -100,7 +102,7 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
     }
   }
 
-  return createPortal(
+  return (
     <ModalRouteShell onClose={() => onOpenChange(false)}>
       <div
         role="dialog"
@@ -169,6 +171,7 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
                 onChange={(e) => {
                   setProjectId(e.target.value)
                   setSectionId('')
+                  setSections([])
                 }}
                 className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
               >
@@ -189,7 +192,7 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
                 className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] disabled:opacity-50"
               >
                 <option value="">Sin sección</option>
-                {sections.map((s) => (
+                {visibleSections.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>
@@ -219,7 +222,6 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
           </div>
         </form>
       </div>
-    </ModalRouteShell>,
-    document.body
+    </ModalRouteShell>
   )
 }

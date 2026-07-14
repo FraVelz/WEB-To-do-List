@@ -39,12 +39,10 @@ export function TaskRow({ task, hideProjectMeta }: Props) {
   const [projectName, setProjectName] = useState<string | null>(null)
   const [sectionName, setSectionName] = useState<string | null>(null)
 
+  const showProjectMeta = !hideProjectMeta && Boolean(task.projectId)
+
   useEffect(() => {
-    if (hideProjectMeta || !task.projectId) {
-      setProjectName(null)
-      setSectionName(null)
-      return
-    }
+    if (!showProjectMeta || !task.projectId) return
     let cancelled = false
     fetchProjects()
       .then((projects) => {
@@ -71,7 +69,7 @@ export function TaskRow({ task, hideProjectMeta }: Props) {
     return () => {
       cancelled = true
     }
-  }, [hideProjectMeta, task.projectId, task.sectionId])
+  }, [showProjectMeta, task.projectId, task.sectionId])
 
   async function toggleDone() {
     const nextCompleted = !task.completed
@@ -87,7 +85,9 @@ export function TaskRow({ task, hideProjectMeta }: Props) {
   }
 
   const overdue = isOverdue(task.dueDate, task.completed)
-  const metaParts = [projectName, sectionName].filter(Boolean)
+  const metaParts = showProjectMeta
+    ? [projectName, sectionName].filter(Boolean)
+    : []
 
   return (
     <>
@@ -123,7 +123,9 @@ export function TaskRow({ task, hideProjectMeta }: Props) {
             {task.title}
           </button>
           {task.description && (
-            <p className="text-text-secondary mt-1 text-sm">{task.description}</p>
+            <p className="text-text-secondary mt-1 text-sm">
+              {task.description}
+            </p>
           )}
           <div className="text-text-secondary mt-2 flex flex-wrap items-center gap-2 text-xs">
             {task.dueDate && (

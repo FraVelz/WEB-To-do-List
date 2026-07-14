@@ -1,4 +1,8 @@
-export function moveItem<T>(list: T[], fromIndex: number, toIndex: number): T[] {
+export function moveItem<T>(
+  list: T[],
+  fromIndex: number,
+  toIndex: number
+): T[] {
   if (
     fromIndex < 0 ||
     toIndex < 0 ||
@@ -34,7 +38,10 @@ export function applyTaskMove(
   taskId: string,
   targetSectionId: string | null,
   targetIndex: number
-): { tasks: TaskLike[]; updates: Array<{ id: string; order: number; sectionId: string | null }> } {
+): {
+  tasks: TaskLike[]
+  updates: Array<{ id: string; order: number; sectionId: string | null }>
+} {
   const moving = tasks.find((t) => t.id === taskId)
   if (!moving) return { tasks, updates: [] }
 

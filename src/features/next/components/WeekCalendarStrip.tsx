@@ -11,9 +11,7 @@ type Props = {
 }
 
 function startOfUtcDay(d: Date) {
-  return new Date(
-    Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
-  )
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()))
 }
 
 export function WeekCalendarStrip({ selected, onSelect, days = 14 }: Props) {
@@ -33,7 +31,9 @@ export function WeekCalendarStrip({ selected, onSelect, days = 14 }: Props) {
 
   return (
     <div className="mt-4 max-w-3xl">
-      <p className="text-text-secondary mb-2 text-sm capitalize">{monthLabel}</p>
+      <p className="text-text-secondary mb-2 text-sm capitalize">
+        {monthLabel}
+      </p>
       <div className="flex gap-1 overflow-x-auto pb-1">
         {items.map((day) => {
           const isSelected = day.getTime() === selectedDay.getTime()
@@ -50,9 +50,7 @@ export function WeekCalendarStrip({ selected, onSelect, days = 14 }: Props) {
                   : 'hover:bg-interactive-hover-soft text-text-secondary'
               )}
             >
-              <span className="uppercase">
-                {WEEKDAYS[day.getUTCDay()]}
-              </span>
+              <span className="uppercase">{WEEKDAYS[day.getUTCDay()]}</span>
               <span
                 className={clsx(
                   'mt-1 text-sm font-semibold',

@@ -5,11 +5,7 @@ import { toast } from 'sonner'
 
 import { RescheduleConfirmModal } from '@/features/tasks/components/RescheduleConfirmModal'
 import { TaskRow } from '@/features/tasks/TaskRow'
-import {
-  fetchTasks,
-  rescheduleTasks,
-  type TaskDto,
-} from '@/services/tasks'
+import { fetchTasks, rescheduleTasks, type TaskDto } from '@/services/tasks'
 import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
 
 export function OverdueSection() {
@@ -78,7 +74,7 @@ export function OverdueSection() {
         <button
           type="button"
           onClick={() => setConfirmOpen(true)}
-          className="text-[var(--color-state-error)] text-sm font-medium hover:underline"
+          className="text-sm font-medium text-[var(--color-state-error)] hover:underline"
         >
           Reprogramar
         </button>

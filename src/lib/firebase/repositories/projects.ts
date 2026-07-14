@@ -47,7 +47,9 @@ export async function listProjects(userId: string): Promise<ProjectRecord[]> {
     toProjectRecord(doc.id, doc.data() as ProjectDoc)
   )
 
-  projects.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'es'))
+  projects.sort(
+    (a, b) => a.order - b.order || a.name.localeCompare(b.name, 'es')
+  )
   return projects
 }
 

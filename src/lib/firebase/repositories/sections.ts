@@ -51,7 +51,9 @@ export async function listSections(
     toSectionRecord(doc.id, doc.data() as SectionDoc)
   )
 
-  sections.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, 'es'))
+  sections.sort(
+    (a, b) => a.order - b.order || a.name.localeCompare(b.name, 'es')
+  )
   return sections
 }
 

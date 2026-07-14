@@ -87,10 +87,7 @@ export function TaskListBySections({ projectId }: Props) {
   }, [projectId, version])
 
   const unsectioned = useMemo(
-    () =>
-      tasks
-        .filter((t) => !t.sectionId)
-        .sort((a, b) => a.order - b.order),
+    () => tasks.filter((t) => !t.sectionId).sort((a, b) => a.order - b.order),
     [tasks]
   )
 
@@ -250,9 +247,7 @@ export function TaskListBySections({ projectId }: Props) {
             taskCount={sectionTasks.length}
             collapsed={Boolean(isCollapsed)}
             onToggle={() => toggle(section.id)}
-            onAddTask={() =>
-              openAddTask({ projectId, sectionId: section.id })
-            }
+            onAddTask={() => openAddTask({ projectId, sectionId: section.id })}
             onDropSection={handleSectionDrop}
             onDropTaskOnSection={(taskId) =>
               handleTaskDropOnSection(section.id, taskId)

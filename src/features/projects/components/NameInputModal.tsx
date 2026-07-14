@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useId, useState } from 'react'
+import { useId, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { toast } from 'sonner'
 
@@ -24,16 +24,31 @@ export function NameInputModal({
   confirmLabel,
   onSubmit,
 }: NameInputModalProps) {
+  if (!open) return null
+
+  return createPortal(
+    <NameInputModalForm
+      onOpenChange={onOpenChange}
+      title={title}
+      label={label}
+      confirmLabel={confirmLabel}
+      onSubmit={onSubmit}
+    />,
+    document.body
+  )
+}
+
+function NameInputModalForm({
+  onOpenChange,
+  title,
+  label,
+  confirmLabel,
+  onSubmit,
+}: Omit<NameInputModalProps, 'open'>) {
   const titleId = useId()
   const inputId = useId()
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (open) setName('')
-  }, [open])
-
-  if (!open) return null
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -53,7 +68,7 @@ export function NameInputModal({
     }
   }
 
-  return createPortal(
+  return (
     <ModalRouteShell onClose={() => !loading && onOpenChange(false)}>
       <div
         role="dialog"
@@ -96,7 +111,6 @@ export function NameInputModal({
           </div>
         </form>
       </div>
-    </ModalRouteShell>,
-    document.body
+    </ModalRouteShell>
   )
 }

@@ -43,20 +43,25 @@ export function ModalAddTask() {
   }, [])
 
   useEffect(() => {
-    if (!projectId) {
-      setSections([])
-      setSectionId('')
-      return
-    }
+    if (!projectId) return
+    let cancelled = false
     fetchSections(projectId)
       .then((data) => {
+        if (cancelled) return
         setSections(data)
         if (sectionId && !data.some((s) => s.id === sectionId)) {
           setSectionId('')
         }
       })
-      .catch(() => setSections([]))
+      .catch(() => {
+        if (!cancelled) setSections([])
+      })
+    return () => {
+      cancelled = true
+    }
   }, [projectId, sectionId])
+
+  const visibleSections = projectId ? sections : []
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -166,7 +171,11 @@ export function ModalAddTask() {
               Proyecto
               <select
                 value={projectId}
-                onChange={(e) => setProjectId(e.target.value)}
+                onChange={(e) => {
+                  setProjectId(e.target.value)
+                  setSectionId('')
+                  setSections([])
+                }}
                 className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)]"
               >
                 <option value="">Bandeja de entrada</option>
@@ -187,7 +196,7 @@ export function ModalAddTask() {
                 className="border-border-default bg-surface-app text-text-primary mt-1 w-full rounded-md border px-3 py-2 outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-ring)] disabled:opacity-50"
               >
                 <option value="">Sin sección</option>
-                {sections.map((s) => (
+                {visibleSections.map((s) => (
                   <option key={s.id} value={s.id}>
                     {s.name}
                   </option>
