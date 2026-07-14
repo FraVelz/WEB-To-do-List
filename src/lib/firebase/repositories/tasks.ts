@@ -12,6 +12,7 @@ export type TaskRecord = {
   label: string | null
   projectId: string | null
   sectionId: string | null
+  order: number
   completedAt: string | null
   createdAt: string
   updatedAt: string
@@ -42,6 +43,7 @@ type TaskDoc = {
   label: string | null
   projectId: string | null
   sectionId: string | null
+  order: number
   completedAt: Timestamp | null
   createdAt: Timestamp
   updatedAt: Timestamp
@@ -72,6 +74,7 @@ function toTaskRecord(id: string, data: TaskDoc): TaskRecord {
     label: data.label ?? null,
     projectId: data.projectId ?? null,
     sectionId: data.sectionId ?? null,
+    order: typeof data.order === 'number' ? data.order : 0,
     completedAt: toIso(data.completedAt),
     createdAt: toIso(data.createdAt) ?? new Date().toISOString(),
     updatedAt: toIso(data.updatedAt) ?? new Date().toISOString(),
@@ -113,9 +116,13 @@ function matchesFilter(task: TaskRecord, filter: TaskFilter) {
   }
 }
 
-function sortTasks(tasks: TaskRecord[]) {
+function sortTasks(tasks: TaskRecord[], byProjectOrder = false) {
   tasks.sort((a, b) => {
     if (a.completed !== b.completed) return a.completed ? 1 : -1
+    if (byProjectOrder) {
+      if (a.order !== b.order) return a.order - b.order
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    }
     const aDue = a.dueDate
       ? new Date(a.dueDate).getTime()
       : Number.MAX_SAFE_INTEGER
@@ -164,7 +171,7 @@ export async function listTasks(
   if (label) tasks = tasks.filter((task) => task.label === label)
   if (q) tasks = tasks.filter((task) => matchesSearch(task, q))
 
-  sortTasks(tasks)
+  sortTasks(tasks, Boolean(projectId))
   return tasks
 }
 
@@ -196,6 +203,7 @@ export async function createTask(
     priority?: number
     projectId?: string | null
     sectionId?: string | null
+    order?: number
   }
 ): Promise<TaskRecord> {
   const now = FieldValue.serverTimestamp()
@@ -209,6 +217,7 @@ export async function createTask(
     label: data.label ?? null,
     projectId: data.projectId ?? null,
     sectionId: data.sectionId ?? null,
+    order: data.order ?? Date.now(),
     completedAt: null,
     createdAt: now,
     updatedAt: now,
@@ -237,6 +246,7 @@ export async function updateTask(
     label: string | null
     projectId: string | null
     sectionId: string | null
+    order: number
   }>
 ): Promise<TaskRecord | null> {
   const ref = getAdminDb().collection(COLLECTION).doc(id)
@@ -256,6 +266,7 @@ export async function updateTask(
   if (data.label !== undefined) patch.label = data.label
   if (data.projectId !== undefined) patch.projectId = data.projectId
   if (data.sectionId !== undefined) patch.sectionId = data.sectionId
+  if (data.order !== undefined) patch.order = data.order
   if (data.dueDate === null) patch.dueDate = null
   else if (data.dueDate instanceof Date) {
     patch.dueDate = Timestamp.fromDate(data.dueDate)

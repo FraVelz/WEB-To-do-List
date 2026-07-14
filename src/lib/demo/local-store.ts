@@ -8,6 +8,7 @@ type TaskDto = {
   label: string | null
   projectId: string | null
   sectionId: string | null
+  order: number
   completedAt: string | null
   createdAt: string
   updatedAt: string
@@ -136,6 +137,7 @@ function seedData(): DemoData {
         label: null,
         projectId: null,
         sectionId: null,
+        order: 0,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -150,6 +152,7 @@ function seedData(): DemoData {
         label: 'Tutorial',
         projectId: null,
         sectionId: null,
+        order: 1,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -164,6 +167,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionOrg,
+        order: 2,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -178,6 +182,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionOrg,
+        order: 3,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -192,6 +197,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionVal,
+        order: 4,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -206,6 +212,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionCyber,
+        order: 5,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -220,6 +227,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionCyber,
+        order: 6,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -234,6 +242,7 @@ function seedData(): DemoData {
         label: null,
         projectId,
         sectionId: sectionCyber,
+        order: 7,
         completedAt: null,
         createdAt: now,
         updatedAt: now,
@@ -264,6 +273,10 @@ function normalizeTask(raw: Partial<TaskDto> & { id: string }): TaskDto {
     label: raw.label ?? null,
     projectId: raw.projectId ?? null,
     sectionId: raw.sectionId ?? null,
+    order:
+      typeof raw.order === 'number'
+        ? raw.order
+        : Date.parse(raw.createdAt ?? now) || 0,
     completedAt: raw.completedAt ?? null,
     createdAt: raw.createdAt ?? now,
     updatedAt: raw.updatedAt ?? now,
@@ -341,9 +354,13 @@ function matchesFilter(task: TaskDto, filter: TaskFilter) {
   }
 }
 
-function sortTasks(tasks: TaskDto[]) {
+function sortTasks(tasks: TaskDto[], byProjectOrder = false) {
   tasks.sort((a, b) => {
     if (a.completed !== b.completed) return a.completed ? 1 : -1
+    if (byProjectOrder) {
+      if (a.order !== b.order) return a.order - b.order
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    }
     const aDue = a.dueDate
       ? new Date(a.dueDate).getTime()
       : Number.MAX_SAFE_INTEGER
@@ -383,7 +400,7 @@ export function listDemoTasks(params: {
   if (label) tasks = tasks.filter((task) => task.label === label)
   if (q) tasks = tasks.filter((task) => matchesSearch(task, q))
 
-  sortTasks(tasks)
+  sortTasks(tasks, Boolean(projectId))
   return tasks
 }
 
@@ -405,6 +422,7 @@ export function createDemoTask(input: {
   priority?: number
   projectId?: string | null
   sectionId?: string | null
+  order?: number
 }): TaskDto {
   const data = readData()
   const now = new Date().toISOString()
@@ -418,6 +436,7 @@ export function createDemoTask(input: {
     label: input.label ?? null,
     projectId: input.projectId ?? null,
     sectionId: input.sectionId ?? null,
+    order: input.order ?? Date.now(),
     completedAt: null,
     createdAt: now,
     updatedAt: now,
@@ -439,6 +458,7 @@ export function patchDemoTask(
     label: string | null
     projectId: string | null
     sectionId: string | null
+    order: number
   }>
 ): TaskDto | null {
   const data = readData()

@@ -47,6 +47,7 @@ const baseTask = {
   label: 'Tag',
   projectId: null as string | null,
   sectionId: null as string | null,
+  order: 0,
   completedAt: null as string | null,
   createdAt: '',
   updatedAt: '',
