@@ -58,7 +58,6 @@ vi.mock('@/services/projects', () => ({
   fetchSections: vi.fn().mockResolvedValue([]),
 }))
 
-
 describe('TaskRow', () => {
   afterEach(() => {
     cleanup()
@@ -105,9 +104,7 @@ describe('TaskRow', () => {
 
     await waitFor(() => {
       expect(patchTask).toHaveBeenCalledWith('t1', { completed: false })
-      expect(toast.success).toHaveBeenCalledWith(
-        'Tarea marcada como pendiente'
-      )
+      expect(toast.success).toHaveBeenCalledWith('Tarea marcada como pendiente')
       expect(bump).toHaveBeenCalled()
     })
   })

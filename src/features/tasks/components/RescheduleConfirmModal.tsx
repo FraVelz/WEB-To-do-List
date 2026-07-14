@@ -61,11 +61,7 @@ export function RescheduleConfirmModal({
           Las fechas se moverán al día de hoy (UTC).
         </p>
         <div className="mt-8 flex flex-col gap-2 sm:flex-row sm:justify-center">
-          <Button
-            type="button"
-            disabled={loading}
-            onClick={handleConfirm}
-          >
+          <Button type="button" disabled={loading} onClick={handleConfirm}>
             {loading ? 'Reprogramando…' : 'Reprogramar'}
           </Button>
           <Button

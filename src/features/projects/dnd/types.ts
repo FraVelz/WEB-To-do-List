@@ -15,7 +15,9 @@ export type ProjectDragData = TaskDragData | SectionDragData
 
 export type InsertEdge = 'before' | 'after'
 
-export function isTaskDragData(data: Record<string | symbol, unknown>): data is TaskDragData {
+export function isTaskDragData(
+  data: Record<string | symbol, unknown>
+): data is TaskDragData {
   return data.kind === 'task' && typeof data.taskId === 'string'
 }
 

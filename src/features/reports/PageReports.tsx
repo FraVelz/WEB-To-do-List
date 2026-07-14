@@ -76,7 +76,11 @@ export function PageReports() {
     const days = last7Days()
     const today = new Date()
     const windowStart = new Date(
-      Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()) -
+      Date.UTC(
+        today.getUTCFullYear(),
+        today.getUTCMonth(),
+        today.getUTCDate()
+      ) -
         6 * 86400000
     )
     const byKey = new Map(days.map((d) => [d.key, d]))

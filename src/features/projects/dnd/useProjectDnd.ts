@@ -1,6 +1,9 @@
 'use client'
 
-import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
+import {
+  draggable,
+  dropTargetForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter'
 import { useEffect, useState, type RefObject } from 'react'
 
 import {
@@ -118,10 +121,7 @@ export function useSectionDropTarget(
   opts: {
     sectionId: string | null
     enabled?: boolean
-    onDropSection: (args: {
-      sectionId: string
-      edge: InsertEdge
-    }) => void
+    onDropSection: (args: { sectionId: string; edge: InsertEdge }) => void
     onDropTaskOnSection: (args: { taskId: string }) => void
   }
 ) {

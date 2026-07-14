@@ -12,8 +12,7 @@ const PRIORITIES = [
 
 export function priorityColor(priority: number) {
   return (
-    PRIORITIES.find((p) => p.value === priority)?.color ??
-    PRIORITIES[0].color
+    PRIORITIES.find((p) => p.value === priority)?.color ?? PRIORITIES[0].color
   )
 }
 
