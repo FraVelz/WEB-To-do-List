@@ -312,6 +312,39 @@ export async function rescheduleTasks(
   return updated
 }
 
+export async function reorderTasks(
+  userId: string,
+  updates: Array<{
+    id: string
+    order: number
+    sectionId?: string | null
+  }>
+): Promise<number> {
+  const db = getAdminDb()
+  const batch = db.batch()
+  let updated = 0
+
+  for (const item of updates) {
+    const ref = db.collection(COLLECTION).doc(item.id)
+    const existing = await ref.get()
+    if (!existing.exists || (existing.data() as TaskDoc).userId !== userId) {
+      continue
+    }
+    const patch: Record<string, unknown> = {
+      order: item.order,
+      updatedAt: FieldValue.serverTimestamp(),
+    }
+    if (item.sectionId !== undefined) {
+      patch.sectionId = item.sectionId
+    }
+    batch.update(ref, patch)
+    updated += 1
+  }
+
+  if (updated > 0) await batch.commit()
+  return updated
+}
+
 export async function deleteTask(userId: string, id: string): Promise<boolean> {
   const ref = getAdminDb().collection(COLLECTION).doc(id)
   const existing = await ref.get()

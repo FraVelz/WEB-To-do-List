@@ -5,6 +5,7 @@ import {
   listDemoTaskLabels,
   listDemoTasks,
   patchDemoTask,
+  reorderDemoTasks,
   rescheduleDemoTasks,
 } from '@/lib/demo/local-store'
 import { isDemoMode } from '@/lib/demo/is-demo-mode'
@@ -165,6 +166,30 @@ export async function rescheduleTasks(
     const err = await res.json().catch(() => ({}))
     throw new Error(
       typeof err.error === 'string' ? err.error : 'Error al reprogramar'
+    )
+  }
+
+  const body = (await res.json()) as { updated: number }
+  return body.updated
+}
+
+export async function reorderTasks(
+  updates: Array<{ id: string; order: number; sectionId?: string | null }>
+): Promise<number> {
+  if (updates.length === 0) return 0
+  if (isDemoMode()) {
+    return reorderDemoTasks(updates)
+  }
+
+  const res = await authFetch('/api/tasks/reorder', {
+    method: 'POST',
+    body: JSON.stringify({ updates }),
+  })
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(
+      typeof err.error === 'string' ? err.error : 'Error al reordenar tareas'
     )
   }
 

@@ -102,6 +102,31 @@ export async function updateSection(
   return toSectionRecord(updated.id, updated.data() as SectionDoc)
 }
 
+export async function reorderSections(
+  userId: string,
+  updates: Array<{ id: string; order: number }>
+): Promise<number> {
+  const db = getAdminDb()
+  const batch = db.batch()
+  let updated = 0
+
+  for (const item of updates) {
+    const ref = db.collection(COLLECTION).doc(item.id)
+    const existing = await ref.get()
+    if (!existing.exists || (existing.data() as SectionDoc).userId !== userId) {
+      continue
+    }
+    batch.update(ref, {
+      order: item.order,
+      updatedAt: FieldValue.serverTimestamp(),
+    })
+    updated += 1
+  }
+
+  if (updated > 0) await batch.commit()
+  return updated
+}
+
 export async function deleteSection(
   userId: string,
   id: string

@@ -8,6 +8,7 @@ import {
   deleteDemoSection,
   listDemoSections,
   patchDemoSection,
+  reorderDemoSections,
 } from '@/lib/demo/local-store'
 import { isDemoMode } from '@/lib/demo/is-demo-mode'
 
@@ -164,6 +165,28 @@ export async function patchSection(
     )
   }
   return res.json() as Promise<SectionDto>
+}
+
+export async function reorderSections(
+  updates: Array<{ id: string; order: number }>
+): Promise<number> {
+  if (updates.length === 0) return 0
+  if (isDemoMode()) {
+    return reorderDemoSections(updates)
+  }
+
+  const res = await authFetch('/api/sections/reorder', {
+    method: 'POST',
+    body: JSON.stringify({ updates }),
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}))
+    throw new Error(
+      typeof err.error === 'string' ? err.error : 'Error al reordenar secciones'
+    )
+  }
+  const body = (await res.json()) as { updated: number }
+  return body.updated
 }
 
 export async function deleteSection(id: string): Promise<void> {
