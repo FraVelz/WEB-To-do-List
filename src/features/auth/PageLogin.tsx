@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 type AuthView = 'login' | 'signup'
 
@@ -56,7 +57,9 @@ export function PageLogin() {
     setError(null)
 
     if (!email.trim() || !password.trim()) {
-      setError('Introduce email y contraseña.')
+      const message = 'Introduce email y contraseña.'
+      setError(message)
+      toast.error(message)
       return
     }
 
@@ -70,7 +73,9 @@ export function PageLogin() {
       enterUser()
       router.push('/inbox')
     } catch (err) {
-      setError(firebaseAuthMessage(err, view))
+      const message = firebaseAuthMessage(err, view)
+      setError(message)
+      toast.error(message)
       setLoading(false)
     }
   }

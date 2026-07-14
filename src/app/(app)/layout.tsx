@@ -1,7 +1,6 @@
 import { AuthGate } from '@/components/auth/AuthGate'
-import { DemoModeBanner } from '@/features/auth/DemoModeBanner'
 import Aside from '@/components/layout/aside-bar/Aside'
-import { Toaster } from '@/components/ui/sonner'
+import { DemoModeBanner } from '@/features/auth/DemoModeBanner'
 
 export default function AppLayout({
   children,
@@ -20,7 +19,6 @@ export default function AppLayout({
       </div>
 
       {modal}
-      <Toaster position="top-center" richColors closeButton />
     </div>
   )
 }
