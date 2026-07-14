@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { useSidebarStore } from '@/stores/sidebar-store'
+import { fetchTaskCounts, type TaskCounts } from '@/services/tasks'
+import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
 
 import { AsideNavIcon } from './AsideNavIcon'
 import { LinkPages } from './LinkPages'
@@ -21,6 +23,7 @@ import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
 
 import { ButtonProfile } from './components/buttonProfile'
+import { ProjectsNav } from '@/features/projects/components/ProjectsNav'
 
 const MOBILE_MQ = '(max-width: 767px)'
 
@@ -35,6 +38,22 @@ export default function Aside() {
   const { openAddTask, openSearch } = useModalNavigation()
   const pathname = usePathname()
   const isNotificationActive = pathname === '/notification'
+  const version = useTasksRefreshStore((s) => s.version)
+  const [counts, setCounts] = useState<TaskCounts | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    fetchTaskCounts()
+      .then((data) => {
+        if (!cancelled) setCounts(data)
+      })
+      .catch(() => {
+        if (!cancelled) setCounts(null)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [version])
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ)
@@ -173,19 +192,31 @@ export default function Aside() {
                 </button>
               </li>
 
-              {asideItems.map((item) => (
-                <li key={item.link}>
-                  <LinkPages
-                    text={item.text}
-                    link={item.link}
-                    iconSrc={item.icon}
-                    iconSize={item.width}
-                    fontsize={item.fontSize}
-                    onNavigate={closeIfMobile}
-                  />
-                </li>
-              ))}
+              {asideItems.map((item) => {
+                const badge =
+                  item.link === '/today'
+                    ? (counts?.today ?? 0) + (counts?.overdue ?? 0)
+                    : item.link === '/next'
+                      ? (counts?.next ?? 0) + (counts?.overdue ?? 0)
+                      : item.link === '/inbox'
+                        ? counts?.inbox
+                        : undefined
+                return (
+                  <li key={item.link}>
+                    <LinkPages
+                      text={item.text}
+                      link={item.link}
+                      iconSrc={item.icon}
+                      iconSize={item.width}
+                      fontsize={item.fontSize}
+                      onNavigate={closeIfMobile}
+                      badge={badge}
+                    />
+                  </li>
+                )
+              })}
             </ul>
+            <ProjectsNav onNavigate={closeIfMobile} />
           </nav>
         </div>
 

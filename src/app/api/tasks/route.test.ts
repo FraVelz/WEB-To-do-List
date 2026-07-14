@@ -34,6 +34,7 @@ describe('GET /api/tasks', () => {
       filter: 'inbox',
       q: undefined,
       label: undefined,
+      projectId: undefined,
     })
   })
 
@@ -44,13 +45,14 @@ describe('GET /api/tasks', () => {
       filter: 'completed',
       q: undefined,
       label: undefined,
+      projectId: undefined,
     })
   })
 
-  it('pasa búsqueda y label al repositorio', async () => {
+  it('pasa búsqueda, label y projectId al repositorio', async () => {
     await GET(
       new Request(
-        'http://localhost/api/tasks?filter=inbox&q=  hola  &label=Trabajo'
+        'http://localhost/api/tasks?filter=inbox&q=  hola  &label=Trabajo&projectId=p1'
       )
     )
 
@@ -58,6 +60,7 @@ describe('GET /api/tasks', () => {
       filter: 'inbox',
       q: 'hola',
       label: 'Trabajo',
+      projectId: 'p1',
     })
   })
 
@@ -120,6 +123,8 @@ describe('POST /api/tasks', () => {
       label: null,
       dueDate: null,
       priority: 0,
+      projectId: null,
+      sectionId: null,
     })
   })
 })

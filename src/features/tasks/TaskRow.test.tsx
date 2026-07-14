@@ -45,9 +45,18 @@ const baseTask = {
   dueDate: null as string | null,
   priority: 0,
   label: 'Tag',
+  projectId: null as string | null,
+  sectionId: null as string | null,
+  completedAt: null as string | null,
   createdAt: '',
   updatedAt: '',
 }
+
+vi.mock('@/services/projects', () => ({
+  fetchProjects: vi.fn().mockResolvedValue([]),
+  fetchSections: vi.fn().mockResolvedValue([]),
+}))
+
 
 describe('TaskRow', () => {
   afterEach(() => {

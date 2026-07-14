@@ -1,11 +1,14 @@
 'use client'
 
-import { Trash2Icon } from 'lucide-react'
+import { CalendarIcon, Trash2Icon } from 'lucide-react'
 import clsx from 'clsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { formatTaskDate } from '@/lib/date-format'
+import { EditTaskModal } from '@/features/tasks/components/EditTaskModal'
+import { PriorityDot } from '@/features/tasks/components/PrioritySelect'
+import { fetchProjects, fetchSections } from '@/services/projects'
 import { patchTask, type TaskDto } from '@/services/tasks'
 import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
 
@@ -13,11 +16,62 @@ import { DeleteTaskConfirmModal } from './components/DeleteTaskConfirmModal'
 
 type Props = {
   task: TaskDto
+  hideProjectMeta?: boolean
 }
 
-export function TaskRow({ task }: Props) {
+function isOverdue(dueDate: string | null, completed: boolean) {
+  if (!dueDate || completed) return false
+  const due = new Date(dueDate)
+  const start = new Date(
+    Date.UTC(
+      new Date().getUTCFullYear(),
+      new Date().getUTCMonth(),
+      new Date().getUTCDate()
+    )
+  )
+  return due < start
+}
+
+export function TaskRow({ task, hideProjectMeta }: Props) {
   const bump = useTasksRefreshStore((s) => s.bump)
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [projectName, setProjectName] = useState<string | null>(null)
+  const [sectionName, setSectionName] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (hideProjectMeta || !task.projectId) {
+      setProjectName(null)
+      setSectionName(null)
+      return
+    }
+    let cancelled = false
+    fetchProjects()
+      .then((projects) => {
+        if (cancelled) return
+        const project = projects.find((p) => p.id === task.projectId)
+        setProjectName(project?.name ?? null)
+        if (!task.sectionId || !task.projectId) {
+          setSectionName(null)
+          return
+        }
+        return fetchSections(task.projectId).then((sections) => {
+          if (cancelled) return
+          setSectionName(
+            sections.find((s) => s.id === task.sectionId)?.name ?? null
+          )
+        })
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setProjectName(null)
+          setSectionName(null)
+        }
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [hideProjectMeta, task.projectId, task.sectionId])
 
   async function toggleDone() {
     const nextCompleted = !task.completed
@@ -32,6 +86,9 @@ export function TaskRow({ task }: Props) {
     }
   }
 
+  const overdue = isOverdue(task.dueDate, task.completed)
+  const metaParts = [projectName, sectionName].filter(Boolean)
+
   return (
     <>
       <div
@@ -40,31 +97,54 @@ export function TaskRow({ task }: Props) {
           task.completed && 'opacity-60'
         )}
       >
+        <PriorityDot priority={task.priority} />
         <input
           type="checkbox"
           checked={task.completed}
           onChange={toggleDone}
           className="border-border-default mt-1 size-4 shrink-0 cursor-pointer rounded"
+          style={
+            task.priority
+              ? { accentColor: undefined, borderColor: undefined }
+              : undefined
+          }
           aria-label={task.completed ? 'Marcar pendiente' : 'Marcar hecha'}
         />
 
         <div className="min-w-0 flex-1">
-          <p
+          <button
+            type="button"
+            onClick={() => setEditOpen(true)}
             className={clsx(
-              'font-medium',
+              'text-left font-medium hover:underline',
               task.completed && 'text-text-secondary line-through'
             )}
           >
             {task.title}
-          </p>
+          </button>
           {task.description && (
             <p className="text-text-secondary mt-1 text-sm">{task.description}</p>
           )}
-          <div className="text-text-secondary mt-2 flex flex-wrap gap-2 text-xs">
-            {task.dueDate && <span>Vence: {formatTaskDate(task.dueDate)}</span>}
+          <div className="text-text-secondary mt-2 flex flex-wrap items-center gap-2 text-xs">
+            {task.dueDate && (
+              <span
+                className={clsx(
+                  'inline-flex items-center gap-1',
+                  overdue && 'text-[var(--color-state-error)]'
+                )}
+              >
+                <CalendarIcon className="size-3" aria-hidden />
+                {formatTaskDate(task.dueDate)}
+              </span>
+            )}
             {task.label && (
               <span className="bg-surface-accent-soft text-text-accent rounded px-1.5 py-0.5">
                 {task.label}
+              </span>
+            )}
+            {metaParts.length > 0 && (
+              <span className="text-text-secondary">
+                # {metaParts.join(' / ')}
               </span>
             )}
           </div>
@@ -86,6 +166,7 @@ export function TaskRow({ task }: Props) {
         taskTitle={task.title}
         onOpenChange={setDeleteOpen}
       />
+      <EditTaskModal open={editOpen} task={task} onOpenChange={setEditOpen} />
     </>
   )
 }

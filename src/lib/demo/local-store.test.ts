@@ -8,7 +8,7 @@ import {
   patchDemoTask,
 } from './local-store'
 
-const STORAGE_KEY = 'todo-demo-data'
+const STORAGE_KEY = 'todo-demo-data-v2'
 
 describe('demo local-store', () => {
   beforeEach(() => {

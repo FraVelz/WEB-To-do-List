@@ -14,16 +14,28 @@ export function useModalNavigation() {
     }
   }
 
-  function openModal(path: ModalPath) {
-    if (pathname === path) return
-    router.push(path)
+  function openModal(path: ModalPath, query?: Record<string, string>) {
+    const sp = new URLSearchParams()
+    if (query) {
+      for (const [key, value] of Object.entries(query)) {
+        if (value) sp.set(key, value)
+      }
+    }
+    const qs = sp.toString()
+    const href = qs ? `${path}?${qs}` : path
+    if (pathname === path && !qs) return
+    router.push(href)
   }
 
   return {
     pathname,
     isModalOpen: isModalPath(pathname),
     closeModal,
-    openAddTask: () => openModal(MODAL_PATHS.addTask),
+    openAddTask: (opts?: { projectId?: string; sectionId?: string }) =>
+      openModal(MODAL_PATHS.addTask, {
+        ...(opts?.projectId ? { projectId: opts.projectId } : {}),
+        ...(opts?.sectionId ? { sectionId: opts.sectionId } : {}),
+      }),
     openSearch: () => openModal(MODAL_PATHS.search),
     openPro: () => openModal(MODAL_PATHS.pro),
   }

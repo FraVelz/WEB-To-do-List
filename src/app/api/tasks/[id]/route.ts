@@ -19,6 +19,8 @@ export async function PATCH(req: Request, context: RouteContext) {
       dueDate?: Date | null
       priority?: number
       label?: string | null
+      projectId?: string | null
+      sectionId?: string | null
     } = {}
 
     if (typeof body.title === 'string') {
@@ -50,6 +52,18 @@ export async function PATCH(req: Request, context: RouteContext) {
     if (body.label === null || typeof body.label === 'string') {
       data.label =
         typeof body.label === 'string' ? body.label.trim() || null : null
+    }
+    if (body.projectId === null || typeof body.projectId === 'string') {
+      data.projectId =
+        typeof body.projectId === 'string'
+          ? body.projectId.trim() || null
+          : null
+    }
+    if (body.sectionId === null || typeof body.sectionId === 'string') {
+      data.sectionId =
+        typeof body.sectionId === 'string'
+          ? body.sectionId.trim() || null
+          : null
     }
 
     const task = await updateTask(userId, id, data)

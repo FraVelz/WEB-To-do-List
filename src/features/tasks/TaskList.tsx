@@ -9,11 +9,12 @@ import { useTasksRefreshStore } from '@/stores/tasks-refresh-store'
 import { TaskRow } from './TaskRow'
 
 type Props = {
-  filter: TaskFilter
+  filter?: TaskFilter
   label?: string
+  projectId?: string
 }
 
-export function TaskList({ filter, label }: Props) {
+export function TaskList({ filter, label, projectId }: Props) {
   const version = useTasksRefreshStore((s) => s.version)
   const [tasks, setTasks] = useState<Awaited<ReturnType<typeof fetchTasks>>>([])
   const [loading, setLoading] = useState(true)
@@ -25,7 +26,7 @@ export function TaskList({ filter, label }: Props) {
       if (!cancelled) setLoading(true)
     })
 
-    fetchTasks({ filter, label })
+    fetchTasks({ filter, label, projectId })
       .then((data) => {
         if (!cancelled) setTasks(data)
       })
@@ -42,7 +43,7 @@ export function TaskList({ filter, label }: Props) {
     return () => {
       cancelled = true
     }
-  }, [filter, label, version])
+  }, [filter, label, projectId, version])
 
   if (loading) {
     return <p className="text-text-secondary mt-6 text-sm">Cargando tareas…</p>
@@ -60,7 +61,7 @@ export function TaskList({ filter, label }: Props) {
     <ul className="mt-6 flex max-w-2xl flex-col gap-2">
       {tasks.map((task) => (
         <li key={task.id}>
-          <TaskRow task={task} />
+          <TaskRow task={task} hideProjectMeta={Boolean(projectId)} />
         </li>
       ))}
     </ul>
