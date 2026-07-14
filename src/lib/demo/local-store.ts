@@ -485,6 +485,28 @@ export function patchDemoTask(
   return updated
 }
 
+export function reorderDemoTasks(
+  updates: Array<{ id: string; order: number; sectionId?: string | null }>
+): number {
+  const data = readData()
+  const now = new Date().toISOString()
+  const byId = new Map(updates.map((u) => [u.id, u]))
+  let count = 0
+  data.tasks = data.tasks.map((task) => {
+    const update = byId.get(task.id)
+    if (!update) return task
+    count += 1
+    return {
+      ...task,
+      order: update.order,
+      ...(update.sectionId !== undefined ? { sectionId: update.sectionId } : {}),
+      updatedAt: now,
+    }
+  })
+  writeData(data)
+  return count
+}
+
 export function rescheduleDemoTasks(
   ids: string[],
   dueDate: string
@@ -624,6 +646,23 @@ export function patchDemoSection(
   data.sections[index] = updated
   writeData(data)
   return updated
+}
+
+export function reorderDemoSections(
+  updates: Array<{ id: string; order: number }>
+): number {
+  const data = readData()
+  const now = new Date().toISOString()
+  const byId = new Map(updates.map((u) => [u.id, u]))
+  let count = 0
+  data.sections = data.sections.map((section) => {
+    const update = byId.get(section.id)
+    if (!update) return section
+    count += 1
+    return { ...section, order: update.order, updatedAt: now }
+  })
+  writeData(data)
+  return count
 }
 
 export function deleteDemoSection(id: string): boolean {
