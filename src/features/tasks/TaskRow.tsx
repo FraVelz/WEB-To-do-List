@@ -16,8 +16,12 @@ export function TaskRow({ task }: Props) {
   const bump = useTasksRefreshStore((s) => s.bump)
 
   async function toggleDone() {
+    const nextCompleted = !task.completed
     try {
-      await patchTask(task.id, { completed: !task.completed })
+      await patchTask(task.id, { completed: nextCompleted })
+      toast.success(
+        nextCompleted ? 'Tarea completada' : 'Tarea marcada como pendiente'
+      )
       bump()
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Error al actualizar')
@@ -46,7 +50,7 @@ export function TaskRow({ task }: Props) {
         type="checkbox"
         checked={task.completed}
         onChange={toggleDone}
-        className="border-border-default mt-1 size-4 shrink-0 rounded"
+        className="border-border-default mt-1 size-4 shrink-0 cursor-pointer rounded"
         aria-label={task.completed ? 'Marcar pendiente' : 'Marcar hecha'}
       />
 

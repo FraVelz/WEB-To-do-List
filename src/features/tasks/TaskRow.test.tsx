@@ -7,6 +7,8 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { toast } from 'sonner'
+
 import { TaskRow } from './TaskRow'
 
 const patchTask = vi.fn()
@@ -51,6 +53,8 @@ describe('TaskRow', () => {
     patchTask.mockReset()
     deleteTask.mockReset()
     bump.mockReset()
+    vi.mocked(toast.success).mockReset()
+    vi.mocked(toast.error).mockReset()
     patchTask.mockResolvedValue({ ...baseTask, completed: true })
     deleteTask.mockResolvedValue(undefined)
     vi.spyOn(window, 'confirm').mockReturnValue(true)
@@ -63,7 +67,7 @@ describe('TaskRow', () => {
     expect(screen.getByText('Tag')).toBeInTheDocument()
   })
 
-  it('al marcar checkbox llama patchTask y bump', async () => {
+  it('al marcar checkbox llama patchTask, toast de éxito y bump', async () => {
     render(<TaskRow task={baseTask} />)
 
     fireEvent.click(
@@ -72,6 +76,24 @@ describe('TaskRow', () => {
 
     await waitFor(() => {
       expect(patchTask).toHaveBeenCalledWith('t1', { completed: true })
+      expect(toast.success).toHaveBeenCalledWith('Tarea completada')
+      expect(bump).toHaveBeenCalled()
+    })
+  })
+
+  it('al reabrir tarea muestra toast de pendiente', async () => {
+    patchTask.mockResolvedValue({ ...baseTask, completed: false })
+    render(<TaskRow task={{ ...baseTask, completed: true }} />)
+
+    fireEvent.click(
+      screen.getAllByRole('checkbox', { name: /marcar pendiente/i })[0]!
+    )
+
+    await waitFor(() => {
+      expect(patchTask).toHaveBeenCalledWith('t1', { completed: false })
+      expect(toast.success).toHaveBeenCalledWith(
+        'Tarea marcada como pendiente'
+      )
       expect(bump).toHaveBeenCalled()
     })
   })
