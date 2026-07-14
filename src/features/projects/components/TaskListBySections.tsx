@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import clsx from 'clsx'
 
 import { useModalNavigation } from '@/hooks/useModalNavigation'
+import { NameInputModal } from '@/features/projects/components/NameInputModal'
 import {
   createSection,
   fetchSections,
@@ -35,6 +36,7 @@ export function TaskListBySections({ projectId }: Props) {
   const [tasks, setTasks] = useState<TaskDto[]>([])
   const [loading, setLoading] = useState(true)
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [sectionOpen, setSectionOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -89,19 +91,13 @@ export function TaskListBySections({ projectId }: Props) {
     })
   }
 
-  async function handleAddSection() {
-    const name = window.prompt('Nombre de la sección')
-    if (!name?.trim()) return
-    try {
-      const section = await createSection({
-        projectId,
-        name: name.trim(),
-      })
-      setSections((prev) => [...prev, section])
-      toast.success('Sección creada')
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Error al crear sección')
-    }
+  async function handleAddSection(name: string) {
+    const section = await createSection({
+      projectId,
+      name,
+    })
+    setSections((prev) => [...prev, section])
+    toast.success('Sección creada')
   }
 
   if (loading) {
@@ -180,12 +176,21 @@ export function TaskListBySections({ projectId }: Props) {
 
       <button
         type="button"
-        onClick={handleAddSection}
+        onClick={() => setSectionOpen(true)}
         className="text-text-secondary hover:text-text-primary mt-2 flex items-center gap-2 text-sm"
       >
         <PlusIcon className="size-4" />
         Añadir sección
       </button>
+
+      <NameInputModal
+        open={sectionOpen}
+        onOpenChange={setSectionOpen}
+        title="Nueva sección"
+        label="Nombre de la sección"
+        confirmLabel="Crear"
+        onSubmit={handleAddSection}
+      />
     </div>
   )
 }

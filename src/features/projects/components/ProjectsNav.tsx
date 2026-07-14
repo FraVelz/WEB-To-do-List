@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import clsx from 'clsx'
 
+import { NameInputModal } from '@/features/projects/components/NameInputModal'
 import {
   createProject,
   fetchProjects,
@@ -22,7 +23,7 @@ export function ProjectsNav({ onNavigate }: Props) {
   const pathname = usePathname()
   const version = useTasksRefreshStore((s) => s.version)
   const [projects, setProjects] = useState<ProjectDto[]>([])
-  const [creating, setCreating] = useState(false)
+  const [createOpen, setCreateOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -42,19 +43,10 @@ export function ProjectsNav({ onNavigate }: Props) {
     }
   }, [version])
 
-  async function handleAdd() {
-    const name = window.prompt('Nombre del proyecto')
-    if (!name?.trim()) return
-    setCreating(true)
-    try {
-      const project = await createProject({ name: name.trim() })
-      setProjects((prev) => [...prev, project])
-      toast.success('Proyecto creado')
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Error al crear proyecto')
-    } finally {
-      setCreating(false)
-    }
+  async function handleCreate(name: string) {
+    const project = await createProject({ name })
+    setProjects((prev) => [...prev, project])
+    toast.success('Proyecto creado')
   }
 
   return (
@@ -65,8 +57,7 @@ export function ProjectsNav({ onNavigate }: Props) {
         </p>
         <button
           type="button"
-          onClick={handleAdd}
-          disabled={creating}
+          onClick={() => setCreateOpen(true)}
           className="text-text-secondary hover:text-text-primary rounded p-0.5"
           aria-label="Añadir proyecto"
         >
@@ -96,6 +87,15 @@ export function ProjectsNav({ onNavigate }: Props) {
           )
         })}
       </ul>
+
+      <NameInputModal
+        open={createOpen}
+        onOpenChange={setCreateOpen}
+        title="Nuevo proyecto"
+        label="Nombre del proyecto"
+        confirmLabel="Crear"
+        onSubmit={handleCreate}
+      />
     </div>
   )
 }
