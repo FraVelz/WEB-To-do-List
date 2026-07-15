@@ -20,8 +20,10 @@ type Props = {
 
 export function PageProject({ projectId }: Props) {
   const version = useTasksRefreshStore((s) => s.version)
+  const bump = useTasksRefreshStore((s) => s.bump)
   const { openAddTask } = useModalNavigation()
   const [project, setProject] = useState<ProjectDto | null>(null)
+  const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -34,6 +36,7 @@ export function PageProject({ projectId }: Props) {
       .then((p) => {
         if (cancelled) return
         setProject(p)
+        setName(p.name)
         setDescription(p.description ?? '')
       })
       .catch((e: unknown) => {
@@ -51,6 +54,26 @@ export function PageProject({ projectId }: Props) {
       cancelled = true
     }
   }, [projectId, version])
+
+  async function saveName() {
+    if (!project) return
+    const next = name.trim()
+    if (!next) {
+      setName(project.name)
+      toast.error('El nombre no puede estar vacío')
+      return
+    }
+    if (project.name === next) return
+    try {
+      const updated = await patchProject(project.id, { name: next })
+      setProject(updated)
+      setName(updated.name)
+      bump()
+    } catch (e) {
+      setName(project.name)
+      toast.error(e instanceof Error ? e.message : 'Error al guardar nombre')
+    }
+  }
 
   async function saveDescription() {
     if (!project) return
@@ -80,9 +103,18 @@ export function PageProject({ projectId }: Props) {
           <>
             <p className="text-text-secondary text-sm">Mis Proyectos /</p>
             <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
-              <h1 className="text-text-heading text-2xl font-bold">
-                {project.name}
-              </h1>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onBlur={() => void saveName()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.currentTarget.blur()
+                  }
+                }}
+                aria-label="Nombre del proyecto"
+                className="text-text-heading min-w-0 flex-1 bg-transparent text-2xl font-bold outline-none"
+              />
               <button
                 type="button"
                 onClick={() => openAddTask({ projectId: project.id })}
@@ -94,7 +126,7 @@ export function PageProject({ projectId }: Props) {
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              onBlur={saveDescription}
+              onBlur={() => void saveDescription()}
               placeholder="Añade una descripción"
               className="text-text-secondary placeholder:text-text-secondary/70 mt-2 w-full max-w-2xl bg-transparent text-sm outline-none"
             />
