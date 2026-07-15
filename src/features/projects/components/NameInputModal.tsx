@@ -13,6 +13,8 @@ type NameInputModalProps = {
   title: string
   label: string
   confirmLabel: string
+  /** Valor inicial del campo (p. ej. al renombrar). */
+  initialValue?: string
   onSubmit: (name: string) => void | Promise<void>
 }
 
@@ -22,16 +24,19 @@ export function NameInputModal({
   title,
   label,
   confirmLabel,
+  initialValue = '',
   onSubmit,
 }: NameInputModalProps) {
   if (!open) return null
 
   return createPortal(
     <NameInputModalForm
+      key={initialValue}
       onOpenChange={onOpenChange}
       title={title}
       label={label}
       confirmLabel={confirmLabel}
+      initialValue={initialValue}
       onSubmit={onSubmit}
     />,
     document.body
@@ -43,11 +48,12 @@ function NameInputModalForm({
   title,
   label,
   confirmLabel,
+  initialValue = '',
   onSubmit,
 }: Omit<NameInputModalProps, 'open'>) {
   const titleId = useId()
   const inputId = useId()
-  const [name, setName] = useState('')
+  const [name, setName] = useState(initialValue)
   const [loading, setLoading] = useState(false)
 
   async function handleSubmit(e: React.FormEvent) {

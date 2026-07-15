@@ -16,6 +16,7 @@ import type { InsertEdge } from '@/features/projects/dnd/types'
 import {
   createSection,
   fetchSections,
+  patchSection,
   reorderSections,
   type SectionDto,
 } from '@/services/projects'
@@ -56,6 +57,9 @@ export function TaskListBySections({ projectId }: Props) {
   const [loading, setLoading] = useState(true)
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [sectionOpen, setSectionOpen] = useState(false)
+  const [renamingSection, setRenamingSection] = useState<SectionDto | null>(
+    null
+  )
 
   useEffect(() => {
     let cancelled = false
@@ -128,6 +132,16 @@ export function TaskListBySections({ projectId }: Props) {
     })
     setSections((prev) => [...prev, section])
     toast.success('Sección creada')
+  }
+
+  async function handleRenameSection(name: string) {
+    if (!renamingSection) return
+    if (renamingSection.name === name) return
+    const updated = await patchSection(renamingSection.id, { name })
+    setSections((prev) =>
+      prev.map((s) => (s.id === updated.id ? updated : s))
+    )
+    toast.success('Sección renombrada')
   }
 
   async function persistTaskUpdates(
@@ -248,6 +262,7 @@ export function TaskListBySections({ projectId }: Props) {
             collapsed={Boolean(isCollapsed)}
             onToggle={() => toggle(section.id)}
             onAddTask={() => openAddTask({ projectId, sectionId: section.id })}
+            onRename={() => setRenamingSection(section)}
             onDropSection={handleSectionDrop}
             onDropTaskOnSection={(taskId) =>
               handleTaskDropOnSection(section.id, taskId)
@@ -302,6 +317,18 @@ export function TaskListBySections({ projectId }: Props) {
         label="Nombre de la sección"
         confirmLabel="Crear"
         onSubmit={handleAddSection}
+      />
+
+      <NameInputModal
+        open={renamingSection !== null}
+        onOpenChange={(open) => {
+          if (!open) setRenamingSection(null)
+        }}
+        title="Renombrar sección"
+        label="Nombre de la sección"
+        confirmLabel="Guardar"
+        initialValue={renamingSection?.name ?? ''}
+        onSubmit={handleRenameSection}
       />
     </div>
   )

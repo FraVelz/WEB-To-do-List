@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDownIcon, PlusIcon } from 'lucide-react'
+import { ChevronDownIcon, PencilIcon, PlusIcon } from 'lucide-react'
 import { useRef, type ReactNode } from 'react'
 import clsx from 'clsx'
 
@@ -15,6 +15,7 @@ type Props = {
   collapsed: boolean
   onToggle: () => void
   onAddTask: () => void
+  onRename: () => void
   children: ReactNode
   onDropSection: (args: {
     draggedSectionId: string
@@ -30,6 +31,7 @@ export function DraggableSectionBlock({
   collapsed,
   onToggle,
   onAddTask,
+  onRename,
   children,
   onDropSection,
   onDropTaskOnSection,
@@ -79,6 +81,14 @@ export function DraggableSectionBlock({
           <span className="text-text-secondary text-sm font-normal">
             {taskCount}
           </span>
+        </button>
+        <button
+          type="button"
+          onClick={onRename}
+          className="text-text-secondary hover:bg-interactive-hover-soft hover:text-text-primary rounded p-1 opacity-0 group-hover:opacity-100"
+          aria-label={`Renombrar sección ${section.name}`}
+        >
+          <PencilIcon className="size-4" />
         </button>
         <button
           type="button"
