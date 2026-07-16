@@ -138,9 +138,7 @@ export function TaskListBySections({ projectId }: Props) {
     if (!renamingSection) return
     if (renamingSection.name === name) return
     const updated = await patchSection(renamingSection.id, { name })
-    setSections((prev) =>
-      prev.map((s) => (s.id === updated.id ? updated : s))
-    )
+    setSections((prev) => prev.map((s) => (s.id === updated.id ? updated : s)))
     toast.success('Sección renombrada')
   }
 

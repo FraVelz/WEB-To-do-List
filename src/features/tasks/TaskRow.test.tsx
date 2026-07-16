@@ -84,7 +84,7 @@ describe('TaskRow', () => {
     render(<TaskRow task={baseTask} />)
 
     fireEvent.click(
-      screen.getAllByRole('checkbox', { name: /marcar hecha/i })[0]!
+      screen.getAllByRole('checkbox', { name: /marcar hecha: mi tarea/i })[0]!
     )
 
     await waitFor(() => {
@@ -99,7 +99,9 @@ describe('TaskRow', () => {
     render(<TaskRow task={{ ...baseTask, completed: true }} />)
 
     fireEvent.click(
-      screen.getAllByRole('checkbox', { name: /marcar pendiente/i })[0]!
+      screen.getAllByRole('checkbox', {
+        name: /marcar pendiente: mi tarea/i,
+      })[0]!
     )
 
     await waitFor(() => {
@@ -113,7 +115,7 @@ describe('TaskRow', () => {
     render(<TaskRow task={baseTask} />)
 
     fireEvent.click(
-      screen.getAllByRole('button', { name: /eliminar tarea/i })[0]!
+      screen.getAllByRole('button', { name: /eliminar tarea: mi tarea/i })[0]!
     )
 
     expect(
@@ -133,7 +135,7 @@ describe('TaskRow', () => {
     render(<TaskRow task={baseTask} />)
 
     fireEvent.click(
-      screen.getAllByRole('button', { name: /eliminar tarea/i })[0]!
+      screen.getAllByRole('button', { name: /eliminar tarea: mi tarea/i })[0]!
     )
     fireEvent.click(screen.getByRole('button', { name: /cancelar/i }))
 
