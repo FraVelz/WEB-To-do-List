@@ -1,3 +1,11 @@
+import {
+  matchesTaskLabel,
+  matchesTaskSearch,
+  matchesTaskView,
+  normalizeLabel,
+  uniqueTaskLabels,
+} from '@/lib/domain/task-domain'
+
 type TaskDto = {
   id: string
   title: string
@@ -49,21 +57,15 @@ type NotificationDto = {
   read: boolean
 }
 
-const STORAGE_KEY = 'todo-demo-data-v2'
+/** Browser-only demo DB key — never Firestore (see ADR 0002). */
+export const DEMO_STORAGE_KEY = 'todo-demo-data-v2'
+const STORAGE_KEY = DEMO_STORAGE_KEY
 
 type DemoData = {
   tasks: TaskDto[]
   projects: ProjectDto[]
   sections: SectionDto[]
   notifications: NotificationDto[]
-}
-
-function utcDayRange(ref: Date = new Date()) {
-  const start = new Date(
-    Date.UTC(ref.getUTCFullYear(), ref.getUTCMonth(), ref.getUTCDate())
-  )
-  const end = new Date(start.getTime() + 86400000)
-  return { start, end }
 }
 
 function createId(prefix: string) {
@@ -311,39 +313,8 @@ function writeData(data: DemoData) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
 }
 
-function matchesSearch(task: TaskDto, q: string) {
-  const needle = q.toLowerCase()
-  return (
-    task.title.toLowerCase().includes(needle) ||
-    (task.description?.toLowerCase().includes(needle) ?? false)
-  )
-}
-
 function matchesFilter(task: TaskDto, filter: TaskFilter) {
-  const { start: dayStart } = utcDayRange()
-  const weekEnd = new Date(dayStart.getTime() + 7 * 86400000)
-  const due = task.dueDate ? new Date(task.dueDate) : null
-
-  switch (filter) {
-    case 'completed':
-      return task.completed
-    case 'all':
-      return true
-    case 'today': {
-      if (task.completed || !due) return false
-      const { start, end } = utcDayRange()
-      return due >= start && due < end
-    }
-    case 'next':
-      if (task.completed || !due) return false
-      return due >= dayStart && due < weekEnd
-    case 'overdue':
-      if (task.completed || !due) return false
-      return due < dayStart
-    case 'inbox':
-    default:
-      return !task.completed && task.projectId == null
-  }
+  return matchesTaskView(task, filter)
 }
 
 function sortTasks(tasks: TaskDto[], byProjectOrder = false) {
@@ -389,8 +360,8 @@ export function listDemoTasks(params: {
     tasks = tasks.filter((task) => matchesFilter(task, filter))
   }
 
-  if (label) tasks = tasks.filter((task) => task.label === label)
-  if (q) tasks = tasks.filter((task) => matchesSearch(task, q))
+  if (label) tasks = tasks.filter((task) => matchesTaskLabel(task, label))
+  if (q) tasks = tasks.filter((task) => matchesTaskSearch(task, q))
 
   sortTasks(tasks, Boolean(projectId))
   return tasks
@@ -425,7 +396,7 @@ export function createDemoTask(input: {
     completed: false,
     dueDate: input.dueDate ?? null,
     priority: input.priority ?? 0,
-    label: input.label ?? null,
+    label: normalizeLabel(input.label ?? null),
     projectId: input.projectId ?? null,
     sectionId: input.sectionId ?? null,
     order: input.order ?? Date.now(),
@@ -469,6 +440,9 @@ export function patchDemoTask(
   const updated: TaskDto = {
     ...current,
     ...patch,
+    ...(patch.label !== undefined
+      ? { label: normalizeLabel(patch.label) }
+      : {}),
     completedAt,
     updatedAt: now,
   }
@@ -525,11 +499,7 @@ export function deleteDemoTask(id: string): boolean {
 }
 
 export function listDemoTaskLabels(): string[] {
-  const labels = new Set<string>()
-  for (const task of readData().tasks) {
-    if (task.label) labels.add(task.label)
-  }
-  return [...labels].sort((a, b) => a.localeCompare(b, 'es'))
+  return uniqueTaskLabels(readData().tasks)
 }
 
 export function listDemoProjects(): ProjectDto[] {

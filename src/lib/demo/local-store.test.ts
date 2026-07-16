@@ -1,14 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import {
+  DEMO_STORAGE_KEY,
   createDemoTask,
   deleteDemoTask,
   listDemoTaskLabels,
   listDemoTasks,
   patchDemoTask,
 } from './local-store'
-
-const STORAGE_KEY = 'todo-demo-data-v2'
 
 describe('demo local-store', () => {
   beforeEach(() => {
@@ -22,7 +21,7 @@ describe('demo local-store', () => {
   it('inicializa datos de ejemplo en localStorage', () => {
     const tasks = listDemoTasks({ filter: 'inbox' })
     expect(tasks.length).toBeGreaterThan(0)
-    expect(localStorage.getItem(STORAGE_KEY)).toBeTruthy()
+    expect(localStorage.getItem(DEMO_STORAGE_KEY)).toBeTruthy()
   })
 
   it('crea, actualiza y elimina tareas', () => {
