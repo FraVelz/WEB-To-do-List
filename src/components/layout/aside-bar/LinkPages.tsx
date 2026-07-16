@@ -28,6 +28,7 @@ export function LinkPages({
     <Link
       href={link}
       onClick={onNavigate}
+      aria-current={isActive ? 'page' : undefined}
       className={clsx(
         'group hover:bg-interactive-hover-soft flex items-center gap-3 rounded-md px-3 py-2 transition-colors',
         isActive
