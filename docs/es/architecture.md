@@ -69,11 +69,11 @@ Las rutas bajo `(app)/` comparten este shell. Las APIs en `src/app/api/` no usan
 
 En `/`, además del formulario de login con Firebase, existe **“Probar en modo demo”**: entra sin credenciales ni conexión al backend.
 
-- **Modo demo** — datos en `localStorage` (`src/lib/demo/local-store.ts`); solo interfaz local.
-- **Modo usuario** — Firebase Auth + Firestore vía APIs.
-- El modo se guarda en `sessionStorage` vía [`src/lib/auth-session.ts`](../src/lib/auth-session.ts) y [`useAuthSessionStore`](../src/stores/auth-session-store.ts).
-- En modo demo, el layout `(app)` muestra [`DemoModeBanner`](../src/features/auth/DemoModeBanner.tsx) y el perfil del sidebar indica “Usuario demo”.
-- Al cerrar sesión en `/logout`, demo solo borra la sesión; usuario real también llama a `signOut` de Firebase.
+- **Modo demo (Lab)** — datos en `localStorage` (`src/lib/demo/local-store.ts`); **nunca** escribe en Firestore. Ver [ADR 0002](../adr/0002-demo-store-isolation.md).
+- **Modo usuario** — Firebase Auth + Firestore vía APIs (opcional; fuera del foco Camino A).
+- El modo se guarda en `sessionStorage` vía [`src/lib/auth-session.ts`](../../src/lib/auth-session.ts) y [`useAuthSessionStore`](../../src/stores/auth-session-store.ts).
+- En modo demo, el layout `(app)` muestra [`DemoModeBanner`](../../src/features/auth/DemoModeBanner.tsx) (“Lab / Modo demo”) y el perfil del sidebar indica “Usuario demo”.
+- Camino A firmado: [ADR 0001](../adr/0001-camino-a-lab.md) — sin sharing/roles.
 
 ## Datos (Firebase)
 

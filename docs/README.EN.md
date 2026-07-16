@@ -8,6 +8,7 @@ Project documentation index. Each guide is available in **Spanish** and **Englis
 | Architecture    | [es/architecture.md](es/architecture.md)       | [en/architecture.md](en/architecture.md)       |
 | Development     | [es/development.md](es/development.md)         | [en/development.md](en/development.md)         |
 | Design system   | [es/design-system.md](es/design-system.md)     | [en/design-system.md](en/design-system.md)     |
+| ADRs (Lab)      | [adr/README.md](adr/README.md)                 | same                                           |
 
 ## Suggested reading order
 
