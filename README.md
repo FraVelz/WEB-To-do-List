@@ -1,9 +1,12 @@
-# 📋 WEB To-Do List
+# WEB To-Do List — Lab
 
 [English version](README.EN.md)
 
-Aplicación de gestión de tareas moderna construida con Next.js. Organiza tu vida y tu trabajo con una interfaz intuitiva
-y un diseño limpio.
+**Lab / Demo** (Camino A). Laboratorio de UI densa de tareas con Next.js, Vitest y modo demo
+local — **no** es un producto colaborativo (sin sharing, roles ni workspaces).
+
+Decisión: [docs/adr/0001-camino-a-lab.md](docs/adr/0001-camino-a-lab.md) · Aislamiento demo:
+[docs/adr/0002-demo-store-isolation.md](docs/adr/0002-demo-store-isolation.md)
 
 <p align="center">
   <img
@@ -13,34 +16,40 @@ y un diseño limpio.
   />
 </p>
 
-## 📚 Documentación
+## Qué es / qué no es
 
-Guías técnicas (español e inglés): [docs/README.md](docs/README.md) · [docs/README.EN.md](docs/README.EN.md)
+| Sí (Lab)                                            | No (congelado)               |
+| --------------------------------------------------- | ---------------------------- |
+| Inbox / Hoy / Próximo, etiquetas, proyectos locales | Sharing, invites, roles      |
+| Modo demo en `localStorage` (sin Firestore)         | Pitch como flagship hired    |
+| ≥10 tests de dominio task/label                     | Billing real / “Pro” de pago |
 
-## ✨ Características
+## Cómo probar
 
-- **Bandeja de entrada** — Todas tus tareas en un solo lugar
-- **Hoy** — Tareas programadas para el día actual
-- **Próximo** — Vista de tareas pendientes
-- **Buscador** — Encuentra tareas rápidamente
-- **Filtros y etiquetas** — Organiza y categoriza tus tareas
-- **Completado** — Historial de tareas finalizadas
-- **Modales** — Interfaz fluida para crear y editar tareas
-- **Barra lateral** — Navegación cómoda y accesible
-- **Modo oscuro** — Soporte para temas claro y oscuro (Tailwind)
+```bash
+pnpm install
+pnpm dev
+```
 
-## 🛠️ Tecnologías
+En `/` elige **Probar en modo demo** — datos en el navegador; el banner “Lab / Modo demo” debe
+verse en toda la app.
 
-- [Next.js 16](https://nextjs.org/) — Framework React
-- [React 19](https://react.dev/) — Biblioteca UI
-- [TypeScript](https://www.typescriptlang.org/) — Tipado estático
-- [Tailwind CSS 4](https://tailwindcss.com/) — Estilos utilitarios
-- [Firebase](https://firebase.google.com/) — Auth + Firestore
+```bash
+pnpm test:run   # Vitest (dominio + UI)
+pnpm lint
+pnpm build
+```
 
-## 📄 Información
+## Documentación
 
-Proyecto de uso educativo.
+- Índice: [docs/README.md](docs/README.md)
+- ADRs: [docs/adr/README.md](docs/adr/README.md)
 
-Licencia Apache 2.0
+## Stack
 
-**Autor:** [Fravelz](https://github.com/fravelz)
+Next.js 16 · React 19 · TypeScript · Tailwind 4 · Firebase (opcional, modo usuario) · Vitest ·
+Radix · Zustand
+
+## Licencia
+
+Apache 2.0 — [Fravelz](https://github.com/fravelz)

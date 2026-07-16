@@ -1,8 +1,12 @@
-# 📋 WEB To-Do List
+# WEB To-Do List — Lab
 
 This document is in English. [Versión en español](./README.md)
 
-Modern task management app built with Next.js. Organize your life and work with an intuitive interface and clean design.
+**Lab / Demo** (Path A). A dense task-UI learning lab with Next.js, Vitest, and a browser-local
+demo store — **not** a collaborative product (no sharing, roles, or workspaces).
+
+Decision: [docs/adr/0001-camino-a-lab.md](docs/adr/0001-camino-a-lab.md) · Demo isolation:
+[docs/adr/0002-demo-store-isolation.md](docs/adr/0002-demo-store-isolation.md)
 
 <p align="center">
   <img
@@ -12,33 +16,40 @@ Modern task management app built with Next.js. Organize your life and work with 
   />
 </p>
 
-## 📚 Documentation
+## What it is / is not
 
-Technical guides (Spanish and English): [docs/README.md](docs/README.md) · [docs/README.EN.md](docs/README.EN.md)
+| Yes (Lab)                                    | No (frozen)               |
+| -------------------------------------------- | ------------------------- |
+| Inbox / Today / Next, labels, local projects | Sharing, invites, roles   |
+| Demo mode in `localStorage` (no Firestore)   | Hired flagship pitch      |
+| ≥10 task/label domain tests                  | Real billing / paid “Pro” |
 
-## ✨ Features
+## Try it
 
-- **Inbox** — All your tasks in one place
-- **Today** — Tasks scheduled for the current day
-- **Next** — View of pending tasks
-- **Search** — Find tasks quickly
-- **Filters and tags** — Organize and categorize your tasks
-- **Completed** — History of finished tasks
-- **Modals** — Smooth UI for creating and editing tasks
-- **Sidebar** — Comfortable, accessible navigation
-- **Dark mode** — Light and dark theme support (Tailwind)
+```bash
+pnpm install
+pnpm dev
+```
 
-## 🛠️ Technologies
+On `/`, choose **Try demo mode** — browser-local data; the “Lab / Demo mode” banner should stay
+visible.
 
-- [Next.js 16](https://nextjs.org/) — React framework
-- [React 19](https://react.dev/) — UI library
-- [TypeScript](https://www.typescriptlang.org/) — Static typing
-- [Tailwind CSS 4](https://tailwindcss.com/) — Utility-first styles
+```bash
+pnpm test:run
+pnpm lint
+pnpm build
+```
 
-## 📄 Information
+## Docs
 
-Educational project.
+- Index: [docs/README.md](docs/README.md)
+- ADRs: [docs/adr/README.md](docs/adr/README.md)
 
-Apache 2.0 License
+## Stack
 
-**Author:** [Fravelz](https://github.com/fravelz)
+Next.js 16 · React 19 · TypeScript · Tailwind 4 · Firebase (optional, signed-in mode) · Vitest ·
+Radix · Zustand
+
+## License
+
+Apache 2.0 — [Fravelz](https://github.com/fravelz)

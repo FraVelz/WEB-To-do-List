@@ -8,6 +8,7 @@
 | Arquitectura      | [es/architecture.md](es/architecture.md)       | [en/architecture.md](en/architecture.md)       |
 | Desarrollo        | [es/development.md](es/development.md)         | [en/development.md](en/development.md)         |
 | Sistema de diseño | [es/design-system.md](es/design-system.md)     | [en/design-system.md](en/design-system.md)     |
+| ADRs (Lab)        | [adr/README.md](adr/README.md)                 | same                                           |
 
 ## Lectura recomendada
 
