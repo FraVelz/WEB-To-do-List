@@ -18,13 +18,13 @@ export function DemoModeBanner() {
   return (
     <output className="border-border-default text-text-secondary flex shrink-0 flex-col gap-2 border-b bg-[color-mix(in_srgb,var(--color-surface-sidebar)_70%,transparent)] px-4 py-2 text-sm sm:flex-row sm:items-center sm:justify-between sm:gap-3">
       <p className="min-w-0 leading-snug">
-        <span className="text-text-heading font-medium">Modo demo</span>
+        <span className="text-text-heading font-medium">Lab / Modo demo</span>
         <span className="hidden sm:inline">
           {' — '}
-          Explora la interfaz con datos de ejemplo guardados en tu navegador.
+          Datos locales en el navegador; no tocan Firebase de producción.
         </span>
         <span className="text-text-secondary sm:hidden">
-          {' — '}Datos de ejemplo en el navegador.
+          {' — '}Datos locales (Lab); sin Firebase prod.
         </span>
       </p>
       <Link
