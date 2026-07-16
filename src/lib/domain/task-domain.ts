@@ -93,7 +93,10 @@ export function normalizeLabel(
   return trimmed.length > 0 ? trimmed : null
 }
 
-export function matchesTaskLabel(task: TaskLike, label: string): boolean {
+export function matchesTaskLabel(
+  task: { label: string | null },
+  label: string
+): boolean {
   const needle = normalizeLabel(label)
   if (!needle) return true
   return normalizeLabel(task.label) === needle
