@@ -66,19 +66,18 @@ function NameInputModalForm({
     setLoading(true)
     try {
       await onSubmit(trimmed)
+      setLoading(false)
       onOpenChange(false)
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
-    } finally {
       setLoading(false)
+      toast.error(err instanceof Error ? err.message : 'Error al guardar')
     }
   }
 
   return (
     <ModalRouteShell onClose={() => !loading && onOpenChange(false)}>
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby={titleId}
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-6 shadow-xl"
       >
@@ -116,7 +115,7 @@ function NameInputModalForm({
             </Button>
           </div>
         </form>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }

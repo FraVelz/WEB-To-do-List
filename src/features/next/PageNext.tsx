@@ -1,13 +1,11 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
 import Header from '@/components/layout/header/Header'
-import {
-  WeekCalendarStrip,
-  isSameUtcDay,
-} from '@/features/next/components/WeekCalendarStrip'
+import { WeekCalendarStrip } from '@/features/next/components/WeekCalendarStrip'
+import { isSameUtcDay } from '@/features/next/components/weekCalendarUtils'
 import { OverdueSection } from '@/features/tasks/components/OverdueSection'
 import { TaskEmptyState } from '@/features/tasks/TaskEmptyState'
 import { TaskRow } from '@/features/tasks/TaskRow'
@@ -53,10 +51,7 @@ export function PageNext() {
     }
   }, [version])
 
-  const dayTasks = useMemo(
-    () => tasks.filter((t) => isSameUtcDay(t.dueDate, selected)),
-    [tasks, selected]
-  )
+  const dayTasks = tasks.filter((t) => isSameUtcDay(t.dueDate, selected))
 
   useEffect(() => {
     rowRefs.current = rowRefs.current.slice(0, dayTasks.length)
@@ -71,15 +66,12 @@ export function PageNext() {
     })
   }
 
-  function onListKeyDown(e: React.KeyboardEvent<HTMLUListElement>) {
+  function handleMoveFocus(target: 'prev' | 'next' | 'first' | 'last') {
     if (dayTasks.length === 0) return
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      moveFocus(focusIndex + 1)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      moveFocus(focusIndex - 1)
-    }
+    if (target === 'prev') moveFocus(focusIndex - 1)
+    else if (target === 'next') moveFocus(focusIndex + 1)
+    else if (target === 'first') moveFocus(0)
+    else moveFocus(dayTasks.length - 1)
   }
 
   return (
@@ -119,14 +111,9 @@ export function PageNext() {
             />
           )}
           {!loading && dayTasks.length > 0 && (
-            <ul
-              className="mt-4 flex flex-col gap-2"
-              role="list"
-              aria-label="Tareas del día"
-              onKeyDown={onListKeyDown}
-            >
+            <ul className="mt-4 flex flex-col gap-2" aria-label="Tareas del día">
               {dayTasks.map((task, index) => (
-                <li key={task.id} role="none">
+                <li key={task.id}>
                   <TaskRow
                     task={task}
                     rowRef={(el) => {
@@ -134,6 +121,7 @@ export function PageNext() {
                     }}
                     tabIndex={index === focusIndex ? 0 : -1}
                     onRowFocus={() => setFocusIndex(index)}
+                    onMoveFocus={handleMoveFocus}
                   />
                 </li>
               ))}

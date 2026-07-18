@@ -1,7 +1,7 @@
 'use client'
 
 import { PlusIcon } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { useModalNavigation } from '@/hooks/useModalNavigation'
@@ -90,12 +90,11 @@ export function TaskListBySections({ projectId }: Props) {
     }
   }, [projectId, version])
 
-  const unsectioned = useMemo(
-    () => tasks.filter((t) => !t.sectionId).sort((a, b) => a.order - b.order),
-    [tasks]
-  )
+  const unsectioned = tasks
+    .filter((t) => !t.sectionId)
+    .sort((a, b) => a.order - b.order)
 
-  const bySection = useMemo(() => {
+  const bySection = (() => {
     const map = new Map<string, TaskDto[]>()
     for (const s of sections) map.set(s.id, [])
     for (const t of tasks) {
@@ -110,12 +109,9 @@ export function TaskListBySections({ projectId }: Props) {
       )
     }
     return map
-  }, [sections, tasks])
+  })()
 
-  const sortedSections = useMemo(
-    () => [...sections].sort((a, b) => a.order - b.order),
-    [sections]
-  )
+  const sortedSections = [...sections].sort((a, b) => a.order - b.order)
 
   function toggle(sectionId: string) {
     setCollapsed((prev) => {

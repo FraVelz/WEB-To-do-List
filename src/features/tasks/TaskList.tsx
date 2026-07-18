@@ -65,21 +65,12 @@ export function TaskList({ filter, label, projectId, emptyView }: Props) {
     })
   }
 
-  function onListKeyDown(e: React.KeyboardEvent<HTMLUListElement>) {
+  function handleMoveFocus(target: 'prev' | 'next' | 'first' | 'last') {
     if (tasks.length === 0) return
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      moveFocus(focusIndex + 1)
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      moveFocus(focusIndex - 1)
-    } else if (e.key === 'Home') {
-      e.preventDefault()
-      moveFocus(0)
-    } else if (e.key === 'End') {
-      e.preventDefault()
-      moveFocus(tasks.length - 1)
-    }
+    if (target === 'prev') moveFocus(focusIndex - 1)
+    else if (target === 'next') moveFocus(focusIndex + 1)
+    else if (target === 'first') moveFocus(0)
+    else moveFocus(tasks.length - 1)
   }
 
   if (loading) {
@@ -98,12 +89,10 @@ export function TaskList({ filter, label, projectId, emptyView }: Props) {
   return (
     <ul
       className="mt-6 flex max-w-2xl flex-col gap-2"
-      role="list"
       aria-label="Lista de tareas"
-      onKeyDown={onListKeyDown}
     >
       {tasks.map((task, index) => (
-        <li key={task.id} role="none">
+        <li key={task.id}>
           <TaskRow
             task={task}
             hideProjectMeta={Boolean(projectId)}
@@ -112,6 +101,7 @@ export function TaskList({ filter, label, projectId, emptyView }: Props) {
             }}
             tabIndex={index === focusIndex ? 0 : -1}
             onRowFocus={() => setFocusIndex(index)}
+            onMoveFocus={handleMoveFocus}
           />
         </li>
       ))}

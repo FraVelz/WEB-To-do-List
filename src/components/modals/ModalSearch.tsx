@@ -51,9 +51,8 @@ export function ModalSearch() {
 
   return (
     <ModalRouteShell align="top">
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="modal-search-title"
         className="border-border-default bg-surface-sidebar w-full max-w-lg rounded-xl border shadow-xl"
       >
@@ -117,7 +116,7 @@ export function ModalSearch() {
             Cerrar
           </button>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }
