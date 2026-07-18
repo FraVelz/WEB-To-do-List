@@ -42,9 +42,8 @@ export function LogoutConfirmModal({
 
   return createPortal(
     <ModalRouteShell onClose={() => onOpenChange(false)}>
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="logout-modal-title"
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8 text-center shadow-xl"
       >
@@ -80,7 +79,7 @@ export function LogoutConfirmModal({
             Cancelar
           </Button>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>,
     document.body
   )

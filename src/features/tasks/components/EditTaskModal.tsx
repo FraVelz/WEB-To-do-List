@@ -41,13 +41,13 @@ export function EditTaskModal({ open, task, onOpenChange }: Props) {
 
 function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
   const bump = useTasksRefreshStore((s) => s.bump)
-  const [title, setTitle] = useState(task.title)
-  const [description, setDescription] = useState(task.description ?? '')
-  const [label, setLabel] = useState(task.label ?? '')
-  const [dueDate, setDueDate] = useState(toLocalInput(task.dueDate))
-  const [priority, setPriority] = useState(task.priority)
-  const [projectId, setProjectId] = useState(task.projectId ?? '')
-  const [sectionId, setSectionId] = useState(task.sectionId ?? '')
+  const [title, setTitle] = useState(() => task.title)
+  const [description, setDescription] = useState(() => task.description ?? '')
+  const [label, setLabel] = useState(() => task.label ?? '')
+  const [dueDate, setDueDate] = useState(() => toLocalInput(task.dueDate))
+  const [priority, setPriority] = useState(() => task.priority)
+  const [projectId, setProjectId] = useState(() => task.projectId ?? '')
+  const [sectionId, setSectionId] = useState(() => task.sectionId ?? '')
   const [projects, setProjects] = useState<ProjectDto[]>([])
   const [sections, setSections] = useState<SectionDto[]>([])
   const [loading, setLoading] = useState(false)
@@ -94,19 +94,18 @@ function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
       })
       toast.success('Tarea actualizada')
       bump()
+      setLoading(false)
       onOpenChange(false)
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Error al actualizar')
-    } finally {
       setLoading(false)
+      toast.error(err instanceof Error ? err.message : 'Error al actualizar')
     }
   }
 
   return (
     <ModalRouteShell onClose={() => onOpenChange(false)}>
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="edit-task-modal-title"
         className="border-border-default bg-surface-sidebar w-full max-w-md rounded-xl border p-6 shadow-xl"
       >
@@ -221,7 +220,7 @@ function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
             </button>
           </div>
         </form>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }

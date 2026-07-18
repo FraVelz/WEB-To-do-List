@@ -33,17 +33,17 @@ export function RescheduleConfirmModal({
     setLoading(true)
     try {
       await onConfirm()
+      setLoading(false)
       onOpenChange(false)
-    } finally {
+    } catch {
       setLoading(false)
     }
   }
 
   return createPortal(
     <ModalRouteShell onClose={() => !loading && onOpenChange(false)}>
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="reschedule-modal-title"
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8 text-center shadow-xl"
       >
@@ -73,7 +73,7 @@ export function RescheduleConfirmModal({
             Cancelar
           </Button>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>,
     document.body
   )

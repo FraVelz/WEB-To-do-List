@@ -10,7 +10,7 @@ const PRIORITIES = [
   { value: 4, label: 'P4', color: '#94a3b8' },
 ] as const
 
-export function priorityColor(priority: number) {
+function priorityColor(priority: number) {
   return (
     PRIORITIES.find((p) => p.value === priority)?.color ?? PRIORITIES[0].color
   )

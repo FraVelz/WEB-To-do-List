@@ -43,12 +43,11 @@ export function TaskEmptyState({ view = 'generic', className }: Props) {
   const copy = COPY[view]
 
   return (
-    <div
+    <output
       className={
         className ??
         'border-border-subtle bg-surface-sidebar/40 mt-6 max-w-2xl rounded-lg border px-4 py-6'
       }
-      role="status"
     >
       <p className="text-text-heading font-medium">{copy.title}</p>
       <p className="text-text-secondary mt-1 text-sm">{copy.body}</p>
@@ -60,6 +59,6 @@ export function TaskEmptyState({ view = 'generic', className }: Props) {
           {copy.ctaLabel}
         </Link>
       )}
-    </div>
+    </output>
   )
 }

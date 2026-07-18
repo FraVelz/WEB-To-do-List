@@ -128,6 +128,7 @@ export function PageProject({ projectId }: Props) {
               onChange={(e) => setDescription(e.target.value)}
               onBlur={() => void saveDescription()}
               placeholder="Añade una descripción"
+              aria-label="Descripción del proyecto"
               className="text-text-secondary placeholder:text-text-secondary/70 mt-2 w-full max-w-2xl bg-transparent text-sm outline-none"
             />
             <TaskListBySections projectId={project.id} />

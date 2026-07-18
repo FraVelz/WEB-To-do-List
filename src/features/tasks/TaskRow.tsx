@@ -20,6 +20,7 @@ type Props = {
   rowRef?: (el: HTMLDivElement | null) => void
   tabIndex?: number
   onRowFocus?: () => void
+  onMoveFocus?: (target: 'prev' | 'next' | 'first' | 'last') => void
 }
 
 function isOverdue(dueDate: string | null, completed: boolean) {
@@ -41,6 +42,7 @@ export function TaskRow({
   rowRef,
   tabIndex = 0,
   onRowFocus,
+  onMoveFocus,
 }: Props) {
   const bump = useTasksRefreshStore((s) => s.bump)
   const [deleteOpen, setDeleteOpen] = useState(false)
@@ -100,6 +102,26 @@ export function TaskRow({
   function onRowKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
     const target = e.target as HTMLElement
     if (target !== e.currentTarget) return
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      onMoveFocus?.('next')
+      return
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      onMoveFocus?.('prev')
+      return
+    }
+    if (e.key === 'Home') {
+      e.preventDefault()
+      onMoveFocus?.('first')
+      return
+    }
+    if (e.key === 'End') {
+      e.preventDefault()
+      onMoveFocus?.('last')
+      return
+    }
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault()
       if (e.key === ' ') {
@@ -122,7 +144,6 @@ export function TaskRow({
     <>
       <div
         ref={rowRef}
-        role="group"
         tabIndex={tabIndex}
         onFocus={onRowFocus}
         onKeyDown={onRowKeyDown}

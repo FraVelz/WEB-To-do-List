@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import Header from '@/components/layout/header/Header'
@@ -72,7 +72,7 @@ export function PageReports() {
     }
   }, [version])
 
-  const stats = useMemo(() => {
+  const stats = (() => {
     const days = last7Days()
     const today = new Date()
     const windowStart = new Date(
@@ -99,7 +99,7 @@ export function PageReports() {
     }
 
     return days
-  }, [tasks])
+  })()
 
   const max = Math.max(1, ...stats.flatMap((d) => [d.created, d.completed]))
   const totalCreated = stats.reduce((s, d) => s + d.created, 0)

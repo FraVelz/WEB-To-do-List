@@ -69,9 +69,8 @@ export default function ModalPro() {
 
   return (
     <ModalRouteShell>
-      <div
-        role="dialog"
-        aria-modal="true"
+      <dialog
+        open
         aria-labelledby="modal-pro-title"
         className="z-10 flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl shadow-2xl lg:max-h-[42rem] lg:flex-row"
       >
@@ -215,7 +214,7 @@ export default function ModalPro() {
             producto ni servicio oficial.
           </p>
         </div>
-      </div>
+      </dialog>
     </ModalRouteShell>
   )
 }
