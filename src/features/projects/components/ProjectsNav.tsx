@@ -4,7 +4,7 @@ import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 import clsx from 'clsx'
 
 import { NameInputModal } from '@/features/projects/components/NameInputModal'
@@ -33,9 +33,9 @@ export function ProjectsNav({ onNavigate }: Props) {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(
-            e instanceof Error ? e.message : 'Error al cargar proyectos'
-          )
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar proyectos',
+          })
         }
       })
     return () => {
@@ -46,7 +46,7 @@ export function ProjectsNav({ onNavigate }: Props) {
   async function handleCreate(name: string) {
     const project = await createProject({ name })
     setProjects((prev) => [...prev, project])
-    toast.success('Proyecto creado')
+    toast.success({ text: 'Proyecto creado' })
   }
 
   return (

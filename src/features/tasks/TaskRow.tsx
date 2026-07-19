@@ -3,7 +3,7 @@
 import { CalendarIcon, Trash2Icon } from 'lucide-react'
 import clsx from 'clsx'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { formatTaskDate } from '@/lib/date-format'
 import { EditTaskModal } from '@/features/tasks/components/EditTaskModal'
@@ -90,12 +90,16 @@ export function TaskRow({
       setLiveMessage(
         nextCompleted ? `Completada: ${task.title}` : `Pendiente: ${task.title}`
       )
-      toast.success(
-        nextCompleted ? 'Tarea completada' : 'Tarea marcada como pendiente'
-      )
+      toast.success({
+        text: nextCompleted
+          ? 'Tarea completada'
+          : 'Tarea marcada como pendiente',
+      })
       bump()
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Error al actualizar')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al actualizar',
+      })
     }
   }
 

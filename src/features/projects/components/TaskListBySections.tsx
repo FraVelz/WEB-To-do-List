@@ -2,7 +2,7 @@
 
 import { PlusIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { useModalNavigation } from '@/hooks/useModalNavigation'
 import { NameInputModal } from '@/features/projects/components/NameInputModal'
@@ -78,7 +78,9 @@ export function TaskListBySections({ projectId }: Props) {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(e instanceof Error ? e.message : 'Error al cargar')
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar',
+          })
         }
       })
       .finally(() => {
@@ -127,7 +129,7 @@ export function TaskListBySections({ projectId }: Props) {
       name,
     })
     setSections((prev) => [...prev, section])
-    toast.success('Sección creada')
+    toast.success({ text: 'Sección creada' })
   }
 
   async function handleRenameSection(name: string) {
@@ -135,7 +137,7 @@ export function TaskListBySections({ projectId }: Props) {
     if (renamingSection.name === name) return
     const updated = await patchSection(renamingSection.id, { name })
     setSections((prev) => prev.map((s) => (s.id === updated.id ? updated : s)))
-    toast.success('Sección renombrada')
+    toast.success({ text: 'Sección renombrada' })
   }
 
   async function persistTaskUpdates(
@@ -148,7 +150,9 @@ export function TaskListBySections({ projectId }: Props) {
       await reorderTasks(updates)
     } catch (e) {
       setTasks(prev)
-      toast.error(e instanceof Error ? e.message : 'Error al reordenar')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al reordenar',
+      })
       bump()
     }
   }
@@ -163,7 +167,9 @@ export function TaskListBySections({ projectId }: Props) {
       await reorderSections(updates)
     } catch (e) {
       setSections(prev)
-      toast.error(e instanceof Error ? e.message : 'Error al reordenar')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al reordenar',
+      })
       bump()
     }
   }

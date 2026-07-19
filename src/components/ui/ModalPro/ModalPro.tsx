@@ -10,7 +10,7 @@ import {
   SparklesIcon,
 } from 'lucide-react'
 import Image from 'next/image'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { Button } from '@/components/ui/button'
@@ -63,7 +63,9 @@ export default function ModalPro() {
   const { closeModal } = useModalNavigation()
 
   function handleActivate() {
-    toast.success('Plan Pro activado en este entorno de demostración.')
+    toast.success({
+      text: 'Plan Pro activado en este entorno de demostración.',
+    })
     closeModal()
   }
 

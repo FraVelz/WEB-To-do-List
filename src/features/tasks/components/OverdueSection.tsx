@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { RescheduleConfirmModal } from '@/features/tasks/components/RescheduleConfirmModal'
 import { TaskRow } from '@/features/tasks/TaskRow'
@@ -26,9 +26,9 @@ export function OverdueSection() {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(
-            e instanceof Error ? e.message : 'Error al cargar vencidas'
-          )
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar vencidas',
+          })
           setTasks([])
         }
       })
@@ -57,10 +57,12 @@ export function OverdueSection() {
         tasks.map((t) => t.id),
         dueDate
       )
-      toast.success('Tareas reprogramadas para hoy')
+      toast.success({ text: 'Tareas reprogramadas para hoy' })
       bump()
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Error al reprogramar')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al reprogramar',
+      })
       throw e
     }
   }

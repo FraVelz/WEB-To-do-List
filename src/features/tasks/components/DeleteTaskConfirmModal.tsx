@@ -3,7 +3,7 @@
 import { Trash2Icon } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { Button } from '@/components/ui/button'
@@ -32,13 +32,15 @@ export function DeleteTaskConfirmModal({
     setLoading(true)
     try {
       await deleteTask(taskId)
-      toast.success('Tarea eliminada')
+      toast.success({ text: 'Tarea eliminada' })
       bump()
       onOpenChange(false)
       setLoading(false)
     } catch (e) {
       setLoading(false)
-      toast.error(e instanceof Error ? e.message : 'Error al eliminar')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al eliminar',
+      })
     }
   }
 

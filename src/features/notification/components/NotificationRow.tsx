@@ -1,7 +1,7 @@
 'use client'
 
 import clsx from 'clsx'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import {
   markNotificationRead,
@@ -27,9 +27,9 @@ export function NotificationRow({ item, onUpdated }: Props) {
         await markNotificationRead(item.id)
         onUpdated()
       } catch (e) {
-        toast.error(
-          e instanceof Error ? e.message : 'No se pudo marcar como leída'
-        )
+        toast.error({
+          text: e instanceof Error ? e.message : 'No se pudo marcar como leída',
+        })
       }
     }
   }

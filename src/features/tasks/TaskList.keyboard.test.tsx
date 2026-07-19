@@ -27,7 +27,7 @@ vi.mock('@/services/projects', () => ({
   fetchSections: vi.fn().mockResolvedValue([]),
 }))
 
-vi.mock('sonner', () => ({
+vi.mock('@pheralb/toast', () => ({
   toast: { error: vi.fn(), success: vi.fn() },
 }))
 
@@ -83,24 +83,29 @@ describe('TaskList keyboard a11y (L6-5)', () => {
       ).toBeInTheDocument()
     })
 
-    const first = screen.getByRole('group', { name: 'Primera' })
+    const first = screen.getByLabelText('Primera', {
+      selector: 'div[tabindex]',
+    })
     first.focus()
     expect(first).toHaveFocus()
 
-    fireEvent.keyDown(screen.getByRole('list', { name: /lista de tareas/i }), {
-      key: 'ArrowDown',
-    })
+    fireEvent.keyDown(first, { key: 'ArrowDown' })
 
     await waitFor(() => {
-      expect(screen.getByRole('group', { name: 'Segunda' })).toHaveFocus()
+      expect(
+        screen.getByLabelText('Segunda', { selector: 'div[tabindex]' })
+      ).toHaveFocus()
     })
 
-    fireEvent.keyDown(screen.getByRole('list', { name: /lista de tareas/i }), {
-      key: 'ArrowUp',
-    })
+    fireEvent.keyDown(
+      screen.getByLabelText('Segunda', { selector: 'div[tabindex]' }),
+      { key: 'ArrowUp' }
+    )
 
     await waitFor(() => {
-      expect(screen.getByRole('group', { name: 'Primera' })).toHaveFocus()
+      expect(
+        screen.getByLabelText('Primera', { selector: 'div[tabindex]' })
+      ).toHaveFocus()
     })
   })
 })

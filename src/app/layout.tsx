@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { AuthProvider } from '@/components/auth/AuthProvider'
 import { FirebaseAnalytics } from '@/components/auth/FirebaseAnalytics'
 import { ThemeProvider } from '@/components/theme/ThemeProvider'
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from '@/components/ui/ToasterTheme'
 import { getSiteUrl, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE } from '@/lib/site'
 import { DEFAULT_THEME, THEME_STORAGE_KEY } from '@/lib/theme'
 
@@ -68,7 +68,7 @@ export default function RootLayout({
           <AuthProvider>
             <FirebaseAnalytics />
             {children}
-            <Toaster position="top-center" richColors closeButton />
+            <Toaster />
           </AuthProvider>
         </ThemeProvider>
       </body>

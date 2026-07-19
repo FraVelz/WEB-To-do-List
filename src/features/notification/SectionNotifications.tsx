@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import {
   fetchNotifications,
@@ -16,13 +16,17 @@ export function SectionNotification({ unreadOnly }: { unreadOnly?: boolean }) {
   function load() {
     fetchNotifications({ unreadOnly })
       .then(setItems)
-      .catch(() => toast.error('No se pudieron cargar las notificaciones'))
+      .catch(() =>
+        toast.error({ text: 'No se pudieron cargar las notificaciones' })
+      )
   }
 
   useEffect(() => {
     fetchNotifications({ unreadOnly })
       .then(setItems)
-      .catch(() => toast.error('No se pudieron cargar las notificaciones'))
+      .catch(() =>
+        toast.error({ text: 'No se pudieron cargar las notificaciones' })
+      )
   }, [unreadOnly])
 
   return (

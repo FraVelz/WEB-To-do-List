@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { useModalNavigation } from '@/hooks/useModalNavigation'
@@ -36,7 +36,7 @@ export function ModalSearch() {
         if (list !== undefined) {
           setResults(list)
         } else {
-          toast.error('No se pudo buscar')
+          toast.error({ text: 'No se pudo buscar' })
           setResults([])
         }
         setLoading(false)

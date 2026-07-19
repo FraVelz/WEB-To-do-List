@@ -4,7 +4,7 @@ import Header from '@/components/layout/header/Header'
 import { Button } from '@/components/ui/button'
 import { MailIcon } from 'lucide-react'
 import { useRef } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ProfileAvatar } from './components/ProfileAvatar'
 import { useUserProfile } from './hooks/useUserProfile'
@@ -26,23 +26,23 @@ export function PageProfile() {
 
   function handleSave() {
     if (!save()) return
-    toast.success('Cambios guardados.')
+    toast.success({ text: 'Cambios guardados.' })
   }
 
   async function handleAvatarChange(file: File | undefined) {
     if (!file) return
     const outcome = await setAvatarFromFile(file)
     if (!outcome.ok) {
-      toast.error(outcome.error)
+      toast.error({ text: outcome.error })
       return
     }
-    toast.success('Foto de perfil actualizada.')
+    toast.success({ text: 'Foto de perfil actualizada.' })
   }
 
   function handleRemoveAvatar() {
     if (!removeAvatar()) return
     if (fileInputRef.current) fileInputRef.current.value = ''
-    toast.success('Foto de perfil eliminada.')
+    toast.success({ text: 'Foto de perfil eliminada.' })
   }
 
   return (
