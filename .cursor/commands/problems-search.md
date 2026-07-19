@@ -67,7 +67,7 @@ Usar esta escala en el informe:
 ### 5. Rendimiento y experiencia (P1–P2)
 
 - React Compiler / hidratación innecesaria (`"use client"` de más).
-- Listas de tareas largas, re-fetch excesivo, toasts (`sonner`) sin feedback de error.
+- Listas de tareas largas, re-fetch excesivo, toasts (`@pheralb/toast`) sin feedback de error.
 
 ### 6. Accesibilidad (P1–P2)
 

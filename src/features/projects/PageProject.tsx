@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import Header from '@/components/layout/header/Header'
 import {
@@ -41,9 +41,9 @@ export function PageProject({ projectId }: Props) {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(
-            e instanceof Error ? e.message : 'Error al cargar proyecto'
-          )
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar proyecto',
+          })
           setProject(null)
         }
       })
@@ -60,7 +60,7 @@ export function PageProject({ projectId }: Props) {
     const next = name.trim()
     if (!next) {
       setName(project.name)
-      toast.error('El nombre no puede estar vacío')
+      toast.error({ text: 'El nombre no puede estar vacío' })
       return
     }
     if (project.name === next) return
@@ -71,7 +71,9 @@ export function PageProject({ projectId }: Props) {
       bump()
     } catch (e) {
       setName(project.name)
-      toast.error(e instanceof Error ? e.message : 'Error al guardar nombre')
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al guardar nombre',
+      })
     }
   }
 
@@ -83,9 +85,9 @@ export function PageProject({ projectId }: Props) {
       const updated = await patchProject(project.id, { description: next })
       setProject(updated)
     } catch (e) {
-      toast.error(
-        e instanceof Error ? e.message : 'Error al guardar descripción'
-      )
+      toast.error({
+        text: e instanceof Error ? e.message : 'Error al guardar descripción',
+      })
     }
   }
 

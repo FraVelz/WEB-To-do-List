@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import Header from '@/components/layout/header/Header'
 import { WeekCalendarStrip } from '@/features/next/components/WeekCalendarStrip'
@@ -39,7 +39,9 @@ export function PageNext() {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(e instanceof Error ? e.message : 'Error al cargar')
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar',
+          })
           setTasks([])
         }
       })
@@ -111,7 +113,10 @@ export function PageNext() {
             />
           )}
           {!loading && dayTasks.length > 0 && (
-            <ul className="mt-4 flex flex-col gap-2" aria-label="Tareas del día">
+            <ul
+              className="mt-4 flex flex-col gap-2"
+              aria-label="Tareas del día"
+            >
               {dayTasks.map((task, index) => (
                 <li key={task.id}>
                   <TaskRow

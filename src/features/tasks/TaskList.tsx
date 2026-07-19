@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { TaskEmptyState } from '@/features/tasks/TaskEmptyState'
 import { fetchTasks, type TaskFilter } from '@/services/tasks'
@@ -39,7 +39,9 @@ export function TaskList({ filter, label, projectId, emptyView }: Props) {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(e instanceof Error ? e.message : 'Error al cargar tareas')
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar tareas',
+          })
           setTasks([])
         }
       })

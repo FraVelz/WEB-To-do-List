@@ -2,7 +2,7 @@
 
 import { useId, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { Button } from '@/components/ui/button'
@@ -60,7 +60,7 @@ function NameInputModalForm({
     e.preventDefault()
     const trimmed = name.trim()
     if (!trimmed) {
-      toast.error('Escribe un nombre')
+      toast.error({ text: 'Escribe un nombre' })
       return
     }
     setLoading(true)
@@ -70,7 +70,9 @@ function NameInputModalForm({
       onOpenChange(false)
     } catch (err) {
       setLoading(false)
-      toast.error(err instanceof Error ? err.message : 'Error al guardar')
+      toast.error({
+        text: err instanceof Error ? err.message : 'Error al guardar',
+      })
     }
   }
 

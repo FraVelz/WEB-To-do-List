@@ -3,7 +3,7 @@
 import { LogOutIcon } from 'lucide-react'
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
 import { Button } from '@/components/ui/button'
@@ -34,9 +34,9 @@ export function LogoutConfirmModal({
       setLoading(false)
     } catch (e) {
       setLoading(false)
-      toast.error(
-        e instanceof Error ? e.message : 'No se pudo cerrar la sesión'
-      )
+      toast.error({
+        text: e instanceof Error ? e.message : 'No se pudo cerrar la sesión',
+      })
     }
   }
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 import clsx from 'clsx'
 
 import Header from '@/components/layout/header/Header'
@@ -15,7 +15,7 @@ export function PageFilters() {
   useEffect(() => {
     fetchTaskLabels()
       .then(setLabels)
-      .catch(() => toast.error('No se pudieron cargar las etiquetas'))
+      .catch(() => toast.error({ text: 'No se pudieron cargar las etiquetas' }))
   }, [])
 
   return (

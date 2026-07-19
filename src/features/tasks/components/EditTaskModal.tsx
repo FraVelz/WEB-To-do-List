@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 import clsx from 'clsx'
 
 import { ModalRouteShell } from '@/components/modals/ModalRouteShell'
@@ -78,7 +78,7 @@ function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!title.trim()) {
-      toast.error('Escribe un título')
+      toast.error({ text: 'Escribe un título' })
       return
     }
     setLoading(true)
@@ -92,13 +92,15 @@ function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
         projectId: projectId || null,
         sectionId: projectId && sectionId ? sectionId : null,
       })
-      toast.success('Tarea actualizada')
+      toast.success({ text: 'Tarea actualizada' })
       bump()
       setLoading(false)
       onOpenChange(false)
     } catch (err) {
       setLoading(false)
-      toast.error(err instanceof Error ? err.message : 'Error al actualizar')
+      toast.error({
+        text: err instanceof Error ? err.message : 'Error al actualizar',
+      })
     }
   }
 

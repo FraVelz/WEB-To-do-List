@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 import clsx from 'clsx'
 import { useSearchParams } from 'next/navigation'
 
@@ -66,7 +66,7 @@ export function ModalAddTask() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!title.trim()) {
-      toast.error('Escribe un título')
+      toast.error({ text: 'Escribe un título' })
       return
     }
     setLoading(true)
@@ -84,13 +84,14 @@ export function ModalAddTask() {
     )
 
     if (!outcome.ok) {
-      toast.error(
-        outcome.error instanceof Error
-          ? outcome.error.message
-          : 'Error al crear'
-      )
+      toast.error({
+        text:
+          outcome.error instanceof Error
+            ? outcome.error.message
+            : 'Error al crear',
+      })
     } else {
-      toast.success('Tarea creada')
+      toast.success({ text: 'Tarea creada' })
       setTitle('')
       setDescription('')
       setLabel('')

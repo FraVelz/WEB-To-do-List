@@ -7,7 +7,7 @@ import {
 } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import { TaskRow } from './TaskRow'
 
@@ -30,7 +30,7 @@ vi.mock('@/stores/tasks-refresh-store', () => ({
     sel({ bump }),
 }))
 
-vi.mock('sonner', () => ({
+vi.mock('@pheralb/toast', () => ({
   toast: {
     error: vi.fn(),
     success: vi.fn(),
@@ -89,7 +89,7 @@ describe('TaskRow', () => {
 
     await waitFor(() => {
       expect(patchTask).toHaveBeenCalledWith('t1', { completed: true })
-      expect(toast.success).toHaveBeenCalledWith('Tarea completada')
+      expect(toast.success).toHaveBeenCalledWith({ text: 'Tarea completada' })
       expect(bump).toHaveBeenCalled()
     })
   })
@@ -106,7 +106,9 @@ describe('TaskRow', () => {
 
     await waitFor(() => {
       expect(patchTask).toHaveBeenCalledWith('t1', { completed: false })
-      expect(toast.success).toHaveBeenCalledWith('Tarea marcada como pendiente')
+      expect(toast.success).toHaveBeenCalledWith({
+        text: 'Tarea marcada como pendiente',
+      })
       expect(bump).toHaveBeenCalled()
     })
   })
@@ -126,7 +128,7 @@ describe('TaskRow', () => {
 
     await waitFor(() => {
       expect(deleteTask).toHaveBeenCalledWith('t1')
-      expect(toast.success).toHaveBeenCalledWith('Tarea eliminada')
+      expect(toast.success).toHaveBeenCalledWith({ text: 'Tarea eliminada' })
       expect(bump).toHaveBeenCalled()
     })
   })

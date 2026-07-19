@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 import Header from '@/components/layout/header/Header'
 import { fetchTasks, type TaskDto } from '@/services/tasks'
@@ -60,7 +60,9 @@ export function PageReports() {
       })
       .catch((e: unknown) => {
         if (!cancelled) {
-          toast.error(e instanceof Error ? e.message : 'Error al cargar')
+          toast.error({
+            text: e instanceof Error ? e.message : 'Error al cargar',
+          })
           setTasks([])
         }
       })

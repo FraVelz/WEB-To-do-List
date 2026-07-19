@@ -7,7 +7,7 @@ import clsx from 'clsx'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { toast } from 'sonner'
+import { toast } from '@pheralb/toast'
 
 type AuthView = 'login' | 'signup'
 
@@ -59,7 +59,7 @@ export function PageLogin() {
     if (!email.trim() || !password.trim()) {
       const message = 'Introduce email y contraseña.'
       setError(message)
-      toast.error(message)
+      toast.error({ text: message })
       return
     }
 
@@ -75,7 +75,7 @@ export function PageLogin() {
     } catch (err) {
       const message = firebaseAuthMessage(err, view)
       setError(message)
-      toast.error(message)
+      toast.error({ text: message })
       setLoading(false)
     }
   }
