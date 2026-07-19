@@ -48,6 +48,7 @@ export function DeleteTaskConfirmModal({
     <ModalRouteShell onClose={() => onOpenChange(false)}>
       <dialog
         open
+        aria-modal="true"
         aria-labelledby="delete-task-modal-title"
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8 text-center shadow-xl"
       >
@@ -77,6 +78,7 @@ export function DeleteTaskConfirmModal({
             type="button"
             variant="outline"
             disabled={loading}
+            autoFocus
             onClick={() => onOpenChange(false)}
           >
             Cancelar

@@ -44,6 +44,7 @@ export function RescheduleConfirmModal({
     <ModalRouteShell onClose={() => !loading && onOpenChange(false)}>
       <dialog
         open
+        aria-modal="true"
         aria-labelledby="reschedule-modal-title"
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-8 text-center shadow-xl"
       >
@@ -68,6 +69,7 @@ export function RescheduleConfirmModal({
             type="button"
             variant="outline"
             disabled={loading}
+            autoFocus
             onClick={() => onOpenChange(false)}
           >
             Cancelar

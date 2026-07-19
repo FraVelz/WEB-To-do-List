@@ -73,6 +73,7 @@ export default function ModalPro() {
     <ModalRouteShell>
       <dialog
         open
+        aria-modal="true"
         aria-labelledby="modal-pro-title"
         className="z-10 flex w-full max-w-3xl flex-col overflow-hidden rounded-3xl shadow-2xl lg:max-h-[42rem] lg:flex-row"
       >

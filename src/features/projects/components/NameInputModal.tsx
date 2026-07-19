@@ -80,6 +80,7 @@ function NameInputModalForm({
     <ModalRouteShell onClose={() => !loading && onOpenChange(false)}>
       <dialog
         open
+        aria-modal="true"
         aria-labelledby={titleId}
         className="border-border-default w-full max-w-md rounded-xl border bg-[color-mix(in_srgb,var(--color-surface-sidebar)_85%,transparent)] p-6 shadow-xl"
       >

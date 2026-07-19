@@ -53,6 +53,7 @@ export function ModalSearch() {
     <ModalRouteShell align="top">
       <dialog
         open
+        aria-modal="true"
         aria-labelledby="modal-search-title"
         className="border-border-default bg-surface-sidebar w-full max-w-lg rounded-xl border shadow-xl"
       >

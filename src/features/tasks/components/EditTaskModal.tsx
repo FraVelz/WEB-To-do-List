@@ -108,6 +108,7 @@ function EditTaskModalForm({ task, onOpenChange }: Omit<Props, 'open'>) {
     <ModalRouteShell onClose={() => onOpenChange(false)}>
       <dialog
         open
+        aria-modal="true"
         aria-labelledby="edit-task-modal-title"
         className="border-border-default bg-surface-sidebar w-full max-w-md rounded-xl border p-6 shadow-xl"
       >
